@@ -53,6 +53,7 @@ public class MovimientoBloques : MonoBehaviour
         if (gano)
         {
             Debug.Log("YA GANO !!");
+            GameObject.Find("GameManager").GetComponent<Timer>().flag = true;
         }
 
     }
