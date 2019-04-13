@@ -1,44 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using System.Linq;
+//using System;
 
 public class MovimientoBloques : MonoBehaviour
 {
     int[,] matriz = new int[3, 3] { { 2, 6, 3 }, { 4, 0, 1 }, { 8, 7, 5 } };
     int[,] matrizGano = new int[3, 3] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 } };
     int fila, columna;
+    int[] arrayNumeros;
     RaycastHit hit;
     bool gano = false;
+
+    int num;
 
     // Update is called once per frame
     void Update()
     {
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit, 100.0f) && hit.transform != null && Input.GetMouseButtonDown(0))
+        if (!gano)
         {
-            //Debug.LogWarning("Se presiono mouse");
+            // Generar rayo para "clickear" bloque
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            int slot = Int32.Parse(hit.transform.gameObject.name);
-
-            scanEmptySlot(matriz, slot);
-
+            // Si el rayo hace contacto con un bloque y se tiene el click IZQUIERDO persionado
+            if (Physics.Raycast(ray, out hit, 100.0f) && hit.transform != null && Input.GetMouseButtonDown(0))
+            {
+                int slot = int.Parse(hit.transform.gameObject.name);
+                scanEmptySlot(matriz, slot);
+            }
+            analizarGano(matriz);
         }
-
-        if (!gano) { analizarGano(matriz); }
     }
 
     void Start()
     {
-        //mostrarMatriz(matriz);
+
+        generarMatriz();
+
+        Debug.Log("Mostrando Matriz Convertida: ");
+        mostrarMatriz();
+
     }
 
     void analizarGano(int[,] matriz)
     {
         gano = true;
 
+        // Analizar si matrizes juego y gano son identicas
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
@@ -50,6 +59,7 @@ public class MovimientoBloques : MonoBehaviour
             }
         }
 
+        // Si termino el juego parar el timer
         if (gano)
         {
             Debug.Log("YA GANO !!");
@@ -58,29 +68,23 @@ public class MovimientoBloques : MonoBehaviour
 
     }
 
+    // Analizar si existe espacio vacio
     void scanEmptySlot(int[,] matriz, int slot)
     {
-
-        // Debug.Log(slot);
-
+        // Analizar en que espacio estoy ahora
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-
                 if (matriz[i, j] == slot)
                 {
-
                     fila = i;
                     columna = j;
-
                 }
-
             }
         }
 
-        //Debug.Log( "FILA: " + fila + " | COLUMNA: " + columna );
-
+        // Analizar movimientos posibles de bloque
         if (columna + 1 < 3 && matriz[fila, columna + 1] == 0)
         {
             Transform posicion = GameObject.Find(hit.transform.gameObject.name).GetComponent<Transform>();
@@ -140,4 +144,45 @@ public class MovimientoBloques : MonoBehaviour
         }
 
     }
+
+    // Generar matriz con numeros aleatorios de hash
+    void generarMatriz() {
+        // Contador para leer hash
+        int k;
+
+        // Generar hash para almacenar numeros aleatorios
+        var hash = new HashSet<int>();
+
+        // Agregar numeros hasta que haya 0-8 sin repetir
+        while (hash.Count < 9) { hash.Add(Random.Range(0, 9)); }
+
+        // Convertir a un array de ints
+        arrayNumeros = hash.ToArray();
+
+        k = 0;
+
+        // Cargar matriz con numeros aleatorios
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                matriz[i, j] = arrayNumeros[k];
+                k++;
+            }
+        }
+
+    }
+
+    // Mostrar Matriz
+    void mostrarMatriz() {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Debug.Log(matriz[i, j]);
+            }
+        }
+    }
+
 }
+
