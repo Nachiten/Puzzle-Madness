@@ -5,27 +5,29 @@ using System;
 
 public class MovimientoBloques : MonoBehaviour
 {
-    int[,] matriz = new int[3, 3] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 } };
-    int[,] emptySlot = new int[1, 2] { { 0, 0 } };
+    int[,] matriz = new int[3, 3] { { 2, 6, 3 }, { 4, 0, 1 }, { 8, 7, 5 } };
+    int[,] matrizGano = new int[3, 3] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 } };
     int fila, columna;
     RaycastHit hit;
+    bool gano = false;
 
     // Update is called once per frame
     void Update()
     {
 
-        
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit, 100.0f) && hit.transform != null && Input.GetMouseButtonDown(0))
         {
-            Debug.LogWarning("Se presiono mouse");
+            //Debug.LogWarning("Se presiono mouse");
 
             int slot = Int32.Parse(hit.transform.gameObject.name);
 
-            scanEmptySlot(matriz, emptySlot, slot);
+            scanEmptySlot(matriz, slot);
 
         }
+
+        if (!gano) { analizarGano(matriz); }
     }
 
     void Start()
@@ -33,20 +35,29 @@ public class MovimientoBloques : MonoBehaviour
         //mostrarMatriz(matriz);
     }
 
-    void mostrarMatriz(int[,] matriz)
+    void analizarGano(int[,] matriz)
     {
+        gano = true;
 
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                Debug.Log(matriz[i, j]);
+                if (matriz[i, j] != matrizGano[i, j])
+                {
+                    gano = false;
+                }
             }
+        }
+
+        if (gano)
+        {
+            Debug.Log("YA GANO !!");
         }
 
     }
 
-    void scanEmptySlot(int[,] matriz, int[,] emptySlot, int slot)
+    void scanEmptySlot(int[,] matriz, int slot)
     {
 
         // Debug.Log(slot);
@@ -75,7 +86,7 @@ public class MovimientoBloques : MonoBehaviour
 
             Vector3 posicionVector = new Vector3(posicion.position.x + 6, posicion.position.y, posicion.position.z);
 
-            Debug.Log("SE MUEVE A LA DERECHA");
+            //Debug.Log("SE MUEVE A LA DERECHA");
 
             posicion.position = posicionVector;
 
@@ -89,7 +100,7 @@ public class MovimientoBloques : MonoBehaviour
 
             Vector3 posicionVector = new Vector3(posicion.position.x - 6, posicion.position.y, posicion.position.z);
 
-            Debug.Log("SE MUEVE A LA IZQUIERDA");
+            //Debug.Log("SE MUEVE A LA IZQUIERDA");
 
             posicion.position = posicionVector;
 
@@ -102,7 +113,7 @@ public class MovimientoBloques : MonoBehaviour
 
             Vector3 posicionVector = new Vector3(posicion.position.x, posicion.position.y, posicion.position.z - 6);
 
-            Debug.Log("SE MUEVE ABAJO");
+            //Debug.Log("SE MUEVE ABAJO");
 
             posicion.position = posicionVector;
 
@@ -115,7 +126,7 @@ public class MovimientoBloques : MonoBehaviour
 
             Vector3 posicionVector = new Vector3(posicion.position.x, posicion.position.y, posicion.position.z + 6);
 
-            Debug.Log("SE MUEVE ARRIBA");
+            //Debug.Log("SE MUEVE ARRIBA");
 
             posicion.position = posicionVector;
 
