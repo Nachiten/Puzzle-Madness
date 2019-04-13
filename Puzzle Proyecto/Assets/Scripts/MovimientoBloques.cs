@@ -7,13 +7,24 @@ using System.Linq;
 public class MovimientoBloques : MonoBehaviour
 {
     int[,] matriz = new int[3, 3] { { 2, 6, 3 }, { 4, 0, 1 }, { 8, 7, 5 } };
-    int[,] matrizGano = new int[3, 3] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 } };
+    int[,] matrizGano = new int[3, 3] { { 1, 2, 3 }, { 4, 5, 6 }, { 8, 7, 0 } };
+    Vector3 posicionBloque = new Vector3();
     int fila, columna;
     int[] arrayNumeros;
     RaycastHit hit;
     bool gano = false;
 
     int num;
+
+    Transform objeto1;
+    Transform objeto2;
+    Transform objeto3;
+    Transform objeto4;
+    Transform objeto5;
+    Transform objeto6;
+    Transform objeto7;
+    Transform objeto8;
+    Transform objeto9;
 
     // Update is called once per frame
     void Update()
@@ -35,12 +46,12 @@ public class MovimientoBloques : MonoBehaviour
 
     void Start()
     {
-
         generarMatriz();
 
         Debug.Log("Mostrando Matriz Convertida: ");
         mostrarMatriz();
 
+        moverBloques();
     }
 
     void analizarGano(int[,] matriz)
@@ -173,6 +184,83 @@ public class MovimientoBloques : MonoBehaviour
 
     }
 
+    void moverBloques() {
+
+        if (matriz[0, 0] != 0) { objeto1 = GameObject.Find(matriz[0, 0].ToString()).GetComponent<Transform>(); }
+        if (matriz[0, 1] != 0) { objeto2 = GameObject.Find(matriz[0, 1].ToString()).GetComponent<Transform>(); }
+        if (matriz[0, 2] != 0) { objeto3 = GameObject.Find(matriz[0, 2].ToString()).GetComponent<Transform>(); }
+        if (matriz[1, 0] != 0) { objeto4 = GameObject.Find(matriz[1, 0].ToString()).GetComponent<Transform>(); }
+        if (matriz[1, 1] != 0) { objeto5 = GameObject.Find(matriz[1, 1].ToString()).GetComponent<Transform>(); }
+        if (matriz[1, 2] != 0) { objeto6 = GameObject.Find(matriz[1, 2].ToString()).GetComponent<Transform>(); }
+        if (matriz[2, 0] != 0) { objeto7 = GameObject.Find(matriz[2, 0].ToString()).GetComponent<Transform>(); }
+        if (matriz[2, 1] != 0) { objeto8 = GameObject.Find(matriz[2, 1].ToString()).GetComponent<Transform>(); }
+        if (matriz[2, 2] != 0) { objeto9 = GameObject.Find(matriz[2, 2].ToString()).GetComponent<Transform>(); }
+
+        if (objeto1 != null)
+        {
+            posicionBloque = new Vector3( -9.63f , 0.44f, 8f);
+
+            objeto1.position = posicionBloque;
+        }
+
+        if (objeto2 != null)
+        {
+            posicionBloque = new Vector3(-3.63f, 0.44f, 8f);
+
+            objeto2.position = posicionBloque;
+        }
+
+        if (objeto3 != null)
+        {
+            posicionBloque = new Vector3(2.37f, 0.44f, 8f);
+
+            objeto3.position = posicionBloque;
+        }
+
+        if (objeto4 != null)
+        {
+            posicionBloque = new Vector3(-9.63f, 0.44f, 2f);
+
+            objeto4.position = posicionBloque;
+        }
+
+        if (objeto5 != null)
+        {
+            posicionBloque = new Vector3(-3.63f, 0.44f, 2f);
+
+            objeto5.position = posicionBloque;
+        }
+
+        if (objeto6 != null)
+        {
+            posicionBloque = new Vector3(2.37f, 0.44f, 2f);
+
+            objeto6.position = posicionBloque;
+        }
+
+        if (objeto7 != null)
+        {
+            posicionBloque = new Vector3(-9.63f, 0.44f, -4f);
+
+            objeto7.position = posicionBloque;
+        }
+
+        if (objeto8 != null)
+        {
+            posicionBloque = new Vector3(-3.63f, 0.44f, -4f);
+
+            objeto8.position = posicionBloque;
+        }
+
+        if (objeto9 != null)
+        {
+            posicionBloque = new Vector3(2.37f, 0.44f, -4f);
+        
+            objeto9.position = posicionBloque;
+        }
+    }
+
+
     // Mostrar Matriz
     void mostrarMatriz() {
         for (int i = 0; i < 3; i++)
@@ -185,4 +273,3 @@ public class MovimientoBloques : MonoBehaviour
     }
 
 }
-
