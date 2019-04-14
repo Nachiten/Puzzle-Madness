@@ -6,12 +6,13 @@ using UnityEngine.UI;
 
 public class MovimientoBloques : MonoBehaviour
 {
-    int[,] matriz = new int[3, 3] { { 2, 6, 3 }, { 4, 0, 1 }, { 8, 7, 5 } };
+    int[,] matriz = new int[3, 3] { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
     int[,] matrizGano = new int[3, 3] { { 1, 2, 3 }, { 4, 5, 6 }, { 8, 7, 0 } };
     int[] arrayNumeros;
     int fila, columna;
-    int num;
     int movimientos;
+    int num;
+    
     public Text textoMovimiento;
 
     Vector3 posicionBloque = new Vector3();
@@ -20,14 +21,14 @@ public class MovimientoBloques : MonoBehaviour
     bool gano = false;
 
     Transform objeto1;
-    Transform objeto2;
+    /*Transform objeto2;
     Transform objeto3;
     Transform objeto4;
     Transform objeto5;
     Transform objeto6;
     Transform objeto7;
     Transform objeto8;
-    Transform objeto9;
+    Transform objeto9;*/
 
     // Update is called once per frame
     void Update()
@@ -87,6 +88,8 @@ public class MovimientoBloques : MonoBehaviour
     // Analizar si existe espacio vacio
     void scanEmptySlot(int[,] matriz, int slot)
     {
+        
+
         // Analizar en que espacio estoy ahora
         for (int i = 0; i < 3; i++)
         {
@@ -100,66 +103,44 @@ public class MovimientoBloques : MonoBehaviour
             }
         }
 
+        Transform posicion = GameObject.Find(hit.transform.gameObject.name).GetComponent<Transform>();
+
         // Analizar movimientos posibles de bloque
         if (columna + 1 < 3 && matriz[fila, columna + 1] == 0)
         {
             // Se mueve hacia la derecha
-            Transform posicion = GameObject.Find(hit.transform.gameObject.name).GetComponent<Transform>();
-
-            Vector3 posicionVector = new Vector3(posicion.position.x + 6, posicion.position.y, posicion.position.z);
-            posicion.position = posicionVector;
-
-            matriz[fila, columna + 1] = slot;
-            matriz[fila, columna] = 0;
-
-            movimientos++;
+            accion(6,0);
         }
-
         else if (columna - 1 > -1 && matriz[fila, columna - 1] == 0)
         {
             // Se mueve hacia la izquierda
-            Transform posicion = GameObject.Find(hit.transform.gameObject.name).GetComponent<Transform>();
-
-            Vector3 posicionVector = new Vector3(posicion.position.x - 6, posicion.position.y, posicion.position.z);
-            posicion.position = posicionVector;
-
-            matriz[fila, columna - 1] = slot;
-            matriz[fila, columna] = 0;
-
-            movimientos++;
+            accion(-6, 0);
         }
         else if (fila + 1 < 3 && matriz[fila + 1, columna] == 0)
         {
             // Se mueve hacia abajo
-            Transform posicion = GameObject.Find(hit.transform.gameObject.name).GetComponent<Transform>();
-
-            Vector3 posicionVector = new Vector3(posicion.position.x, posicion.position.y, posicion.position.z - 6);
-            posicion.position = posicionVector;
-
-            matriz[fila + 1, columna] = slot;
-            matriz[fila, columna] = 0;
-
-            movimientos++;
+            accion(0, -6);
         }
         else if (fila - 1 > -1 && matriz[fila - 1, columna] == 0)
         {
             // Se mueve hacia arriba
-            Transform posicion = GameObject.Find(hit.transform.gameObject.name).GetComponent<Transform>();
+            accion(0, 6);
+        }
+        else { Debug.Log("No hay espacio a donde mover este bloque"); }
 
-            Vector3 posicionVector = new Vector3(posicion.position.x, posicion.position.y, posicion.position.z + 6);
+        textoMovimiento.text = movimientos.ToString();
+        
+        void accion(int offsetX, int offsetZ) {
+
+            Vector3 posicionVector = new Vector3(posicion.position.x + offsetX, posicion.position.y, posicion.position.z + offsetZ);
             posicion.position = posicionVector;
 
-            matriz[fila - 1, columna] = slot;
+            matriz[fila + offsetZ / -6, columna + offsetX / 6] = slot;
             matriz[fila, columna] = 0;
 
             movimientos++;
-        }
-        else
-        {
-            Debug.Log("No hay espacio a donde mover este bloque");
-        }
 
-        textoMovimiento.text = movimientos.ToString();
+        }
 
     }
 
@@ -193,77 +174,26 @@ public class MovimientoBloques : MonoBehaviour
 
     void moverBloques() {
 
-        if (matriz[0, 0] != 0) { objeto1 = GameObject.Find(matriz[0, 0].ToString()).GetComponent<Transform>(); }
-        if (matriz[0, 1] != 0) { objeto2 = GameObject.Find(matriz[0, 1].ToString()).GetComponent<Transform>(); }
-        if (matriz[0, 2] != 0) { objeto3 = GameObject.Find(matriz[0, 2].ToString()).GetComponent<Transform>(); }
-        if (matriz[1, 0] != 0) { objeto4 = GameObject.Find(matriz[1, 0].ToString()).GetComponent<Transform>(); }
-        if (matriz[1, 1] != 0) { objeto5 = GameObject.Find(matriz[1, 1].ToString()).GetComponent<Transform>(); }
-        if (matriz[1, 2] != 0) { objeto6 = GameObject.Find(matriz[1, 2].ToString()).GetComponent<Transform>(); }
-        if (matriz[2, 0] != 0) { objeto7 = GameObject.Find(matriz[2, 0].ToString()).GetComponent<Transform>(); }
-        if (matriz[2, 1] != 0) { objeto8 = GameObject.Find(matriz[2, 1].ToString()).GetComponent<Transform>(); }
-        if (matriz[2, 2] != 0) { objeto9 = GameObject.Find(matriz[2, 2].ToString()).GetComponent<Transform>(); }
+        float posX = -9.63f;
+        float posZ = 8f;
 
-        if (objeto1 != null)
-        {
-            posicionBloque = new Vector3( -9.63f , 0.44f, 8f);
+        for (int i = 0; i < 3; i++){
+            for (int j = 0; j < 3; j++) {
 
-            objeto1.position = posicionBloque;
-        }
-
-        if (objeto2 != null)
-        {
-            posicionBloque = new Vector3(-3.63f, 0.44f, 8f);
-
-            objeto2.position = posicionBloque;
-        }
-
-        if (objeto3 != null)
-        {
-            posicionBloque = new Vector3(2.37f, 0.44f, 8f);
-
-            objeto3.position = posicionBloque;
-        }
-
-        if (objeto4 != null)
-        {
-            posicionBloque = new Vector3(-9.63f, 0.44f, 2f);
-
-            objeto4.position = posicionBloque;
-        }
-
-        if (objeto5 != null)
-        {
-            posicionBloque = new Vector3(-3.63f, 0.44f, 2f);
-
-            objeto5.position = posicionBloque;
-        }
-
-        if (objeto6 != null)
-        {
-            posicionBloque = new Vector3(2.37f, 0.44f, 2f);
-
-            objeto6.position = posicionBloque;
-        }
-
-        if (objeto7 != null)
-        {
-            posicionBloque = new Vector3(-9.63f, 0.44f, -4f);
-
-            objeto7.position = posicionBloque;
-        }
-
-        if (objeto8 != null)
-        {
-            posicionBloque = new Vector3(-3.63f, 0.44f, -4f);
-
-            objeto8.position = posicionBloque;
-        }
-
-        if (objeto9 != null)
-        {
-            posicionBloque = new Vector3(2.37f, 0.44f, -4f);
-        
-            objeto9.position = posicionBloque;
+                if (matriz[i, j] != 0) {
+                    objeto1 = GameObject.Find(matriz[i, j].ToString()).GetComponent<Transform>();
+                    posicionBloque = new Vector3(posX, 0.44f, posZ);
+                    objeto1.position = posicionBloque;
+                }
+                
+                posX += 6f;
+                if (posX > 3)
+                {
+                    posX = -9.63f;
+                    posZ -= 6;
+                }
+                
+            }
         }
     }
 
