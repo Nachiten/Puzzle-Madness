@@ -6,33 +6,23 @@ using UnityEngine.UI;
 
 public class MovimientoBloques : MonoBehaviour
 {
-    int[,] matriz = new int[3, 3] { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
+    int[,] matriz = new int[3, 3] { { 7, 3, 5 }, { 2, 1, 0 }, { 4, 8, 6 } };
     int[,] matrizGano = new int[3, 3] { { 1, 2, 3 }, { 4, 5, 6 }, { 8, 7, 0 } };
-    int[] arrayNumeros;
     int fila, columna;
     int movimientos;
-    int num;
-    
-    public Text textoMovimiento;
-
-    Vector3 posicionBloque = new Vector3();
-    RaycastHit hit;
-
     bool gano = false;
 
-    Transform objeto1;
-    /*Transform objeto2;
-    Transform objeto3;
-    Transform objeto4;
-    Transform objeto5;
-    Transform objeto6;
-    Transform objeto7;
-    Transform objeto8;
-    Transform objeto9;*/
+    public int RandomMoves = 30;
 
-    // Update is called once per frame
+    public Text textoMovimiento;
+
+    /* -------------------------------------------------------------------------------- */
+
+    // Se actualiza una vez por fotograma
     void Update()
     {
+        RaycastHit hit;
+
         if (!gano)
         {
             // Generar rayo para "clickear" bloque
@@ -41,26 +31,41 @@ public class MovimientoBloques : MonoBehaviour
             // Si el rayo hace contacto con un bloque y se tiene el click IZQUIERDO persionado
             if (Physics.Raycast(ray, out hit, 100.0f) && hit.transform != null && Input.GetMouseButtonDown(0))
             {
+                // Asignar slot correcto y escanear si movimiento es posible
                 int slot = int.Parse(hit.transform.gameObject.name);
-                scanEmptySlot(matriz, slot);
+                scanEmptySlot(slot);
             }
-            analizarGano(matriz);
+            // Analizar si se gano con ese movimiento
+            analizarGano();
         }
     }
 
+    /* -------------------------------------------------------------------------------- */
 
+    // Al iniciar juego
     void Start()
     {
         Debug.Log("Game Started");
-        generarMatriz();
+        
+        Debug.Log("Generando Movimientos Random");
 
-        //Debug.Log("Mostrando Matriz Convertida: ");
-        //mostrarMatriz();
+        do // Se repite si queda en posicion ganada y hasta que haya 30 movimientos
+        {
+            // Generar movimiento random
+            scanEmptySlot(Random.Range(1, 9));
 
-        moverBloques();
+        } while ( movimientos < RandomMoves || gano );
+
+        // Reiniviar movimientos
+        movimientos = 0;
+        textoMovimiento.text = "0";
+
+        Debug.Log("Movimientos aleatorios terminados");
     }
 
-    void analizarGano(int[,] matriz)
+    /* -------------------------------------------------------------------------------- */
+
+    void analizarGano()
     {
         gano = true;
 
@@ -85,11 +90,11 @@ public class MovimientoBloques : MonoBehaviour
 
     }
 
-    // Analizar si existe espacio vacio
-    void scanEmptySlot(int[,] matriz, int slot)
-    {
-        
+    /* -------------------------------------------------------------------------------- */
 
+    // Analizar si existe espacio vacio
+    void scanEmptySlot(int slot)
+    {
         // Analizar en que espacio estoy ahora
         for (int i = 0; i < 3; i++)
         {
@@ -103,17 +108,17 @@ public class MovimientoBloques : MonoBehaviour
             }
         }
 
-        Transform posicion = GameObject.Find(hit.transform.gameObject.name).GetComponent<Transform>();
+        Transform posicion = GameObject.Find(slot.ToString()).GetComponent<Transform>();
 
         // Analizar movimientos posibles de bloque
         if (columna + 1 < 3 && matriz[fila, columna + 1] == 0)
         {
-            // Se mueve hacia la derecha
+            // Se mueve hacia derecha
             accion(6,0);
         }
         else if (columna - 1 > -1 && matriz[fila, columna - 1] == 0)
         {
-            // Se mueve hacia la izquierda
+            // Se mueve hacia izquierda
             accion(-6, 0);
         }
         else if (fila + 1 < 3 && matriz[fila + 1, columna] == 0)
@@ -132,71 +137,20 @@ public class MovimientoBloques : MonoBehaviour
         
         void accion(int offsetX, int offsetZ) {
 
+            // Se modifica el vector posicion con la posicion correspondiente
             Vector3 posicionVector = new Vector3(posicion.position.x + offsetX, posicion.position.y, posicion.position.z + offsetZ);
             posicion.position = posicionVector;
 
+            // Se modifica la matriz para aplicar la nueva posicion
             matriz[fila + offsetZ / -6, columna + offsetX / 6] = slot;
             matriz[fila, columna] = 0;
 
             movimientos++;
 
         }
-
     }
 
-    // Generar matriz con numeros aleatorios de hash
-    void generarMatriz() {
-        // Contador para leer hash
-        int k;
-
-        // Generar hash para almacenar numeros aleatorios
-        var hash = new HashSet<int>();
-
-        // Agregar numeros hasta que haya 0-8 sin repetir
-        while (hash.Count < 9) { hash.Add(Random.Range(0, 9)); }
-
-        // Convertir a un array de ints
-        arrayNumeros = hash.ToArray();
-
-        k = 0;
-
-        // Cargar matriz con numeros aleatorios
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                matriz[i, j] = arrayNumeros[k];
-                k++;
-            }
-        }
-
-    }
-
-    void moverBloques() {
-
-        float posX = -9.63f;
-        float posZ = 8f;
-
-        for (int i = 0; i < 3; i++){
-            for (int j = 0; j < 3; j++) {
-
-                if (matriz[i, j] != 0) {
-                    objeto1 = GameObject.Find(matriz[i, j].ToString()).GetComponent<Transform>();
-                    posicionBloque = new Vector3(posX, 0.44f, posZ);
-                    objeto1.position = posicionBloque;
-                }
-                
-                posX += 6f;
-                if (posX > 3)
-                {
-                    posX = -9.63f;
-                    posZ -= 6;
-                }
-                
-            }
-        }
-    }
-
+    /* -------------------------------------------------------------------------------- */
 
     // Mostrar Matriz
     void mostrarMatriz() {

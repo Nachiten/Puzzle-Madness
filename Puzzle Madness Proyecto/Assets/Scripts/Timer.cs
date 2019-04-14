@@ -9,23 +9,25 @@ public class Timer : MonoBehaviour
     private float startTime;
     public bool flag = false;
 
-    // Start is called before the first frame update
+    /* -------------------------------------------------------------------------------- */
+
+    // Al comenzar
     void Start()
     {
         startTime = Time.time;
     }
 
-    // Update is called once per frame
+    /* -------------------------------------------------------------------------------- */
+
+    // Cada fotograma actualizar el timer
     void Update()
     {
-       
+        // Solo si el juego no esta ganado
         if (!flag) { 
             float t = Time.time - startTime;
 
             string minutes = ( (int)t / 60 ).ToString();
             string seconds = (t % 60).ToString("F0");
-
-
             float milisegundos;
 
             if (((t % 60) % 1 * 10 - 5) < 0)
