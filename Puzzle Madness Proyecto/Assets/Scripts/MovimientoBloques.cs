@@ -16,7 +16,6 @@ public class MovimientoBloques : MonoBehaviour
 
     // Bool juego Ganado
     bool gano = false;
-
     // Bool juego empezado
     bool start = false;
 
@@ -25,6 +24,8 @@ public class MovimientoBloques : MonoBehaviour
 
     // Cantidad de movimientos aleatorios para mezclar
     public int RandomMoves = 30;
+    // Activar random
+    public bool activarRandom = true;
 
     /* -------------------------------------------------------------------------------- */
 
@@ -64,20 +65,29 @@ public class MovimientoBloques : MonoBehaviour
 
         // Llenar matrices de datos
         llenarMatrizes();
-        
-        Debug.Log("Generando Movimientos Random");
-        do // Se repite si queda en posicion ganada y hasta que haya 30 movimientos
+
+        if (activarRandom)
         {
-            // Generar movimiento random
-            scanEmptySlot(Random.Range(1, (tamañoMatriz* tamañoMatriz)));
 
-        } while (movimientos < RandomMoves || gano);
+            Debug.Log("Generando Movimientos Random");
+            do // Se repite si queda en posicion ganada y hasta que haya 30 movimientos
+            {
+                // Generar movimiento random
+                scanEmptySlot(Random.Range(1, (tamañoMatriz * tamañoMatriz)));
 
-        // Reiniviar movimientos
-        movimientos = 0;
-        textoMovimiento.text = "0";
+            } while (movimientos < RandomMoves || gano);
 
-        Debug.Log("Movimientos aleatorios terminados | Comenzando juego...");
+
+            // Reiniviar movimientos
+            movimientos = 0;
+            textoMovimiento.text = "0";
+
+            Debug.Log("Movimientos aleatorios terminados | Comenzando juego...");
+        }
+        else
+        {
+            Debug.LogError("RANDOM DESACTIVADO");
+        }
         start = true;
     }
 
@@ -175,20 +185,6 @@ public class MovimientoBloques : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    // Mostrar Matriz
-    void mostrarMatrix(int[,] matrix)
-    {
-        for (int i = 0; i < tamañoMatriz; i++)
-        {
-            for (int j = 0; j < tamañoMatriz; j++)
-            {
-                Debug.Log(matrix[i, j]);
-            }
-        }
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
     void llenarMatrizes()
     {
         int contador;
@@ -215,40 +211,54 @@ public class MovimientoBloques : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    float offsetX = 0f;
-    float offsetY = 0.75f;
-
     void modificarCosas() {
         Renderer objeto;
 
         int contador = 1;
-        float scale = 1 / tamañoMatriz;
+
+        float scale = 1f / tamañoMatriz;
+        float offsetX = 0f;
+        float offsetY = scale * (tamañoMatriz - 1);
+
+
+        Debug.Log("SCALE: " + scale);
 
         for (int i = 0; i < tamañoMatriz; i++) {
             for (int j = 0; j < tamañoMatriz; j++)
             {
                 if (contador < tamañoMatriz * tamañoMatriz)
                 { 
+                    // Asignar renderer
                     objeto = GameObject.Find(contador.ToString()).GetComponent<Renderer>();
-                    //objeto.material.shader = Shader.Find("Nature/SpeedTree");
+                    // Cambiar "Tiling" de textura
+                    objeto.material.mainTextureScale = new Vector2( scale, scale);
+                    // Ajustar "Offeset" de textura
+                    objeto.material.mainTextureOffset = new Vector2( offsetX, offsetY);
 
-                    if (SceneManager.GetActiveScene().name == "Nivel02 4x4")
-                    {
-                        objeto.material.mainTextureScale = new Vector2( 0.25f, 0.25f);
-                        objeto.material.mainTextureOffset = new Vector2( offsetX, offsetY);
-                        Debug.Log("AFIRMATIVO");
-                    }
-                    else {
-
-                        Debug.Log("NEGATIVO");
-                    }
                     contador++;
                 }
 
-                offsetX += 0.25f;
-                if (offsetX > 0.8f) { offsetX = 0; }
+                offsetX += scale;
+                //if (offsetX > scale * (tamañoMatriz - 1)) { offsetX = 0; }
             }
-            offsetY -= 0.25f;
+            offsetX = 0;
+            offsetY -= scale;
         }
     }
+
+    /* -------------------------------------------------------------------------------- */
+
+    /*
+    // Mostrar Matriz
+    void mostrarMatrix(int[,] matrix)
+    {
+        for (int i = 0; i < tamañoMatriz; i++)
+        {
+            for (int j = 0; j < tamañoMatriz; j++)
+            {
+                Debug.Log(matrix[i, j]);
+            }
+        }
+    }
+    */
 }
