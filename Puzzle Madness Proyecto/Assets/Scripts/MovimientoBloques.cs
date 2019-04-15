@@ -1,20 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MovimientoBloques : MonoBehaviour
 {
+    // Tamaño del mapa
     public int tamañoMatriz = 3;
 
     // Matrices para almacenar posiciones
     int[,] matriz;
     int[,] matrizGano;
 
-    int fila, columna;
+    // Cantidad de movimientos
     int movimientos;
+
+    // Bool juego Ganado
     bool gano = false;
+
+    // Bool juego empezado
     bool start = false;
 
     // Texto de movimientos
@@ -22,13 +25,12 @@ public class MovimientoBloques : MonoBehaviour
 
     // Cantidad de movimientos aleatorios para mezclar
     public int RandomMoves = 30;
-    
+
     /* -------------------------------------------------------------------------------- */
 
     // Se actualiza una vez por fotograma
     void Update()
     {
-
         if (!gano && start)
         {
             // Generar rayo para "clickear" bloque
@@ -51,6 +53,8 @@ public class MovimientoBloques : MonoBehaviour
     // Al iniciar juego
     void Start()
     {
+        modificarCosas();
+
         // Inicializar Matrices
         matriz = new int[tamañoMatriz, tamañoMatriz];
         matrizGano = new int[tamañoMatriz, tamañoMatriz];
@@ -60,7 +64,7 @@ public class MovimientoBloques : MonoBehaviour
 
         // Llenar matrices de datos
         llenarMatrizes();
-
+        
         Debug.Log("Generando Movimientos Random");
         do // Se repite si queda en posicion ganada y hasta que haya 30 movimientos
         {
@@ -106,6 +110,8 @@ public class MovimientoBloques : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    int fila, columna;
+
     // Analizar si existe espacio vacio
     void scanEmptySlot(int slot)
     {
@@ -124,26 +130,28 @@ public class MovimientoBloques : MonoBehaviour
 
         Transform posicion = GameObject.Find(slot.ToString()).GetComponent<Transform>();
 
+        // X= -6.514721 Y= 0.7505659 Z= 8.107872
+
         // Analizar movimientos posibles de bloque
         if (columna + 1 < tamañoMatriz && matriz[fila, columna + 1] == 0)
         {
             // Se mueve hacia derecha
-            accion(6, 0);
+            accion(5, 0);
         }
         else if (columna - 1 > -1 && matriz[fila, columna - 1] == 0)
         {
             // Se mueve hacia izquierda
-            accion(-6, 0);
+            accion(-5, 0);
         }
         else if (fila + 1 < tamañoMatriz && matriz[fila + 1, columna] == 0)
         {
             // Se mueve hacia abajo
-            accion(0, -6);
+            accion(0, -5);
         }
         else if (fila - 1 > -1 && matriz[fila - 1, columna] == 0)
         {
             // Se mueve hacia arriba
-            accion(0, 6);
+            accion(0, 5);
         }
         else { Debug.Log("No hay espacio a donde mover este bloque"); }
 
@@ -157,7 +165,7 @@ public class MovimientoBloques : MonoBehaviour
             posicion.position = posicionVector;
 
             // Se modifica la matriz para aplicar la nueva posicion
-            matriz[fila + offsetZ / -6, columna + offsetX / 6] = slot;
+            matriz[fila + offsetZ / -5, columna + offsetX / 5] = slot;
             matriz[fila, columna] = 0;
 
             movimientos++;
@@ -168,7 +176,7 @@ public class MovimientoBloques : MonoBehaviour
     /* -------------------------------------------------------------------------------- */
 
     // Mostrar Matriz
-    void mostrarMatrix( int[,] matrix)
+    void mostrarMatrix(int[,] matrix)
     {
         for (int i = 0; i < tamañoMatriz; i++)
         {
@@ -178,6 +186,8 @@ public class MovimientoBloques : MonoBehaviour
             }
         }
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     void llenarMatrizes()
     {
@@ -203,5 +213,42 @@ public class MovimientoBloques : MonoBehaviour
         }
     }
 
+    /* -------------------------------------------------------------------------------- */
 
+    float offsetX = 0f;
+    float offsetY = 0.75f;
+
+    void modificarCosas() {
+        Renderer objeto;
+
+        int contador = 1;
+        float scale = 1 / tamañoMatriz;
+
+        for (int i = 0; i < tamañoMatriz; i++) {
+            for (int j = 0; j < tamañoMatriz; j++)
+            {
+                if (contador < tamañoMatriz * tamañoMatriz)
+                { 
+                    objeto = GameObject.Find(contador.ToString()).GetComponent<Renderer>();
+                    //objeto.material.shader = Shader.Find("Nature/SpeedTree");
+
+                    if (SceneManager.GetActiveScene().name == "Nivel02 4x4")
+                    {
+                        objeto.material.mainTextureScale = new Vector2( 0.25f, 0.25f);
+                        objeto.material.mainTextureOffset = new Vector2( offsetX, offsetY);
+                        Debug.Log("AFIRMATIVO");
+                    }
+                    else {
+
+                        Debug.Log("NEGATIVO");
+                    }
+                    contador++;
+                }
+
+                offsetX += 0.25f;
+                if (offsetX > 0.8f) { offsetX = 0; }
+            }
+            offsetY -= 0.25f;
+        }
+    }
 }
