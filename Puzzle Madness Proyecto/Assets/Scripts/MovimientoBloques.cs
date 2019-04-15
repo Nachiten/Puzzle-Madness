@@ -68,7 +68,7 @@ public class MovimientoBloques : MonoBehaviour
 
         if (activarRandom)
         {
-
+            
             Debug.Log("Generando Movimientos Random");
             do // Se repite si queda en posicion ganada y hasta que haya 30 movimientos
             {
@@ -76,7 +76,6 @@ public class MovimientoBloques : MonoBehaviour
                 scanEmptySlot(Random.Range(1, (tamañoMatriz * tamañoMatriz)));
 
             } while (movimientos < RandomMoves || gano);
-
 
             // Reiniviar movimientos
             movimientos = 0;
@@ -88,7 +87,7 @@ public class MovimientoBloques : MonoBehaviour
         {
             Debug.LogError("RANDOM DESACTIVADO");
         }
-        start = true;
+        
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -113,7 +112,7 @@ public class MovimientoBloques : MonoBehaviour
         if (gano)
         {
             Debug.Log("YA GANO !!");
-            GameObject.Find("GameManager").GetComponent<Timer>().flag = true;
+            GameObject.Find("GameManager").GetComponent<Timer>().toggleClock(false);
         }
 
     }
@@ -248,17 +247,5 @@ public class MovimientoBloques : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    /*
-    // Mostrar Matriz
-    void mostrarMatrix(int[,] matrix)
-    {
-        for (int i = 0; i < tamañoMatriz; i++)
-        {
-            for (int j = 0; j < tamañoMatriz; j++)
-            {
-                Debug.Log(matrix[i, j]);
-            }
-        }
-    }
-    */
+    public void startGame() { start = true; }
 }

@@ -7,15 +7,7 @@ public class Timer : MonoBehaviour
 {
     public Text timerText;
     private float startTime;
-    public bool flag = false;
-
-    /* -------------------------------------------------------------------------------- */
-
-    // Al comenzar
-    void Start()
-    {
-        startTime = Time.time;
-    }
+    bool start = false;
 
     /* -------------------------------------------------------------------------------- */
 
@@ -23,7 +15,7 @@ public class Timer : MonoBehaviour
     void Update()
     {
         // Solo si el juego no esta ganado
-        if (!flag) { 
+        if (start) { 
             float t = Time.time - startTime;
 
             string minutes = ( (int)t / 60 ).ToString();
@@ -43,6 +35,18 @@ public class Timer : MonoBehaviour
 
             timerText.text = minutes + ":" + seconds + ":" + milisegundos.ToString("F0");
 
+        }
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    public void toggleClock(bool flag)
+    {
+        start = flag;
+        if (flag)
+        {
+            startTime = Time.time;
+            GetComponent<MovimientoBloques>().startGame();
         }
     }
 }
