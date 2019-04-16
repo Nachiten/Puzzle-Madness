@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public float ReferencePixelUnit = 80;
+
     bool gano = false;
 
     GameObject boton;
@@ -19,6 +21,8 @@ public class GameManager : MonoBehaviour
 
         // Modificar texto
         textoBoton.text = "Comenzar Nivel";
+
+        GameObject.Find("Canvas").GetComponent<CanvasScaler>().referencePixelsPerUnit = ReferencePixelUnit;
     }
 
     /* -------------------------------------------------------------------------------- */

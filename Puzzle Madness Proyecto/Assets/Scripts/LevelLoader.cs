@@ -13,6 +13,10 @@ public class LevelLoader : MonoBehaviour
 
     void Start()
     {
+        if (!GameObject.Find("Panel Carga")) {
+            Debug.LogError("PANEL CARGA DESACTIVADO !!!");
+        }
+
         // Aisgnar variables
         levelLoader = GameObject.Find("Panel Carga");
         textoProgreso = GameObject.Find("TextoProgreso").GetComponent<Text>();
