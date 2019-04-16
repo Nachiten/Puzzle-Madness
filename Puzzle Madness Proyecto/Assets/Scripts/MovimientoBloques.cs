@@ -20,7 +20,7 @@ public class MovimientoBloques : MonoBehaviour
     // Bool juego Ganado
     bool gano = false;
     // Bool juego empezado
-    bool start = false;
+    public bool start = false;
 
     // Texto movimientos
     Text textoMovimiento;
@@ -59,6 +59,15 @@ public class MovimientoBloques : MonoBehaviour
     // Al iniciar juego
     void Start()
     {
+        if (SceneManager.GetActiveScene().buildIndex < 4) {
+            comenzar();
+        }
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    public void comenzar(){
+
         // Ajustar posiciones de imagenes
         ajustarPosiciones();
 
@@ -246,7 +255,7 @@ public class MovimientoBloques : MonoBehaviour
 
     public void comenzarNivel() { start = true; }
 
-    void ganarHACK() {
-        FindObjectOfType<GameManager>().ganoJuego();
-    }
+    /* -------------------------------------------------------------------------------- */
+
+    void ganarHACK() { FindObjectOfType<GameManager>().ganoJuego(); }
 }

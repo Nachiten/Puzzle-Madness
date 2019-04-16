@@ -32,7 +32,10 @@ public class GameManager : MonoBehaviour
         // Desactivar reloj
         GetComponent<Timer>().toggleClock(false);
         // Modificar texto
-        textoBoton.text = "Siguiente Nivel";
+
+        if (SceneManager.GetActiveScene().buildIndex == 4) textoBoton.text = "Regresar a Inicio";
+                                                      else textoBoton.text = "Siguiente Nivel";
+        
         // Mostrar boton
         boton.SetActive(true);
     }
@@ -52,10 +55,16 @@ public class GameManager : MonoBehaviour
             // Activar reloj
             FindObjectOfType<Timer>().toggleClock(true);
         }
+
         // Si el juego termino, pasar al siguiente nivel
-        else {
+        else if (SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            FindObjectOfType<LevelLoader>().cargarNivel(0);
+        }
+        else
+        {
             Debug.Log("Avanzando al siguiente nivel...");
-            FindObjectOfType<LevelLoader>().cargarNivel( SceneManager.GetActiveScene().buildIndex + 1 );
+            FindObjectOfType<LevelLoader>().cargarNivel(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }
