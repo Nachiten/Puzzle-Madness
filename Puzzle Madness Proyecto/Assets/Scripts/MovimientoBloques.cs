@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 
 public class MovimientoBloques : MonoBehaviour
 {
+    // HACK
+    public bool GanarHack = false;
+
     // Tamaño del mapa
     public int tamañoMatriz = 3;
 
@@ -19,7 +22,7 @@ public class MovimientoBloques : MonoBehaviour
     // Bool juego empezado
     bool start = false;
 
-    // Texto de movimientos
+    // Texto movimientos
     Text textoMovimiento;
 
     // Cantidad de movimientos aleatorios para mezclar
@@ -32,6 +35,8 @@ public class MovimientoBloques : MonoBehaviour
     // Se actualiza una vez por fotograma
     void Update()
     {
+        if (GanarHack) { ganarHACK(); }
+
         if (!gano && start)
         {
             // Generar rayo para "clickear" bloque
@@ -54,7 +59,8 @@ public class MovimientoBloques : MonoBehaviour
     // Al iniciar juego
     void Start()
     {
-        modificarCosas();
+        // Ajustar posiciones de imagenes
+        ajustarPosiciones();
 
         // Inicializar Matrices
         matriz = new int[tamañoMatriz, tamañoMatriz];
@@ -68,8 +74,6 @@ public class MovimientoBloques : MonoBehaviour
 
         if (activarRandom)
         {
-            
-            Debug.Log("Generando Movimientos Random");
             do // Se repite si queda en posicion ganada y hasta que haya 30 movimientos
             {
                 // Generar movimiento random
@@ -87,7 +91,7 @@ public class MovimientoBloques : MonoBehaviour
         {
             Debug.LogError("RANDOM DESACTIVADO");
         }
-        
+
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -111,8 +115,8 @@ public class MovimientoBloques : MonoBehaviour
         // Si termino el juego parar el timer
         if (gano)
         {
-            Debug.Log("YA GANO !!");
-            GameObject.Find("GameManager").GetComponent<Timer>().toggleClock(false);
+            Debug.Log("Se gano el juego !! Llamando GameManager");
+            FindObjectOfType<GameManager>().ganoJuego();
         }
 
     }
@@ -125,10 +129,9 @@ public class MovimientoBloques : MonoBehaviour
     void scanEmptySlot(int slot)
     {
         // Analizar en que espacio estoy ahora
-        for (int i = 0; i < tamañoMatriz; i++)
-        {
-            for (int j = 0; j < tamañoMatriz; j++)
-            {
+        for (int i = 0; i < tamañoMatriz; i++) {
+            for (int j = 0; j < tamañoMatriz; j++) {
+
                 if (matriz[i, j] == slot)
                 {
                     fila = i;
@@ -138,8 +141,6 @@ public class MovimientoBloques : MonoBehaviour
         }
 
         Transform posicion = GameObject.Find(slot.ToString()).GetComponent<Transform>();
-
-        // X= -6.514721 Y= 0.7505659 Z= 8.107872
 
         // Analizar movimientos posibles de bloque
         if (columna + 1 < tamañoMatriz && matriz[fila, columna + 1] == 0)
@@ -162,7 +163,7 @@ public class MovimientoBloques : MonoBehaviour
             // Se mueve hacia arriba
             accion(0, 5);
         }
-        else { Debug.Log("No hay espacio a donde mover este bloque"); }
+        //else { Debug.Log("No hay espacio a donde mover este bloque"); }
 
         textoMovimiento.text = movimientos.ToString();
 
@@ -190,10 +191,9 @@ public class MovimientoBloques : MonoBehaviour
 
         contador = 1;
 
-        for (int i = 0; i < tamañoMatriz; i++)
-        {
-            for (int j = 0; j < tamañoMatriz; j++)
-            {
+        for (int i = 0; i < tamañoMatriz; i++) {
+            for (int j = 0; j < tamañoMatriz; j++) {
+
                 if (contador < tamañoMatriz * tamañoMatriz)
                 {
                     matriz[i, j] = contador;
@@ -210,7 +210,8 @@ public class MovimientoBloques : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void modificarCosas() {
+    // Ajustar posiciones y offsets de imagenes
+    void ajustarPosiciones() {
         Renderer objeto;
 
         int contador = 1;
@@ -219,26 +220,22 @@ public class MovimientoBloques : MonoBehaviour
         float offsetX = 0f;
         float offsetY = scale * (tamañoMatriz - 1);
 
-
-        Debug.Log("SCALE: " + scale);
-
         for (int i = 0; i < tamañoMatriz; i++) {
             for (int j = 0; j < tamañoMatriz; j++)
             {
                 if (contador < tamañoMatriz * tamañoMatriz)
-                { 
+                {
                     // Asignar renderer
                     objeto = GameObject.Find(contador.ToString()).GetComponent<Renderer>();
                     // Cambiar "Tiling" de textura
-                    objeto.material.mainTextureScale = new Vector2( scale, scale);
+                    objeto.material.mainTextureScale = new Vector2(scale, scale);
                     // Ajustar "Offeset" de textura
-                    objeto.material.mainTextureOffset = new Vector2( offsetX, offsetY);
+                    objeto.material.mainTextureOffset = new Vector2(offsetX, offsetY);
 
                     contador++;
                 }
 
                 offsetX += scale;
-                //if (offsetX > scale * (tamañoMatriz - 1)) { offsetX = 0; }
             }
             offsetX = 0;
             offsetY -= scale;
@@ -247,5 +244,9 @@ public class MovimientoBloques : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    public void startGame() { start = true; }
+    public void comenzarNivel() { start = true; }
+
+    void ganarHACK() {
+        FindObjectOfType<GameManager>().ganoJuego();
+    }
 }

@@ -5,9 +5,13 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public Text timerText;
-    private float startTime;
-    bool start = false;
+     Text timerText;
+     bool start = false;
+    float startTime;
+
+    /* -------------------------------------------------------------------------------- */
+
+    void Start() { timerText = GameObject.Find("Tiempo").GetComponent<Text>(); }
 
     /* -------------------------------------------------------------------------------- */
 
@@ -22,14 +26,9 @@ public class Timer : MonoBehaviour
             string seconds = (t % 60).ToString("F0");
             float milisegundos;
 
-            if (((t % 60) % 1 * 10 - 5) < 0)
-            {
-                milisegundos = 10 + ((t % 60) % 1 * 10 - 5);    
-            }
-            else
-            {
-                milisegundos = ((t % 60) % 1 * 10 - 5);
-            }
+            if ( (t % 60) % 1 * 10 - 5 < 0 ) milisegundos = 10 + ((t % 60) % 1 * 10 - 5);
+
+            else milisegundos = ((t % 60) % 1 * 10 - 5);
 
             if (milisegundos > 9) milisegundos = 0;
 
@@ -46,7 +45,6 @@ public class Timer : MonoBehaviour
         if (flag)
         {
             startTime = Time.time;
-            GetComponent<MovimientoBloques>().startGame();
         }
     }
 }
