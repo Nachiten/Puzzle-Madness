@@ -1420,7 +1420,7 @@ GameObject:
   - component: {fileID: 853538876}
   - component: {fileID: 853538875}
   m_Layer: 5
-  m_Name: Tiempo
+  m_Name: Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

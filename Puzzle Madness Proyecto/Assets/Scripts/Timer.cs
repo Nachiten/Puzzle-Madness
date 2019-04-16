@@ -11,7 +11,7 @@ public class Timer : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void Start() { timerText = GameObject.Find("Tiempo").GetComponent<Text>(); }
+    void Start() { timerText = GameObject.Find("Timer").GetComponent<Text>(); }
 
     /* -------------------------------------------------------------------------------- */
 

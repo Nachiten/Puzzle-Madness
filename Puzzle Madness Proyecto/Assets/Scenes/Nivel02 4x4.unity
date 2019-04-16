@@ -350,7 +350,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Cargando Nivel 01 ...
+  m_Text: Cargando Nivel 03 ...
 --- !u!222 &86292535
 CanvasRenderer:
   m_ObjectHideFlags: 0
