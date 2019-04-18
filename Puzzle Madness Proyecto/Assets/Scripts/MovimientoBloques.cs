@@ -20,7 +20,7 @@ public class MovimientoBloques : MonoBehaviour
     // Bool juego Ganado
     bool gano = false;
     // Bool juego empezado
-    public bool start = false;
+    bool start = false;
 
     // Texto movimientos
     Text textoMovimiento;
@@ -155,32 +155,34 @@ public class MovimientoBloques : MonoBehaviour
         if (columna + 1 < tamañoMatriz && matriz[fila, columna + 1] == 0)
         {
             // Se mueve hacia derecha
-            accion(5, 0);
+            accion(5, 0, "ActivarIzquierda");
         }
         else if (columna - 1 > -1 && matriz[fila, columna - 1] == 0)
         {
             // Se mueve hacia izquierda
-            accion(-5, 0);
+            accion(-5, 0, "ActivarDerecha");
         }
         else if (fila + 1 < tamañoMatriz && matriz[fila + 1, columna] == 0)
         {
             // Se mueve hacia abajo
-            accion(0, -5);
+            accion(0, -5, "ActivarArriba");
         }
         else if (fila - 1 > -1 && matriz[fila - 1, columna] == 0)
         {
             // Se mueve hacia arriba
-            accion(0, 5);
+            accion(0, 5, "ActivarAbajo");
         }
         //else { Debug.Log("No hay espacio a donde mover este bloque"); }
 
         textoMovimiento.text = movimientos.ToString();
 
-        void accion(int offsetX, int offsetZ)
+        void accion(int offsetX, int offsetZ, string nombreAnimacion)
         {
-
             // Se modifica el vector posicion con la posicion correspondiente
             Vector3 posicionVector = new Vector3(posicion.position.x + offsetX, posicion.position.y, posicion.position.z + offsetZ);
+
+            // if (start) GameObject.Find(slot.ToString()).GetComponent<Animator>().SetTrigger(nombreAnimacion);
+            // else 
             posicion.position = posicionVector;
 
             // Se modifica la matriz para aplicar la nueva posicion
@@ -188,7 +190,6 @@ public class MovimientoBloques : MonoBehaviour
             matriz[fila, columna] = 0;
 
             movimientos++;
-
         }
     }
 

@@ -5704,7 +5704,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GanarHack: 0
-  "tama\xF1oMatriz": 3
+  "tama\xF1oMatriz": 7
+  start: 0
   RandomMoves: 200
   activarRandom: 1
 --- !u!4 &1424632895
