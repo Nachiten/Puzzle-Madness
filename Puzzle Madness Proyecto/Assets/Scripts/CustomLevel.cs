@@ -10,10 +10,19 @@ public class CustomLevel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // NADA
+    }
+
+    public void comenzarNivel() {
+
         tamañoMatriz = FindObjectOfType<MovimientoBloques>().tamañoMatriz;
 
         eliminarSobrantes();
+
+        GameObject.Find("Panel Seleccion").SetActive(false);
+
     }
+
 
     void eliminarSobrantes() {
 
@@ -69,13 +78,13 @@ public class CustomLevel : MonoBehaviour
 
     private void destruir(char nombre, char nombre2)
     {
+        
         Destroy(GameObject.Find((nombre.ToString() + nombre2.ToString())));
     }
-}
 
-/*
- * if (nombre2 == '-') GameObject.Find(nombre.ToString()).name = contador.ToString();
- *                else GameObject.Find((nombre.ToString() + nombre2.ToString())).name = contador.ToString();
- * 
- * 
- */
+    public void dropDown(int valor)
+    {
+
+        FindObjectOfType<MovimientoBloques>().tamañoMatriz = valor + 3;
+    }
+}

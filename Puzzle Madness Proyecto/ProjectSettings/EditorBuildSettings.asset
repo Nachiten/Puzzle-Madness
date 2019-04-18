@@ -18,6 +18,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Nivel03 5x5.unity
     guid: 1f11a588ad6bf39469ea78620b183c16
   - enabled: 1
+    path: Assets/Scenes/Nivel04 6x6.unity
+    guid: f25c4ff3776f51e4292fe974459c5cbf
+  - enabled: 1
+    path: Assets/Scenes/Nivel05 7x7.unity
+    guid: 3f5d56b7d8a945d4aa10375fc7d908bd
+  - enabled: 1
     path: Assets/Scenes/CustomLevel.unity
     guid: a78285737af48a746ad911a43e152584
+  - enabled: 1
+    path: Assets/Scenes/Level Selector.unity
+    guid: f42b2b49a05d27f47abf7ce1be074aa4
   m_configObjects: {}

@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        
         // Asignar variables
         boton = GameObject.Find("Boton");
         textoBoton = GameObject.Find("TextoBoton").GetComponent<Text>();
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour
         textoBoton.text = "Comenzar Nivel";
 
         GameObject.Find("Canvas").GetComponent<CanvasScaler>().referencePixelsPerUnit = ReferencePixelUnit;
+        
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -33,7 +35,7 @@ public class GameManager : MonoBehaviour
         GetComponent<Timer>().toggleClock(false);
         // Modificar texto
 
-        if (SceneManager.GetActiveScene().buildIndex == 4) textoBoton.text = "Regresar a Inicio";
+        if (SceneManager.GetActiveScene().buildIndex == 6) textoBoton.text = "Regresar a Inicio";
                                                       else textoBoton.text = "Siguiente Nivel";
         
         // Mostrar boton
@@ -44,8 +46,7 @@ public class GameManager : MonoBehaviour
 
     public void comenzarNivel()
     {
-        // Si el juego todavia no comenzo, comenzarlo
-        if (!gano)
+        if (!gano) // Si es el inicio, comenzar el juego
         {
             Debug.Log("Iniciando juego...");
             // Ocultar boton
@@ -54,15 +55,14 @@ public class GameManager : MonoBehaviour
             FindObjectOfType<MovimientoBloques>().comenzarNivel();
             // Activar reloj
             FindObjectOfType<Timer>().toggleClock(true);
-        }
 
-        // Si el juego termino, pasar al siguiente nivel
-        else if (SceneManager.GetActiveScene().buildIndex == 4)
+        }
+        else if (SceneManager.GetActiveScene().buildIndex == 6) // Si es custom level, regresar a inicio
         {
             FindObjectOfType<LevelLoader>().cargarNivel(0);
         }
-        else
-        {
+        else // En otros, pasar al siguiente nivel
+        { 
             Debug.Log("Avanzando al siguiente nivel...");
             FindObjectOfType<LevelLoader>().cargarNivel(SceneManager.GetActiveScene().buildIndex + 1);
         }
