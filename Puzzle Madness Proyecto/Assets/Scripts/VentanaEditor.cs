@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿/*
+using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
@@ -11,28 +12,29 @@ public class VentanaEditor : EditorWindow
 
     [MenuItem("Window/[Vetana]")]
 
+    // --------------------------------------------------------------------------------
+
     // Mostrar Ventana
     public static void ShowWindow()
     {
         GetWindow<VentanaEditor>("Ventana");
     }
 
+    // --------------------------------------------------------------------------------
+
     // Codigo de la Vetana
     void OnGUI()
     {
         if (EditorSceneManager.GetActiveScene().buildIndex != escena)
         {
-            if (pantallaCarga = GameObject.Find("Panel Carga")) {
-                escena = EditorSceneManager.GetActiveScene().buildIndex;
-            }
-            //Debug.Log("NO | " + escena);
+            if (pantallaCarga = GameObject.Find("Panel Carga")) escena = EditorSceneManager.GetActiveScene().buildIndex;
         }
         else
         {
             mostrar = EditorGUILayout.Toggle("Activar Panel Carga: ", mostrar);
             pantallaCarga.SetActive(mostrar);
-
-            //Debug.Log("SI | " + escena);
         } 
       }
 }
+
+*/

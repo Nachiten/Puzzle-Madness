@@ -4,10 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    // Pixeles para canvas
     public float ReferencePixelUnit = 80;
 
     bool gano = false;
 
+    // Boton "Comenzar"
     GameObject boton;
     Text textoBoton;
 
@@ -15,7 +17,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
         // Asignar variables
         boton = GameObject.Find("Boton");
         textoBoton = GameObject.Find("TextoBoton").GetComponent<Text>();
@@ -24,7 +25,6 @@ public class GameManager : MonoBehaviour
         textoBoton.text = "Comenzar Nivel";
 
         GameObject.Find("Canvas").GetComponent<CanvasScaler>().referencePixelsPerUnit = ReferencePixelUnit;
-        
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().buildIndex == 6) textoBoton.text = "Regresar a Inicio";
                                                       else textoBoton.text = "Siguiente Nivel";
-        
         // Mostrar boton
         boton.SetActive(true);
     }
@@ -55,9 +54,8 @@ public class GameManager : MonoBehaviour
             FindObjectOfType<MovimientoBloques>().comenzarNivel();
             // Activar reloj
             FindObjectOfType<Timer>().toggleClock(true);
-
         }
-        else if (SceneManager.GetActiveScene().buildIndex == 6) // Si es custom level, regresar a inicio
+        else if (SceneManager.GetActiveScene().buildIndex == 6 || SceneManager.GetActiveScene().buildIndex == 5) // Si es custom level o nivel 5, regresar a inicio
         {
             FindObjectOfType<LevelLoader>().cargarNivel(0);
         }

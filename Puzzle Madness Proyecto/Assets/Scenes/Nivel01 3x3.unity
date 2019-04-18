@@ -2804,7 +2804,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GanarHack: 0
   "tama\xF1oMatriz": 3
-  start: 0
   RandomMoves: 50
   activarRandom: 1
 --- !u!4 &1424632895
@@ -2870,6 +2869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d2c72ccdb2266a45a845074ee1b40ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flag: 0
 --- !u!1 &1430863434
 GameObject:
   m_ObjectHideFlags: 0
