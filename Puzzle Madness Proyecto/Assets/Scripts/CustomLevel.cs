@@ -1,27 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CustomLevel : MonoBehaviour
 {
     int tamañoMatriz;
-    public bool start = false;
+    RawImage imagen;
 
     /* -------------------------------------------------------------------------------- */
 
     public void comenzarNivel() {
 
-        tamañoMatriz = FindObjectOfType<MovimientoBloques>().tamañoMatriz;
-
-        eliminarSobrantes();
+        FindObjectOfType<MovimientoBloques>().comenzar();
 
         GameObject.Find("Panel Seleccion").SetActive(false);
-
     }
 
     /* -------------------------------------------------------------------------------- */
 
-    void eliminarSobrantes() {
+    public void eliminarSobrantes() {
+
+        imagen = FindObjectOfType<Explorer>().imagen;
+
+        tamañoMatriz = FindObjectOfType<MovimientoBloques>().tamañoMatriz;
 
         char nombre = 'A';
         char nombre2 = '-';
@@ -38,6 +40,10 @@ public class CustomLevel : MonoBehaviour
                 else {
                     if (nombre2 == '-') asignarNombre(nombre, '\0', contador);
                                    else asignarNombre(nombre, nombre2, contador);
+
+                    
+                    
+
                     contador++;
                 }
 
@@ -51,20 +57,32 @@ public class CustomLevel : MonoBehaviour
                 }
             }
         }
-        start = true;
 
-        FindObjectOfType<MovimientoBloques>().comenzar();
+        GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = imagen.texture;
+
+        FindObjectOfType<MovimientoBloques>().ajustarPosiciones();
     }
 
     /* -------------------------------------------------------------------------------- */
 
-    void asignarNombre(char nombre, char nombre2, int contador) { GameObject.Find((nombre.ToString() + nombre2.ToString())).name = contador.ToString(); }
+    void asignarNombre(char nombre, char nombre2, int contador) { 
+        
+        GameObject.Find( nombre.ToString() + nombre2.ToString() ).name = contador.ToString();
+
+        
+
+        GameObject.Find(contador.ToString()).GetComponent<Renderer>().material.mainTexture = imagen.texture;
+    }
 
     /* -------------------------------------------------------------------------------- */
 
-    private void destruir(char nombre, char nombre2) { Destroy(GameObject.Find((nombre.ToString() + nombre2.ToString()))); }
+    private void destruir(char nombre, char nombre2) { Destroy(GameObject.Find(nombre.ToString() + nombre2.ToString())); }
 
     /* -------------------------------------------------------------------------------- */
 
     public void dropDown(int valor){ FindObjectOfType<MovimientoBloques>().tamañoMatriz = valor + 3; }
+
+    public void animacion() { 
+    
+    }
 }

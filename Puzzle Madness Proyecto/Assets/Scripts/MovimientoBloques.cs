@@ -68,9 +68,6 @@ public class MovimientoBloques : MonoBehaviour
 
     public void comenzar(){
 
-        // Ajustar posiciones de imagenes
-        ajustarPosiciones();
-
         // Inicializar Matrices
         matriz = new int[tamañoMatriz, tamañoMatriz];
         matrizGano = new int[tamañoMatriz, tamañoMatriz];
@@ -100,7 +97,6 @@ public class MovimientoBloques : MonoBehaviour
         {
             Debug.LogError("RANDOM DESACTIVADO");
         }
-
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -221,7 +217,7 @@ public class MovimientoBloques : MonoBehaviour
     /* -------------------------------------------------------------------------------- */
 
     // Ajustar posiciones y offsets de imagenes
-    void ajustarPosiciones() {
+    public void ajustarPosiciones() {
         Renderer objeto;
 
         int contador = 1;
