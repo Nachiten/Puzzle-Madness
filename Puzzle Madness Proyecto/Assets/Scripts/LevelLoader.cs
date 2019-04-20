@@ -8,6 +8,7 @@ public class LevelLoader : MonoBehaviour
     GameObject levelLoader;
         Slider slider;
           Text textoProgreso;
+          Text textoNivel;
 
     /* -------------------------------------------------------------------------------- */
 
@@ -22,6 +23,8 @@ public class LevelLoader : MonoBehaviour
             textoProgreso = GameObject.Find("TextoProgreso").GetComponent<Text>();
             slider = GameObject.Find("Barra Carga").GetComponent<Slider>();
 
+            textoNivel = GameObject.Find("Texto Cargando").GetComponent<Text>();
+
             // Ocultar pantalla de carga
             levelLoader.SetActive(false);
     }
@@ -32,6 +35,7 @@ public class LevelLoader : MonoBehaviour
     public void cargarNivel(int index)
     {
         StartCoroutine(cargarAsincronizadamente(index));
+        textoNivel.text ="Cargando " + SceneManager.GetSceneByBuildIndex(index).name + " ...";
     }
 
     /* -------------------------------------------------------------------------------- */

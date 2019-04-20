@@ -2,15 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
+using System;
 
 public class CustomLevel : MonoBehaviour
 {
     int tamañoMatriz;
     RawImage imagen;
+    GameObject imagenPreview;
+
+    bool imageSet = false;
+    bool sizeSet = false;
+
+    /* -------------------------------------------------------------------------------- */
+
+    void Start() 
+    { 
+        imagen = GameObject.Find("Imagen Elegida").GetComponent<RawImage>();
+        imagenPreview = GameObject.Find("Imagen Preview");
+
+        imagenPreview.SetActive(false);
+    }
 
     /* -------------------------------------------------------------------------------- */
 
     public void comenzarNivel() {
+
+        if ( !(imageSet && sizeSet) )
+        {
+            EditorUtility.DisplayDialog("Respetar Orden", "Debes seleccionar primero una imagen luego un tamaño antes de comenzar", "Bueno ...");
+            return;
+        }
 
         FindObjectOfType<MovimientoBloques>().comenzar();
 
@@ -21,7 +43,13 @@ public class CustomLevel : MonoBehaviour
 
     public void eliminarSobrantes() {
 
-        imagen = FindObjectOfType<Explorer>().imagen;
+        if (!imageSet) {
+            EditorUtility.DisplayDialog("Respetar Orden", "Debes primero seleccionar una imagen antes de seleccionar el tamaño.", "Bueno ...");
+            return;
+        }
+
+        sizeSet = true;
+        imagenPreview.SetActive(true);  
 
         tamañoMatriz = FindObjectOfType<MovimientoBloques>().tamañoMatriz;
 
@@ -65,12 +93,9 @@ public class CustomLevel : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void asignarNombre(char nombre, char nombre2, int contador) { 
-        
+    void asignarNombre(char nombre, char nombre2, int contador) 
+    {
         GameObject.Find( nombre.ToString() + nombre2.ToString() ).name = contador.ToString();
-
-        
-
         GameObject.Find(contador.ToString()).GetComponent<Renderer>().material.mainTexture = imagen.texture;
     }
 
@@ -82,7 +107,28 @@ public class CustomLevel : MonoBehaviour
 
     public void dropDown(int valor){ FindObjectOfType<MovimientoBloques>().tamañoMatriz = valor + 3; }
 
-    public void animacion() { 
+    /* ----------------------------------- Explorer ----------------------------------- */
     
+    string path;
+
+    public void AbrirExplorer()
+    {
+        path = EditorUtility.OpenFilePanel("Seleccionar Imagen", "", "png");
+        setearImagen();
+    }
+
+    void setearImagen()
+    {
+        if (path != null && path != "" && path.Substring(Math.Max(0, path.Length - 4)) == ".png")
+        {
+            WWW www = new WWW("file:///" + path);
+            imagen.texture = www.texture;
+            imageSet = true;
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("Error !!", "Debes seleccionar una imagen valida en formato .PNG", "Bueno ...");
+            imageSet = false;
+        }
     }
 }

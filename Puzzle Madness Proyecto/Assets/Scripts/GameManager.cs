@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
-        AnalyticsResult result = Analytics.CustomEvent("Test");
+        AnalyticsResult result = Analytics.CustomEvent("Game Started");
         // This should print "Ok" if the event was sent correctly.
         Debug.Log("RESULTADO: " + result);
 

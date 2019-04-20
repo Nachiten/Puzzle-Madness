@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using System;
 
 public class Explorer : MonoBehaviour
-{
+{/*
     string path;
     public RawImage imagen;
 
@@ -26,5 +26,5 @@ public class Explorer : MonoBehaviour
         else {
             EditorUtility.DisplayDialog("Error !!", "Debes seleccionar una imagen valida en formato .PNG", "Bueno ...");  
         }
-    }
+    }*/
 }

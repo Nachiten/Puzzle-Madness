@@ -30,6 +30,8 @@ public class MovimientoBloques : MonoBehaviour
     // Activar random
     public bool activarRandom = true;
 
+    Renderer modelo;
+
     /* -------------------------------------------------------------------------------- */
 
     // Se actualiza una vez por fotograma
@@ -59,8 +61,10 @@ public class MovimientoBloques : MonoBehaviour
     // Al iniciar juego
     void Start()
     {
-        if (SceneManager.GetActiveScene().buildIndex < 4) {
+        if (SceneManager.GetActiveScene().buildIndex < 6) {
+            modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
             comenzar();
+            ajustarPosiciones();
         }
     }
 
@@ -237,6 +241,10 @@ public class MovimientoBloques : MonoBehaviour
                     objeto.material.mainTextureScale = new Vector2(scale, scale);
                     // Ajustar "Offeset" de textura
                     objeto.material.mainTextureOffset = new Vector2(offsetX, offsetY);
+
+                    objeto.material.mainTexture = modelo.material.mainTexture;
+
+                   // GameObject.Find( contador.ToString() ).GetComponent<Renderer>().material.mainTexture = imagen.texture;
 
                     contador++;
                 }
