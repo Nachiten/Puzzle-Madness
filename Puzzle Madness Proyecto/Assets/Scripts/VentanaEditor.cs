@@ -1,5 +1,4 @@
-﻿/*
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
@@ -37,4 +36,3 @@ public class VentanaEditor : EditorWindow
       }
 }
 
-*/
