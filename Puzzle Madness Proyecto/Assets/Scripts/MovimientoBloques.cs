@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
 public class MovimientoBloques : MonoBehaviour
@@ -61,11 +62,14 @@ public class MovimientoBloques : MonoBehaviour
     // Al iniciar juego
     void Start()
     {
+        modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
+
         if (SceneManager.GetActiveScene().buildIndex < 6) {
-            modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
             comenzar();
             ajustarPosiciones();
         }
+        
+
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -124,6 +128,9 @@ public class MovimientoBloques : MonoBehaviour
         // Si termino el juego parar el timer
         if (gano)
         {
+            AnalyticsResult result = AnalyticsEvent.Custom("Ganado_" + SceneManager.GetActiveScene().name);
+            Debug.Log("Analytics Result: " + result + " | DATA: " + "Ganado_" + SceneManager.GetActiveScene().name);
+
             Debug.Log("Se gano el juego !! Llamando GameManager");
             FindObjectOfType<GameManager>().ganoJuego();
         }
@@ -243,8 +250,6 @@ public class MovimientoBloques : MonoBehaviour
                     objeto.material.mainTextureOffset = new Vector2(offsetX, offsetY);
 
                     objeto.material.mainTexture = modelo.material.mainTexture;
-
-                   // GameObject.Find( contador.ToString() ).GetComponent<Renderer>().material.mainTexture = imagen.texture;
 
                     contador++;
                 }

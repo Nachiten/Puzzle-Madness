@@ -1,7 +1,6 @@
-﻿using UnityEngine.UI;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.Analytics;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,12 +17,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-
-        AnalyticsResult result = Analytics.CustomEvent("Game Started");
-        // This should print "Ok" if the event was sent correctly.
-        Debug.Log("RESULTADO: " + result);
-
-
         // Asignar variables
         boton = GameObject.Find("Boton");
         textoBoton = GameObject.Find("TextoBoton").GetComponent<Text>();

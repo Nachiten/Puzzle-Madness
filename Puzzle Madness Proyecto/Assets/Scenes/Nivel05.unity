@@ -1273,8 +1273,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 234285909}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.2099998, y: 0.054721832, z: -13.78}
-  m_LocalScale: {x: 29, y: 1, z: 1}
+  m_LocalPosition: {x: -3.2099998, y: 0.054721832, z: -18.76}
+  m_LocalScale: {x: 39, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 897586873}
   m_RootOrder: 4
@@ -2210,8 +2210,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 372010965}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -17.21, y: 0.054721832, z: 0.22}
-  m_LocalScale: {x: 27, y: 1, z: 1}
+  m_LocalPosition: {x: -22.2, y: 0.054721832, z: 0.22}
+  m_LocalScale: {x: 37, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 897586873}
   m_RootOrder: 2
@@ -2287,8 +2287,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 390980010}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 10.790001, y: 0.054721832, z: 0.18}
-  m_LocalScale: {x: 27, y: 1, z: 1}
+  m_LocalPosition: {x: 15.77, y: 0.054721832, z: 0.18}
+  m_LocalScale: {x: 37, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 897586873}
   m_RootOrder: 3
@@ -3286,8 +3286,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 606568683}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.2099998, y: 0.054721832, z: 14.17}
-  m_LocalScale: {x: 29, y: 1, z: 1}
+  m_LocalPosition: {x: -3.2099998, y: 0.054721832, z: 19.15}
+  m_LocalScale: {x: 39, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 897586873}
   m_RootOrder: 1
@@ -3637,7 +3637,7 @@ Transform:
   m_GameObject: {fileID: 703086357}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -3.2099998, y: -0.94527817, z: 0.2}
-  m_LocalScale: {x: 27, y: 1, z: 27}
+  m_LocalScale: {x: 37, y: 1, z: 37}
   m_Children: []
   m_Father: {fileID: 897586873}
   m_RootOrder: 0
@@ -4043,7 +4043,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 897586873}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mapa Juego
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5613,7 +5613,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1305051679}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.6, y: -0.6347122, z: 0.18}
+  m_LocalPosition: {x: -6.5, y: -0.6347122, z: 5.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1166091377}

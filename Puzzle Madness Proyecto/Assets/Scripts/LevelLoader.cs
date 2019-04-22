@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using UnityEngine.Analytics;
+using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
@@ -34,8 +35,12 @@ public class LevelLoader : MonoBehaviour
     // Llamar a Corutina
     public void cargarNivel(int index)
     {
+
         StartCoroutine(cargarAsincronizadamente(index));
-        textoNivel.text ="Cargando " + SceneManager.GetSceneByBuildIndex(index).name + " ...";
+        textoNivel.text ="Cargando '" + SceneManager.GetSceneByBuildIndex(index).name + "' ...";
+
+        AnalyticsResult result =  AnalyticsEvent.Custom("Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
+        Debug.Log("Analytics Result: " + result + " | DATA: " + "Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
     }
 
     /* -------------------------------------------------------------------------------- */
