@@ -37,8 +37,6 @@ public class CustomLevel : MonoBehaviour
         FindObjectOfType<MovimientoBloques>().comenzar();
 
         GameObject.Find("Panel Seleccion").SetActive(false);
-
-
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -47,6 +45,14 @@ public class CustomLevel : MonoBehaviour
 
         if (!imageSet) {
             EditorUtility.DisplayDialog("Respetar Orden", "Debes primero seleccionar una imagen antes de seleccionar el tamaño.", "Bueno ...");
+            return;
+        }
+
+        if (sizeSet) {
+            bool rta = EditorUtility.DisplayDialog("Advertencia !", "Para cambiar el tamaño que ya fue elegido previamente se debe reiniciar el nivel en este momento", "Si, reiniciar nivel", "No, no cambiar");
+            
+            if (rta) FindObjectOfType<LevelLoader>().cargarNivel(6);
+
             return;
         }
 
@@ -70,10 +76,6 @@ public class CustomLevel : MonoBehaviour
                 else {
                     if (nombre2 == '-') asignarNombre(nombre, '\0', contador);
                                    else asignarNombre(nombre, nombre2, contador);
-
-                    
-                    
-
                     contador++;
                 }
 
@@ -111,32 +113,7 @@ public class CustomLevel : MonoBehaviour
 
     public void dropDown(int valor){ FindObjectOfType<MovimientoBloques>().tamañoMatriz = valor + 3; }
 
-    /* ----------------------------------- Explorer ----------------------------------- */
-    
-    string path;
-
-    public void AbrirExplorer()
-    {
-        path = EditorUtility.OpenFilePanel("Seleccionar Imagen", "", "png");
-        setearImagen();
-    }
-
-    void setearImagen()
-    {
-        if (path != null && path != "" && path.Substring(Math.Max(0, path.Length - 4)) == ".png")
-        {
-            WWW www = new WWW("file:///" + path);
-            imagen.texture = www.texture;
-            imageSet = true;
-        }
-        else
-        {
-            EditorUtility.DisplayDialog("Error !!", "Debes seleccionar una imagen valida en formato .PNG", "Bueno ...");
-            imageSet = false;
-        }
-    }
-
-    
+    /* -------------------------------------------------------------------------------- */
 
     void ajustarUbicacion()
     {
@@ -160,11 +137,12 @@ public class CustomLevel : MonoBehaviour
                 if (i == 0 && j == 0)
                 {
                     referencia = GameObject.Find(contador.ToString()).GetComponent<Transform>();
+
                     posX = referencia.position.x;
                     posZ = referencia.position.z;
+
                     determinarPos(ref posX, ref posZ);
                     referencia.position = new Vector3(posX, referencia.position.y, posZ);
-                    Debug.Log("Posicion X: " + referencia.position.x + " | Posicion Y: " + referencia.position.y + " | Posicion Z:" + referencia.position.z);
                 }
                 else if (!(i == tamañoMatriz - 1 && j == tamañoMatriz - 1))
                 {
@@ -176,40 +154,57 @@ public class CustomLevel : MonoBehaviour
                 }
                 contador++;
             }
-
             offsetX = 0;
             offsetZ -= 5;
         }
+    }
 
-        void determinarPos(ref float posicionX, ref float posicionZ)
+    /* -------------------------------------------------------------------------------- */
+
+    void determinarPos(ref float posicionX, ref float posicionZ)
+    {
+        switch (tamañoMatriz)
         {
-            switch (tamañoMatriz) {
+            case 3:
+                posicionX += 10;   posicionZ -= 10;
+                break;
 
-                case 3:
-                    posicionX += 10;
-                    posicionZ -= 10;
-                    break;
+            case 4:
+                posicionX += 7.5f; posicionZ -= 7.5f;
+                break;
 
-                case 4:
-                    posicionX += 7.5f;
-                    posicionZ -= 7.5f;
-                    break;
+            case 5:
+                posicionX += 5;    posicionZ -= 5;
+                break;
 
-                case 5:
-                    posicionX += 5;
-                    posicionZ -= 5;
-                    break;
+            case 6:
+                posicionX += 2.5f; posicionZ -= 2.5f;
+                break;
 
-                case 6:
-                    posicionX += 2.5f;
-                    posicionZ -= 2.5f;
-                    break;
+            case 7:
+                Debug.Log("Nothing");
+                break;
+        }
+    }
 
-                case 7:
-                    Debug.Log("Nothing");
-                    break;
+    /* ----------------------------------- Explorer ----------------------------------- */
 
-            }
+    string path;
+
+    public void AbrirExplorer()
+    {
+        path = EditorUtility.OpenFilePanel("Seleccionar Imagen en .PNG .JPG o .JPEG", "", "png,jpg,jpeg");
+
+        if (path != null && path != "" && (path.Substring(Math.Max(0, path.Length - 4)) == ".png" || path.Substring(Math.Max(0, path.Length - 4)) == ".jpg" || path.Substring(Math.Max(0, path.Length - 4)) == "jpeg"))
+        {
+            WWW www = new WWW("file:///" + path);
+            imagen.texture = www.texture;
+            imageSet = true;
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("Error !!", "Debes seleccionar una imagen valida en uno de los siguientes formatos: .PNG .JPG .JPEG", "Bueno ...");
+            imageSet = false;
         }
     }
 }

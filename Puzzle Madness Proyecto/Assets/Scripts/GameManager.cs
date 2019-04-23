@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     // Pixeles para canvas
-    public float ReferencePixelUnit = 80;
+    //public float ReferencePixelUnit = 80;
 
     bool gano = false;
 
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
         // Modificar texto
         textoBoton.text = "Comenzar Nivel";
 
-        GameObject.Find("Canvas").GetComponent<CanvasScaler>().referencePixelsPerUnit = ReferencePixelUnit;
+        //GameObject.Find("Canvas").GetComponent<CanvasScaler>().referencePixelsPerUnit = ReferencePixelUnit;
     }
 
     /* -------------------------------------------------------------------------------- */
