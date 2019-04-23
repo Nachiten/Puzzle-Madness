@@ -1,7 +1,7 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
 
 public class CustomLevel : MonoBehaviour
 {
