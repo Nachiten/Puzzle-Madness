@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
 public class VentanaEditor : EditorWindow
 {
+     << ---
     bool mostrar = true;
     int escena = 200;
 
@@ -34,5 +35,5 @@ public class VentanaEditor : EditorWindow
             pantallaCarga.SetActive(mostrar);
         } 
       }
-}
-
+      --- >> 
+}*/
