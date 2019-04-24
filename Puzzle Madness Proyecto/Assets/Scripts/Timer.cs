@@ -5,46 +5,36 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-     Text timerText;
-     bool start = false;
-    float startTime;
+    Text timerText;
+    
+    float time;
+    public float speed = 1;
+    bool start;
 
     /* -------------------------------------------------------------------------------- */
 
-    void Start() { timerText = GameObject.Find("Timer").GetComponent<Text>(); }
+    void Start()
+    {
+        timerText = GameObject.Find("Timer").GetComponent<Text>();
+    }
 
     /* -------------------------------------------------------------------------------- */
 
-    // Cada fotograma actualizar el timer
     void Update()
     {
-        // Solo si el juego no esta ganado
         if (start) { 
-            float t = Time.time - startTime;
+        time += Time.deltaTime * speed;
 
-            string minutes = ( (int)t / 60 ).ToString();
-            string seconds = (t % 60).ToString("F0");
-            float milisegundos;
+        string minutes = Mathf.Floor((time % 3600) / 60).ToString("00");
+        string seconds = Mathf.Floor(time % 60).ToString("00");
+        string miliseconds = Mathf.Floor( time % 6 * 10 % 10 ).ToString("0");
 
-            if ( (t % 60) % 1 * 10 - 5 < 0 ) milisegundos = 10 + ((t % 60) % 1 * 10 - 5);
-
-            else milisegundos = ((t % 60) % 1 * 10 - 5);
-
-            if (milisegundos > 9) milisegundos = 0;
-
-            timerText.text = minutes + ":" + seconds + ":" + milisegundos.ToString("F0");
-
+        timerText.text = minutes + ":" + seconds + ":" + miliseconds;
         }
+
     }
 
     /* -------------------------------------------------------------------------------- */
 
-    public void toggleClock(bool flag)
-    {
-        start = flag;
-        if (flag)
-        {
-            startTime = Time.time;
-        }
-    }
+    public void toggleClock(bool valor) { start = valor; }
 }

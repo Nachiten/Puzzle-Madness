@@ -2375,10 +2375,10 @@ RectTransform:
   m_Father: {fileID: 711783758}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.164, y: 0.7372632}
-  m_AnchorMax: {x: 0.27075014, y: 0.8137675}
-  m_AnchoredPosition: {x: -44.220215, y: 34.576233}
-  m_SizeDelta: {x: -41.716614, y: -51.930695}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -580.6, y: 336.8}
+  m_SizeDelta: {x: 163.28339, y: 31.069305}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1349708620
 MonoBehaviour:
@@ -2413,7 +2413,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 0:0:0
+  m_Text: 00:00:0
 --- !u!222 &1349708621
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2811,6 +2811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5146d58f39c958428b83753f9429c73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 1
 --- !u!114 &1424632897
 MonoBehaviour:
   m_ObjectHideFlags: 0

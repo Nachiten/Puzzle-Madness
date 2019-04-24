@@ -1,25 +1,26 @@
-﻿using System;
-using UnityEditor;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CustomLevel : MonoBehaviour
 {
     int tamañoMatriz;
+
     RawImage imagen;
+
     GameObject imagenPreview;
+    Text inputField;
 
-    bool imageSet = false;
-    bool sizeSet = false;
-
-    public bool ENABLE = true;
+    public bool imageSet = false;
+    public bool sizeSet = false;
 
     /* -------------------------------------------------------------------------------- */
 
     void Start() 
-    { 
+    {
         imagen = GameObject.Find("Imagen Elegida").GetComponent<RawImage>();
         imagenPreview = GameObject.Find("Imagen Preview");
+        inputField = GameObject.Find("TextoURL").GetComponent<Text>();
 
         imagenPreview.SetActive(false);
     }
@@ -30,7 +31,11 @@ public class CustomLevel : MonoBehaviour
 
         if ( !(imageSet && sizeSet) )
         {
-            EditorUtility.DisplayDialog("Respetar Orden", "Debes seleccionar primero una imagen luego un tamaño antes de comenzar", "Bueno ...");
+            // NUMERO 1
+            FindObjectOfType<PopUps>().abrirPopUp(1);
+
+            
+            
             return;
         }
 
@@ -43,16 +48,15 @@ public class CustomLevel : MonoBehaviour
 
     public void eliminarSobrantes() {
 
-        if (!imageSet) {
-            EditorUtility.DisplayDialog("Respetar Orden", "Debes primero seleccionar una imagen antes de seleccionar el tamaño.", "Bueno ...");
+        if (!imageSet)
+        {
+            FindObjectOfType<PopUps>().abrirPopUp(2);
             return;
         }
 
-        if (sizeSet) {
-            bool rta = EditorUtility.DisplayDialog("Advertencia !", "Para cambiar el tamaño que ya fue elegido previamente se debe reiniciar el nivel en este momento", "Si, reiniciar nivel", "No, no cambiar");
-            
-            if (rta) FindObjectOfType<LevelLoader>().cargarNivel(6);
-
+        if (sizeSet)
+        {
+            FindObjectOfType<PopUps>().abrirPopUp(3);
             return;
         }
 
@@ -189,22 +193,35 @@ public class CustomLevel : MonoBehaviour
 
     /* ----------------------------------- Explorer ----------------------------------- */
 
-    string path;
+    public string url = "";
+    
 
-    public void AbrirExplorer()
+    public void abrirExplorer()
     {
-        path = EditorUtility.OpenFilePanel("Seleccionar Imagen en .PNG .JPG o .JPEG", "", "png,jpg,jpeg");
+        FindObjectOfType<PopUps>().abrirPopUp(4);
+    }
 
-        if (path != null && path != "" && (path.Substring(Math.Max(0, path.Length - 4)) == ".png" || path.Substring(Math.Max(0, path.Length - 4)) == ".jpg" || path.Substring(Math.Max(0, path.Length - 4)) == "jpeg"))
-        {
-            WWW www = new WWW("file:///" + path);
-            imagen.texture = www.texture;
-            imageSet = true;
-        }
-        else
-        {
-            EditorUtility.DisplayDialog("Error !!", "Debes seleccionar una imagen valida en uno de los siguientes formatos: .PNG .JPG .JPEG", "Bueno ...");
-            imageSet = false;
-        }
+    public void asignTexture()
+    {
+        url = (inputField.GetComponent<Text>().text).ToString();
+        Debug.Log(url);
+        StartCoroutine(GetTexture());
+        imagen.material.color = new Vector4(0.20f, 0.20f, 0.20f, 1);
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    IEnumerator GetTexture()
+    {
+        Debug.Log("Loading ...");
+        WWW wwwLoader = new WWW(url);
+
+        yield return wwwLoader;
+        Debug.Log("Loaded");
+
+        imagen.material.color = Color.white;
+        imagen.texture = wwwLoader.texture;
+
+        FindObjectOfType<CustomLevel>().imageSet = true;
     }
 }

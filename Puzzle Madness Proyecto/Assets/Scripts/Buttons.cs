@@ -1,28 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Buttons : MonoBehaviour
 {
-    LevelLoader codigo;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        codigo = GameObject.Find("GameManager").GetComponent<LevelLoader>();
+      
     }
 
     public void Comenzar() {
-        codigo.cargarNivel(1);
+        if (SceneManager.GetActiveScene().buildIndex == 0) loadLevel(1);
+
+        else FindObjectOfType<ManejarMenu>().manejarMenu();
     }
 
     public void SeleccionarNivel() {
 
-        codigo.cargarNivel(7);
+        loadLevel(7);
     }
 
     public void Salir() {
 
-        codigo.salir();
+        GameObject.Find("GameManager").GetComponent<LevelLoader>().salir();
+    }
+
+    void loadLevel(int index) {
+        GameObject.Find("GameManager").GetComponent<LevelLoader>().cargarNivel(index);
     }
 }
