@@ -1,36 +1,43 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class PopUps : MonoBehaviour
 {
     int popUpOpen = 0;
 
-    Text textoPrincipal;
-    Text TextoBanner;
-
     GameObject botonNo;
-
     GameObject popUp;
     GameObject inputField;
 
+    Text textoPrincipal;
+    Text TextoBanner;
+    Text inputFieldTexto;
+    Text botonSiTexto;
+
     void Start()
     {
-        textoPrincipal = GameObject.Find("Texto Principal").GetComponent<Text>();
-        TextoBanner = GameObject.Find("Texto Banner").GetComponent<Text>();
         popUp = GameObject.Find("Pop Up");
-        inputField = GameObject.Find("URL Imagen");
         botonNo = GameObject.Find("Boton No");
+        inputField = GameObject.Find("URL Imagen");
 
+        inputFieldTexto = GameObject.Find("TextoURL").GetComponent<Text>();
+        TextoBanner = GameObject.Find("Texto Banner").GetComponent<Text>();
+        botonSiTexto = GameObject.Find("BotonSiTexto").GetComponent<Text>();
+        textoPrincipal = GameObject.Find("Texto Principal").GetComponent<Text>();
+        
         inputField.SetActive(false);
         popUp.SetActive(false);
         
     }
 
-
     public void abrirPopUp(int num) {
-        popUp.SetActive(true);
+
         popUpOpen = num;
+        popUp.SetActive(true);
         botonNo.SetActive(false);
+
+        botonSiTexto.text = "Ok";
 
         switch (num)
         {
@@ -47,49 +54,48 @@ public class PopUps : MonoBehaviour
         case 3:
             botonNo.SetActive(true);
             
-         // If (si) => Reiniciar Nivel
-         // If (no) => return
-            
             TextoBanner.text = "Respetar Orden";
             textoPrincipal.text = "Para cambiar el tamaño que ya fue elegido previamente se debe reiniciar el nivel en este momento.";
-
-             break;
-        case 4:
-            inputField.SetActive(true);
-            TextoBanner.text = "Seleccionar imagen a usar";
-            textoPrincipal.text = "";
+            botonSiTexto.text = "Si";
 
             break;
+        case 4:
+            inputField.SetActive(true);
 
+            TextoBanner.text = "Seleccionar imagen a usar [Se recomienda el sitio imgur.com]";
+            textoPrincipal.text = "Por favor ingresar una imagen en uno de los siguientes formatos: .PNG .JPG .JPEG.";
+            botonSiTexto.text = "Listo";
+
+            break;
+        case 5:
+            TextoBanner.text = "Seleccionar Imagen Correcta";
+            textoPrincipal.text = "Debes seleccionar una imagen valida en formato .PNG .JPG o .JPEG.";
+
+            break;
         }
     }
 
     public void cerrarPopUp( bool boton) // TRUE = si FALSE = no
     {
-        
+        string path = "";
+
         popUp.SetActive(false);
 
         switch (popUpOpen)
         {
             case 3:
-                Debug.Log("Depende el boton presionado");
-                if (boton) {
-
-                    FindObjectOfType<LevelLoader>().cargarNivel(6);
-
-                }
+                if (boton) FindObjectOfType<LevelLoader>().cargarNivel(6);
+                
                 break;
             case 4:
+                path = (inputFieldTexto.text).ToString();
 
-                Debug.Log("Seleccionar Imagen");
-              
-
-
-
-                FindObjectOfType<CustomLevel>().asignTexture();
-
+                if (path != "" && ( path.Substring(Math.Max(0, path.Length - 4)) == ".png" || path.Substring(Math.Max(0, path.Length - 4)) == ".jpg" || path.Substring(Math.Max(0, path.Length - 4)) == "jpeg") )
+                    FindObjectOfType<CustomLevel>().asignTexture();
+                else
+                    abrirPopUp(5);
+                
                 break;
-
         }
 
         inputField.SetActive(false);

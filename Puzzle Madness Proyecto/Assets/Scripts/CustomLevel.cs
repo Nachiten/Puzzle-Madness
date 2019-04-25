@@ -203,7 +203,7 @@ public class CustomLevel : MonoBehaviour
 
     public void asignTexture()
     {
-        url = (inputField.GetComponent<Text>().text).ToString();
+        url = (inputField.text).ToString();
         Debug.Log(url);
         StartCoroutine(GetTexture());
         imagen.material.color = new Vector4(0.20f, 0.20f, 0.20f, 1);

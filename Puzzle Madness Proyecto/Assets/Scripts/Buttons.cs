@@ -3,14 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class Buttons : MonoBehaviour
 {
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-      
-    }
-
     public void Comenzar() {
         if (SceneManager.GetActiveScene().buildIndex == 0) loadLevel(1);
 
