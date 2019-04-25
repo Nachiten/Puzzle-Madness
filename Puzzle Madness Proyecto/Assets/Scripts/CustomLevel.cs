@@ -31,11 +31,7 @@ public class CustomLevel : MonoBehaviour
 
         if ( !(imageSet && sizeSet) )
         {
-            // NUMERO 1
             FindObjectOfType<PopUps>().abrirPopUp(1);
-
-            
-            
             return;
         }
 
@@ -194,7 +190,6 @@ public class CustomLevel : MonoBehaviour
     /* ----------------------------------- Explorer ----------------------------------- */
 
     public string url = "";
-    
 
     public void abrirExplorer()
     {

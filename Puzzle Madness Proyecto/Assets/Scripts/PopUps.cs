@@ -5,6 +5,10 @@ using System;
 public class PopUps : MonoBehaviour
 {
     int popUpOpen = 0;
+    int currentImage = 0;
+
+    public Texture[] Textura;
+    RawImage simbolo;
 
     GameObject botonNo;
     GameObject popUp;
@@ -25,7 +29,10 @@ public class PopUps : MonoBehaviour
         TextoBanner = GameObject.Find("Texto Banner").GetComponent<Text>();
         botonSiTexto = GameObject.Find("BotonSiTexto").GetComponent<Text>();
         textoPrincipal = GameObject.Find("Texto Principal").GetComponent<Text>();
-        
+
+        simbolo = GameObject.Find("Icono").GetComponent<RawImage>();
+
+
         inputField.SetActive(false);
         popUp.SetActive(false);
         
@@ -36,6 +43,8 @@ public class PopUps : MonoBehaviour
         popUpOpen = num;
         popUp.SetActive(true);
         botonNo.SetActive(false);
+
+        currentImage = 0;
 
         botonSiTexto.text = "Ok";
 
@@ -62,17 +71,21 @@ public class PopUps : MonoBehaviour
         case 4:
             inputField.SetActive(true);
 
+            currentImage = 3;
             TextoBanner.text = "Seleccionar imagen a usar [Se recomienda el sitio imgur.com]";
-            textoPrincipal.text = "Por favor ingresar una imagen en uno de los siguientes formatos: .PNG .JPG .JPEG.";
+            textoPrincipal.text = "Por favor ingresar el link de una imagen en uno de los siguientes formatos:         .PNG .JPG .JPEG.";
             botonSiTexto.text = "Listo";
 
             break;
         case 5:
+            currentImage = 1;
             TextoBanner.text = "Seleccionar Imagen Correcta";
             textoPrincipal.text = "Debes seleccionar una imagen valida en formato .PNG .JPG o .JPEG.";
-
+           
             break;
         }
+
+        simbolo.texture = Textura[currentImage];
     }
 
     public void cerrarPopUp( bool boton) // TRUE = si FALSE = no
