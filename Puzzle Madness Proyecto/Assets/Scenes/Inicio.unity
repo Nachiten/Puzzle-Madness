@@ -2014,6 +2014,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 521c3dc45bc7d384a95ffb65658605b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textura: []
+  DeleteKeys: 0
 --- !u!114 &2054931802
 MonoBehaviour:
   m_ObjectHideFlags: 0

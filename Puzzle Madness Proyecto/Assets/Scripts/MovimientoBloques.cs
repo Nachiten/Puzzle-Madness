@@ -130,6 +130,9 @@ public class MovimientoBloques : MonoBehaviour
         {
             AnalyticsResult result = AnalyticsEvent.Custom("Ganado_" + SceneManager.GetActiveScene().name);
             Debug.Log("Analytics Result: " + result + " | DATA: " + "Ganado_" + SceneManager.GetActiveScene().name);
+            PlayerPrefs.SetString(SceneManager.GetActiveScene().name, "Ganado");
+
+            Debug.Log(PlayerPrefs.GetString(SceneManager.GetActiveScene().name));
 
             Debug.Log("Se gano el juego !! Llamando GameManager");
             FindObjectOfType<GameManager>().ganoJuego();
@@ -267,5 +270,15 @@ public class MovimientoBloques : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void ganarHACK() { FindObjectOfType<GameManager>().ganoJuego(); }
+    void ganarHACK()
+    {
+        AnalyticsResult result = AnalyticsEvent.Custom("Ganado_" + SceneManager.GetActiveScene().name);
+        Debug.Log("Analytics Result: " + result + " | DATA: " + "Ganado_" + SceneManager.GetActiveScene().name);
+        PlayerPrefs.SetString(SceneManager.GetActiveScene().name, "Ganado");
+
+        Debug.Log(PlayerPrefs.GetString(SceneManager.GetActiveScene().name));
+
+        Debug.Log("Se gano el juego !! Llamando GameManager");
+        FindObjectOfType<GameManager>().ganoJuego();
+    }
 }

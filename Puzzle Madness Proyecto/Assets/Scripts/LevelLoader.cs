@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
@@ -11,10 +11,19 @@ public class LevelLoader : MonoBehaviour
           Text textoProgreso;
           Text textoNivel;
 
+    public Texture[] textura;
+
+    public bool DeleteKeys = false;
+
     /* -------------------------------------------------------------------------------- */
 
     void Start()
     {
+            if (DeleteKeys) {
+            Debug.LogError("BORRANDO TODAS LAS KEYS !!!!");
+            PlayerPrefs.DeleteAll();
+            }
+
             if (!GameObject.Find("Panel Carga")) {
             Debug.LogError("PANEL CARGA DESACTIVADO !!!");
             }
@@ -28,6 +37,19 @@ public class LevelLoader : MonoBehaviour
 
             // Ocultar pantalla de carga
             levelLoader.SetActive(false);
+
+            if (SceneManager.GetActiveScene().buildIndex == 7) {
+
+                for (int i = 1; i < 6; i++) {
+
+                    RawImage imagen = GameObject.Find("Image" + i.ToString()).GetComponent<RawImage>();
+
+                    if (PlayerPrefs.GetString("Nivel0" + i.ToString()) == "Ganado") imagen.texture = textura[0];
+                    else imagen.texture = textura[1];
+            }
+
+            }
+
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -38,8 +60,10 @@ public class LevelLoader : MonoBehaviour
         StartCoroutine(cargarAsincronizadamente(index));
         textoNivel.text ="Cargando '" + SceneManager.GetSceneByBuildIndex(index).name + "' ...";
 
-        AnalyticsResult result =  AnalyticsEvent.Custom("Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
-        Debug.Log("Analytics Result: " + result + " | DATA: " + "Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
+        if (index != 7) { 
+            AnalyticsResult result =  AnalyticsEvent.Custom("Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
+            Debug.Log("Analytics Result: " + result + " | DATA: " + "Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
+        }
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -73,4 +97,6 @@ public class LevelLoader : MonoBehaviour
     /* -------------------------------------------------------------------------------- */
 
     public void salir() { Application.Quit(); }
+
+
 }
