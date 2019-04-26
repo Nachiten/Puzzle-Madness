@@ -16,7 +16,7 @@ public class ManejarMenu : MonoBehaviour
     {
         if (flag)
         {
-            menu = GameObject.Find("Canvas Menu");
+            menu = GameObject.Find("Menu");
             boton = GameObject.Find("TextoBotonComenzar").GetComponent<Text>();
             flag = false;
         }

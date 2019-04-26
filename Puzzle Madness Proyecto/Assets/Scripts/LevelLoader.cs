@@ -6,14 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
-    GameObject levelLoader;
-        Slider slider;
-          Text textoProgreso;
-          Text textoNivel;
+    static GameObject levelLoader;
+    static Slider slider;
+    static Text textoProgreso;
+    static Text textoNivel;
 
     public Texture[] textura;
 
     public bool DeleteKeys = false;
+    static bool flag = true;
 
     /* -------------------------------------------------------------------------------- */
 
@@ -24,15 +25,17 @@ public class LevelLoader : MonoBehaviour
         PlayerPrefs.DeleteAll();
         }
 
-        if (!GameObject.Find("Panel Carga")) Debug.LogError("PANEL CARGA DESACTIVADO !!!");
-        
+        if (flag) { 
+            // Aisgnar variables
+            levelLoader = GameObject.Find("Panel Carga");
+            textoProgreso = GameObject.Find("TextoProgreso").GetComponent<Text>();
+            slider = GameObject.Find("Barra Carga").GetComponent<Slider>();
 
-        // Aisgnar variables
-        levelLoader = GameObject.Find("Panel Carga");
-        textoProgreso = GameObject.Find("TextoProgreso").GetComponent<Text>();
-        slider = GameObject.Find("Barra Carga").GetComponent<Slider>();
+            textoNivel = GameObject.Find("Texto Cargando").GetComponent<Text>();
 
-        textoNivel = GameObject.Find("Texto Cargando").GetComponent<Text>();
+            flag = false;
+        }
+
 
         // Ocultar pantalla de carga
         levelLoader.SetActive(false);
