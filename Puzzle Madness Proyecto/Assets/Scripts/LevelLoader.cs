@@ -19,37 +19,50 @@ public class LevelLoader : MonoBehaviour
 
     void Start()
     {
-            if (DeleteKeys) {
-            Debug.LogError("BORRANDO TODAS LAS KEYS !!!!");
-            PlayerPrefs.DeleteAll();
+        if (DeleteKeys) {
+        Debug.LogError("BORRANDO TODAS LAS KEYS !!!!");
+        PlayerPrefs.DeleteAll();
+        }
+
+        if (!GameObject.Find("Panel Carga")) Debug.LogError("PANEL CARGA DESACTIVADO !!!");
+        
+
+        // Aisgnar variables
+        levelLoader = GameObject.Find("Panel Carga");
+        textoProgreso = GameObject.Find("TextoProgreso").GetComponent<Text>();
+        slider = GameObject.Find("Barra Carga").GetComponent<Slider>();
+
+        textoNivel = GameObject.Find("Texto Cargando").GetComponent<Text>();
+
+        // Ocultar pantalla de carga
+        levelLoader.SetActive(false);
+
+        if (SceneManager.GetActiveScene().buildIndex == 7) {
+
+            for (int i = 1; i < 6; i++) {
+
+                RawImage imagen = GameObject.Find("Image" + i.ToString()).GetComponent<RawImage>();
+
+                Text reloj = GameObject.Find("Timer " + i.ToString()).GetComponent<Text>();
+
+                if (PlayerPrefs.GetString("Nivel0" + i.ToString()) == "Ganado")
+                {
+                    float time = PlayerPrefs.GetFloat("Time_" + i.ToString());
+
+                    string minutes = Mathf.Floor((time % 3600) / 60).ToString("00");
+                    string seconds = Mathf.Floor(time % 60).ToString("00");
+                    string miliseconds = Mathf.Floor(time % 6 * 10 % 10).ToString("0");
+
+                    reloj.text = minutes + ":" + seconds + ":" + miliseconds;
+
+                    imagen.texture = textura[0];
+                }
+                else { 
+                    imagen.texture = textura[1];
+                    reloj.text = "";
+                }
             }
-
-            if (!GameObject.Find("Panel Carga")) {
-            Debug.LogError("PANEL CARGA DESACTIVADO !!!");
-            }
-
-            // Aisgnar variables
-            levelLoader = GameObject.Find("Panel Carga");
-            textoProgreso = GameObject.Find("TextoProgreso").GetComponent<Text>();
-            slider = GameObject.Find("Barra Carga").GetComponent<Slider>();
-
-            textoNivel = GameObject.Find("Texto Cargando").GetComponent<Text>();
-
-            // Ocultar pantalla de carga
-            levelLoader.SetActive(false);
-
-            if (SceneManager.GetActiveScene().buildIndex == 7) {
-
-                for (int i = 1; i < 6; i++) {
-
-                    RawImage imagen = GameObject.Find("Image" + i.ToString()).GetComponent<RawImage>();
-
-                    if (PlayerPrefs.GetString("Nivel0" + i.ToString()) == "Ganado") imagen.texture = textura[0];
-                    else imagen.texture = textura[1];
-            }
-
-            }
-
+        }
     }
 
     /* -------------------------------------------------------------------------------- */

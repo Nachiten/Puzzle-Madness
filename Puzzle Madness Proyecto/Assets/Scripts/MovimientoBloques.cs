@@ -68,8 +68,6 @@ public class MovimientoBloques : MonoBehaviour
             comenzar();
             ajustarPosiciones();
         }
-        
-
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -114,26 +112,28 @@ public class MovimientoBloques : MonoBehaviour
         gano = true;
 
         // Analizar si matrizes juego y gano son identicas
-        for (int i = 0; i < tamañoMatriz; i++)
-        {
-            for (int j = 0; j < tamañoMatriz; j++)
-            {
+        for (int i = 0; i < tamañoMatriz; i++) {
+            for (int j = 0; j < tamañoMatriz; j++) {
+
                 if (matriz[i, j] != matrizGano[i, j])
                 {
-                    gano = false;
+                    gano = false;   
                 }
             }
         }
+        
 
         // Si termino el juego parar el timer
         if (gano)
         {
             AnalyticsResult result = AnalyticsEvent.Custom("Ganado_" + SceneManager.GetActiveScene().name);
             Debug.Log("Analytics Result: " + result + " | DATA: " + "Ganado_" + SceneManager.GetActiveScene().name);
-            PlayerPrefs.SetString(SceneManager.GetActiveScene().name, "Ganado");
 
+            PlayerPrefs.SetString(SceneManager.GetActiveScene().name, "Ganado");
             Debug.Log(PlayerPrefs.GetString(SceneManager.GetActiveScene().name));
 
+            FindObjectOfType<Timer>().setPlayerPref();
+            
             Debug.Log("Se gano el juego !! Llamando GameManager");
             FindObjectOfType<GameManager>().ganoJuego();
         }
@@ -274,9 +274,11 @@ public class MovimientoBloques : MonoBehaviour
     {
         AnalyticsResult result = AnalyticsEvent.Custom("Ganado_" + SceneManager.GetActiveScene().name);
         Debug.Log("Analytics Result: " + result + " | DATA: " + "Ganado_" + SceneManager.GetActiveScene().name);
-        PlayerPrefs.SetString(SceneManager.GetActiveScene().name, "Ganado");
 
+        PlayerPrefs.SetString(SceneManager.GetActiveScene().name, "Ganado");
         Debug.Log(PlayerPrefs.GetString(SceneManager.GetActiveScene().name));
+
+        FindObjectOfType<Timer>().setPlayerPref();
 
         Debug.Log("Se gano el juego !! Llamando GameManager");
         FindObjectOfType<GameManager>().ganoJuego();

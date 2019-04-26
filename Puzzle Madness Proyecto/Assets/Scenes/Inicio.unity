@@ -2123,7 +2123,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2054931806}
-  - component: {fileID: 2054931802}
   - component: {fileID: 2054931803}
   - component: {fileID: 2054931801}
   m_Layer: 0
@@ -2147,36 +2146,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textura: []
   DeleteKeys: 0
---- !u!114 &2054931802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2054931800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -745406591, guid: 220224b43fc464c28bc0e8de8f54a432, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Trigger:
-    m_IsTriggerExpanded: 1
-    m_Type: 0
-    m_LifecycleEvent: 2
-    m_ApplyRules: 0
-    m_Rules:
-      m_Rules: []
-    m_TriggerBool: 0
-    m_InitTime: 5
-    m_RepeatTime: 5
-    m_Repetitions: 0
-    repetitionCount: 0
-  m_EventPayload:
-    m_IsEventExpanded: 1
-    m_StandardEventType: CustomEvent
-    m_Parameters:
-      m_Parameters: []
-    m_Name: Game Started
 --- !u!114 &2054931803
 MonoBehaviour:
   m_ObjectHideFlags: 0

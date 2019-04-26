@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
@@ -13,10 +12,7 @@ public class Timer : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void Start()
-    {
-        timerText = GameObject.Find("Timer").GetComponent<Text>();
-    }
+    void Start() { timerText = GameObject.Find("Timer").GetComponent<Text>(); }
 
     /* -------------------------------------------------------------------------------- */
 
@@ -37,4 +33,24 @@ public class Timer : MonoBehaviour
     /* -------------------------------------------------------------------------------- */
 
     public void toggleClock(bool valor) { start = valor; }
+
+    /* -------------------------------------------------------------------------------- */
+
+    float playerPref;
+
+    public void setPlayerPref() {
+
+        playerPref = PlayerPrefs.GetFloat("Time_" + SceneManager.GetActiveScene().buildIndex);
+
+        Debug.Log(playerPref );
+
+        if (time < playerPref || playerPref == 0)
+        {
+            Debug.Log("Guardando player preff de tiempo .....");
+            PlayerPrefs.SetFloat("Time_" + SceneManager.GetActiveScene().buildIndex, time);
+        }
+        else Debug.Log("Tiempo mayor al previamente guardado, no guardando...");
+        
+
+    }
 }
