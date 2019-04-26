@@ -3314,6 +3314,7 @@ MonoBehaviour:
   textura:
   - {fileID: 2800000, guid: 815fe296f9d71e44ca83002bc483af23, type: 3}
   - {fileID: 2800000, guid: 6c4c53e619715354eafcb70b40eace74, type: 3}
+  DeleteKeys: 0
 --- !u!114 &2054931802
 MonoBehaviour:
   m_ObjectHideFlags: 0

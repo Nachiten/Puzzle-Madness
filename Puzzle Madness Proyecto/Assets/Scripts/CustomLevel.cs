@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 public class CustomLevel : MonoBehaviour
 {
@@ -209,13 +210,16 @@ public class CustomLevel : MonoBehaviour
     IEnumerator GetTexture()
     {
         Debug.Log("Loading ...");
-        WWW wwwLoader = new WWW(url);
 
-        yield return wwwLoader;
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+
+        //WWW wwwLoader = new WWW(url);
+
+        yield return www.SendWebRequest();
         Debug.Log("Loaded");
 
         imagen.material.color = Color.white;
-        imagen.texture = wwwLoader.texture;
+        imagen.texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
 
         FindObjectOfType<CustomLevel>().imageSet = true;
     }

@@ -28,6 +28,7 @@ public class ManejarMenu : MonoBehaviour
         }
         else {
             boton.text = "Comenzar";
+            menu.SetActive(true);
         }
     }
 
