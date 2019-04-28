@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
 
     public void comenzarNivel()
     {
+        Debug.Log("ENTROO");
+
         if (!gano && SceneManager.GetActiveScene().buildIndex < 8) // Si es el inicio, comenzar el juego
         {
             Debug.Log("Iniciando juego...");

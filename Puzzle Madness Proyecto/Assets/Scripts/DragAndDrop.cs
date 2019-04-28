@@ -2,77 +2,84 @@
 
 public class DragAndDrop : MonoBehaviour
 {
-    
-
     public int tamañoMatriz = 3;
 
     // Offset of position
-    Vector3 Offset;
+    Vector3 offset;
 
     // Z Position
-    float CoordZ;
+    float coordZ;
 
     // Limit of distance
-    float limite = 1.4f;
+    float limite = 1.2f;
+    float elevamiento = 0.5f;
 
     // Position when you pick it up
     Vector3 inicialPos;
 
-    // Flag to stop you from being able to move after placing in right position
-    bool move = true;
+    // Rayo
+    RaycastHit hit;
 
-    void Start() {
-        ajustarPosiciones(); mezclarLugares();
-    }
+    // Flag para no cambiar de bloque al tener uno seleccionado
+    bool flag = true;
 
-    void OnMouseDown()
+    // Objeto y posicion correcta objeto
+    GameObject objeto;
+    Transform lugar;
+    
+    void Start() { ajustarPosiciones(); mezclarLugares(); }
+
+    void Update()
     {
-        if (move)
+        // Generar rayo para "clickear" bloque
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        bool operacion = Physics.Raycast(ray, out hit, 100.0f) && hit.transform != null;
+
+        // Si el rayo hace contacto con un bloque y se tiene el click IZQUIERDO persionado
+        if (operacion && Input.GetMouseButton(0))
         {
-            Debug.Log("Item Picked Up");
-            // Seet Z coordinate
-            CoordZ = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+            if (flag)
+            { 
+                // Asignar bloque seleccionado
+                objeto = hit.transform.gameObject;
 
-            // Store offset = gameobject world pos - mouse world pos
-            Offset = gameObject.transform.position - GetMouseAsWorldPoint();
+                // Lugar correcto del bloque
+                lugar = GameObject.Find("Lugar_" + objeto.name).GetComponent<Transform>();
+                flag = false;
+            }
 
-            // Se inicial position
-            inicialPos = GetMouseAsWorldPoint() + Offset;
+            if (objeto.transform.position == new Vector3(lugar.position.x, lugar.position.y + 0.2f, lugar.position.z)) return;
+             
+            // When item Picked Up
+            if (Input.GetMouseButtonDown(0))
+            { 
+                    Debug.Log("Item Picked Up");
+                    // Set Z coordinateF
+                    coordZ = Camera.main.WorldToScreenPoint(objeto.transform.position).z;
+
+                    offset = objeto.transform.position - GetMouseAsWorldPoint();
+
+                    // Set inicial position
+                    inicialPos = GetMouseAsWorldPoint() + offset;
+            }
+            // While item still picked up
+            else if (Input.GetMouseButton(0))
+            {
+                // Move object
+                objeto.transform.position = GetMouseAsWorldPoint() + offset + new Vector3(0,elevamiento,0);
+            }
+
         }
-        else Debug.Log("Item Already in Correct Position");
-        
-    }
+        else if (operacion && Input.GetMouseButtonUp(0))
+        {
+            GameObject Objeto = hit.transform.gameObject;
 
-    private Vector3 GetMouseAsWorldPoint()
-    {
-        // Pixel coordinates of mouse (x,y)
-        Vector3 mousePoint = Input.mousePosition;
-
-        // z coordinate of game object on screen
-        mousePoint.z = CoordZ;
-
-        // Convert it to world points
-        return Camera.main.ScreenToWorldPoint(mousePoint);
-    }
-
-    void OnMouseDrag()
-    {
-        // Move object
-        if (move) transform.position = GetMouseAsWorldPoint() + Offset;
-    }
-
-    void OnMouseUp()
-    {
-        if (move)
-        { 
-
+            // When item dropped
             Debug.Log("Item dropped");
 
-            // Correct place for the object
-            Transform lugar = GameObject.Find("Lugar_" + gameObject.name).GetComponent<Transform>();
-
             // Distance from object to correct place
-            float distancia = Vector3.Distance(gameObject.transform.position, lugar.position);
+            float distancia = Vector3.Distance(Objeto.transform.position, lugar.position);
 
             Debug.Log("Distance: " + distancia + " | " + "Limit of Distance: " + limite);
 
@@ -82,26 +89,37 @@ public class DragAndDrop : MonoBehaviour
                 Debug.Log("Correctly Placed");
 
                 // Place in correct place
-                gameObject.transform.position = new Vector3(lugar.position.x, lugar.position.y + 0.2f, lugar.position.z);
-                move = false;
+                Objeto.transform.position = new Vector3(lugar.position.x, lugar.position.y + 0.2f, lugar.position.z);
             }
             else // Return to start position
             {
+                Objeto.transform.position = new Vector3(Objeto.transform.position.x, Objeto.transform.position.y - elevamiento, Objeto.transform.position.z);
                 Debug.Log("Not correctly placed");
-
-                // Return to start position
-                //gameObject.transform.position = inicialPos;
             }
+            
+            flag = true;
         }
     }
 
-    Renderer modelo;
-    Renderer objeto;
-    
+    /* -------------------------------------------------------------------------------- */
+
+    private Vector3 GetMouseAsWorldPoint()
+    {
+        // Coordenadas de pixel de mouse (X,Y)
+        Vector3 mousePoint = Input.mousePosition;
+
+        // Coordenadas Z del objeto
+        mousePoint.z = coordZ;
+
+        // Convertir posicion de mouse en coordenadas 3D
+        return Camera.main.ScreenToWorldPoint(mousePoint);
+    }
+
+    /* -------------------------------------------------------------------------------- */
 
     public void ajustarPosiciones()
     {
-        modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
+        Renderer modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
 
         int contador = 1;
 
@@ -114,13 +132,13 @@ public class DragAndDrop : MonoBehaviour
             for (int j = 0; j < tamañoMatriz; j++)
             {
                     // Asignar renderer
-                    objeto = GameObject.Find(contador.ToString()).GetComponent<Renderer>();
+                    Renderer renderer = GameObject.Find(contador.ToString()).GetComponent<Renderer>();
                     // Cambiar "Tiling" de textura
-                    objeto.material.mainTextureScale = new Vector2(scale, scale);
+                    renderer.material.mainTextureScale = new Vector2(scale, scale);
                     // Ajustar "Offeset" de textura
-                    objeto.material.mainTextureOffset = new Vector2(offsetX, offsetY);
+                    renderer.material.mainTextureOffset = new Vector2(offsetX, offsetY);
 
-                    objeto.material.mainTexture = modelo.material.mainTexture;
+                    renderer.material.mainTexture = modelo.material.mainTexture;
 
                     contador++;
 
@@ -130,6 +148,8 @@ public class DragAndDrop : MonoBehaviour
             offsetY -= scale;
         }
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     void mezclarLugares()
     {
@@ -146,5 +166,4 @@ public class DragAndDrop : MonoBehaviour
             }
         }
     }
-
 }
