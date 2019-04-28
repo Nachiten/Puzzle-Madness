@@ -46,6 +46,8 @@ public class ManejarMenu : MonoBehaviour
         menu.SetActive(!flag);
         flag = !flag;
 
+        //if (SceneManager.GetActiveScene().buildIndex == 8) FindObjectOfType<DragAndDrop>().move = flag;
+
         if (SceneManager.GetActiveScene().buildIndex != 7) FindObjectOfType<Timer>().toggleClock(!flag);
     }
 }

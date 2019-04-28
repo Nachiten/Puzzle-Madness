@@ -23,8 +23,6 @@ public class GameManager : MonoBehaviour
 
         // Modificar texto
         textoBoton.text = "Comenzar Nivel";
-
-        //GameObject.Find("Canvas").GetComponent<CanvasScaler>().referencePixelsPerUnit = ReferencePixelUnit;
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -45,7 +43,7 @@ public class GameManager : MonoBehaviour
 
     public void comenzarNivel()
     {
-        if (!gano) // Si es el inicio, comenzar el juego
+        if (!gano && SceneManager.GetActiveScene().buildIndex < 8) // Si es el inicio, comenzar el juego
         {
             Debug.Log("Iniciando juego...");
             // Ocultar boton
@@ -59,7 +57,13 @@ public class GameManager : MonoBehaviour
         {
             FindObjectOfType<LevelLoader>().cargarNivel(0);
         }
-        else // En otros, pasar al siguiente nivel
+        else if (SceneManager.GetActiveScene().buildIndex == 8)
+        {
+            Debug.Log("NIVEL NUEVO!!");
+            //FindObjectOfType<DragAndDrop>().move = true;
+        }
+        else
+        // En otros, pasar al siguiente nivel
         { 
             Debug.Log("Avanzando al siguiente nivel...");
             FindObjectOfType<LevelLoader>().cargarNivel(SceneManager.GetActiveScene().buildIndex + 1);
