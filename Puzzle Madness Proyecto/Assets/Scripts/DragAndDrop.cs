@@ -11,7 +11,7 @@ public class DragAndDrop : MonoBehaviour
     float coordZ;
 
     // Limit of distance
-    float limite = 1.2f;
+    float limite = 1.6f;
     float elevamiento = 0.5f;
 
     // Position when you pick it up
@@ -23,87 +23,114 @@ public class DragAndDrop : MonoBehaviour
     // Flag para no cambiar de bloque al tener uno seleccionado
     bool flag = true;
 
+    bool gameStarted = false;
+
     // Objeto y posicion correcta objeto
     GameObject objeto;
     Transform lugar;
-    
+
+    /* -------------------------------------------------------------------------------- */
+
     void Start() { ajustarPosiciones(); mezclarLugares(); }
+
+    /* -------------------------------------------------------------------------------- */
 
     void Update()
     {
         // Generar rayo para "clickear" bloque
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        bool operacion = Physics.Raycast(ray, out hit, 100.0f) && hit.transform != null;
+        // Determina si un rayo pego contra un objeto
+        if (Physics.Raycast(ray, out hit, 100.0f) && hit.transform != null) {
 
-        // Si el rayo hace contacto con un bloque y se tiene el click IZQUIERDO persionado
-        if (operacion && Input.GetMouseButton(0))
-        {
-            if (flag)
-            { 
-                // Asignar bloque seleccionado
-                objeto = hit.transform.gameObject;
+            if (hit.transform.gameObject.name == "Boton") return;
 
-                // Lugar correcto del bloque
-                lugar = GameObject.Find("Lugar_" + objeto.name).GetComponent<Transform>();
-                flag = false;
-            }
-
-            if (objeto.transform.position == new Vector3(lugar.position.x, lugar.position.y + 0.2f, lugar.position.z)) return;
-             
-            // When item Picked Up
-            if (Input.GetMouseButtonDown(0))
-            { 
-                    Debug.Log("Item Picked Up");
-                    // Set Z coordinateF
-                    coordZ = Camera.main.WorldToScreenPoint(objeto.transform.position).z;
-
-                    offset = objeto.transform.position - GetMouseAsWorldPoint();
-
-                    // Set inicial position
-                    inicialPos = GetMouseAsWorldPoint() + offset;
-            }
-            // While item still picked up
-            else if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0))
             {
-                // Move object
-                objeto.transform.position = GetMouseAsWorldPoint() + offset + new Vector3(0,elevamiento,0);
-            }
+                if (!gameStarted)
+                {
+                    GameObject.Find("GameManager").GetComponent<Timer>().toggleClock(true);
+                    gameStarted = true;
+                }
 
-        }
-        else if (operacion && Input.GetMouseButtonUp(0))
-        {
-            GameObject Objeto = hit.transform.gameObject;
+                if (flag)
+                {
+                    // Asignar bloque seleccionado
+                    objeto = hit.transform.gameObject;
 
-            // When item dropped
-            Debug.Log("Item dropped");
+                    // Lugar correcto del bloque
+                    lugar = GameObject.Find("Lugar_" + objeto.name).GetComponent<Transform>();
 
-            // Distance from object to correct place
-            float distancia = Vector3.Distance(Objeto.transform.position, lugar.position);
+                    // Si el bloque esta en lugar correcto retornar void
+                    if (objeto.transform.position == new Vector3(lugar.position.x, lugar.position.y + 0.2f, lugar.position.z)) return;
 
-            Debug.Log("Distance: " + distancia + " | " + "Limit of Distance: " + limite);
-
-            // If its inside the limit
-            if (distancia < limite)
-            {
-                Debug.Log("Correctly Placed");
-
-                // Place in correct place
-                Objeto.transform.position = new Vector3(lugar.position.x, lugar.position.y + 0.2f, lugar.position.z);
-            }
-            else // Return to start position
-            {
-                Objeto.transform.position = new Vector3(Objeto.transform.position.x, Objeto.transform.position.y - elevamiento, Objeto.transform.position.z);
-                Debug.Log("Not correctly placed");
+                    flag = false;
+                }
+                // Al agarrar el bloque
+                if (Input.GetMouseButtonDown(0)) mouseButtonDown();
+            
+                // Mover bloque
+                else objeto.transform.position = GetMouseAsWorldPoint() + offset + new Vector3(0, elevamiento, 0);
             }
             
-            flag = true;
         }
+        if (Input.GetMouseButtonUp(0)) mouseButtonUp();
+
+        analizarGano();
     }
 
     /* -------------------------------------------------------------------------------- */
 
-    private Vector3 GetMouseAsWorldPoint()
+
+
+    void mouseButtonDown()
+    {
+        Debug.Log("Item Picked Up");
+        // Set Z coordinateF
+        coordZ = Camera.main.WorldToScreenPoint(objeto.transform.position).z;
+
+        offset = objeto.transform.position - GetMouseAsWorldPoint();
+
+        // Set inicial position
+        inicialPos = GetMouseAsWorldPoint() + offset;
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    void mouseButtonUp()
+    {
+        if (hit.transform == null || hit.transform.gameObject.name == "Boton") return;
+
+        if (objeto == null || objeto.transform == null) return;
+
+        // When item dropped
+        Debug.Log("Item dropped");
+
+        // Distance from object to correct place
+        float distancia = Vector3.Distance(objeto.transform.position, lugar.position);
+
+        //Debug.Log("Distance: " + distancia + " | " + "Limit of Distance: " + limite);
+
+        // If its inside the limit
+        if (distancia < limite)
+        {
+            Debug.Log("Correctly Placed");
+
+            // Place in correct place
+            objeto.transform.position = new Vector3(lugar.position.x, lugar.position.y + 0.2f, lugar.position.z);
+        }
+        else // Return to start position
+        {
+            objeto.transform.position = new Vector3(objeto.transform.position.x, objeto.transform.position.y - elevamiento, objeto.transform.position.z);
+            Debug.Log("Not correctly placed");
+        }
+        flag = true;
+        
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    Vector3 GetMouseAsWorldPoint()
     {
         // Coordenadas de pixel de mouse (X,Y)
         Vector3 mousePoint = Input.mousePosition;
@@ -113,6 +140,29 @@ public class DragAndDrop : MonoBehaviour
 
         // Convertir posicion de mouse en coordenadas 3D
         return Camera.main.ScreenToWorldPoint(mousePoint);
+    }
+
+    Transform bloque;
+    Transform lugarCorrecto;
+
+    void analizarGano() {
+        int contador;
+
+        contador = 1;
+
+        for (int i = 0; i < tamañoMatriz; i++) {
+            for (int j = 0; j < tamañoMatriz; j++) {
+
+                bloque = GameObject.Find(contador.ToString()).transform.GetComponent<Transform>();
+                lugarCorrecto = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
+
+                if (bloque.position != new Vector3(lugarCorrecto.position.x, lugarCorrecto.position.y + 0.2f, lugarCorrecto.position.z))
+                    return;
+
+                contador++;
+            }
+        }
+            Debug.Log("GANO !!");
     }
 
     /* -------------------------------------------------------------------------------- */
