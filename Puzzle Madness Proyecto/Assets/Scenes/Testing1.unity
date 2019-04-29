@@ -219,6 +219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   "tama\xF1oMatriz": 3
+  pause: 1
 --- !u!1 &106548522
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +408,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.24162503, y: 0.31733212}
   m_AnchorMax: {x: 0.26345846, y: 0.34474593}
-  m_AnchoredPosition: {x: -46.345367, y: 13.051056}
+  m_AnchoredPosition: {x: -46.345367, y: 13.051025}
   m_SizeDelta: {x: -9.320099, y: -11.449837}
   m_Pivot: {x: -0.000000056700515, y: 0.50000006}
 --- !u!114 &145689386
@@ -1041,6 +1042,7 @@ GameObject:
   - component: {fileID: 470174052}
   - component: {fileID: 470174051}
   - component: {fileID: 470174050}
+  - component: {fileID: 470174053}
   m_Layer: 5
   m_Name: Boton
   m_TagString: Untagged
@@ -1161,6 +1163,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 470174048}
   m_CullTransparentMesh: 1
+--- !u!65 &470174053
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470174048}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &562717392
 GameObject:
   m_ObjectHideFlags: 0
@@ -1504,7 +1519,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.148375, y: 0.823}
   m_AnchorMax: {x: 0.20500001, y: 0.8527895}
-  m_AnchoredPosition: {x: -32.86035, y: 41.674133}
+  m_AnchoredPosition: {x: -32.86035, y: 41.674072}
   m_SizeDelta: {x: 52.10138, y: 0.59524536}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1044519704
@@ -1626,6 +1641,72 @@ Transform:
   m_Father: {fileID: 1307656289}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1 &1068538565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1068538568}
+  - component: {fileID: 1068538567}
+  - component: {fileID: 1068538566}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1068538566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068538565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &1068538567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068538565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &1068538568
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068538565}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1107777670
 GameObject:
   m_ObjectHideFlags: 0
@@ -3161,7 +3242,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.14733334, y: 0.31733212}
   m_AnchorMax: {x: 0.24058336, y: 0.34474593}
-  m_AnchoredPosition: {x: -68.99951, y: 13.384338}
+  m_AnchoredPosition: {x: -68.99951, y: 13.3845215}
   m_SizeDelta: {x: -22.37384, y: 2.1841278}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1928198151

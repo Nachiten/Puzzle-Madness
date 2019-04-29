@@ -45,27 +45,32 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("ENTROO");
 
-        if (!gano && SceneManager.GetActiveScene().buildIndex < 8) // Si es el inicio, comenzar el juego
+        if (!gano) // Si no gano, comenzar juego
         {
             Debug.Log("Iniciando juego...");
             // Ocultar boton
             boton.SetActive(false);
-            // Activar juego
+
+            // Si es juego1
+            if (SceneManager.GetActiveScene().buildIndex < 8)
             FindObjectOfType<MovimientoBloques>().comenzarNivel();
+
+            // Si es juego2
+            else if (SceneManager.GetActiveScene().buildIndex > 7)
+            FindObjectOfType<DragAndDrop>().pause = false;
+
             // Activar reloj
             FindObjectOfType<Timer>().toggleClock(true);
         }
-        else if (SceneManager.GetActiveScene().buildIndex == 6 || SceneManager.GetActiveScene().buildIndex == 5) // Si es custom level o nivel 5, regresar a inicio
+
+        // Si es custom level o nivel 5, regresar a inicio
+        else if (SceneManager.GetActiveScene().buildIndex == 6 || SceneManager.GetActiveScene().buildIndex == 5) 
         {
             FindObjectOfType<LevelLoader>().cargarNivel(0);
         }
-        else if (SceneManager.GetActiveScene().buildIndex == 8)
-        {
-            Debug.Log("NIVEL NUEVO!!");
-            //FindObjectOfType<DragAndDrop>().move = true;
-        }
-        else
+
         // En otros, pasar al siguiente nivel
+        else
         { 
             Debug.Log("Avanzando al siguiente nivel...");
             FindObjectOfType<LevelLoader>().cargarNivel(SceneManager.GetActiveScene().buildIndex + 1);

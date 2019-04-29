@@ -10,6 +10,8 @@ public class ManejarMenu : MonoBehaviour
     static GameObject menu;
     static Text boton;
 
+    bool start = false;
+
     /* -------------------------------------------------------------------------------- */
 
     void Start()
@@ -46,8 +48,13 @@ public class ManejarMenu : MonoBehaviour
         menu.SetActive(!flag);
         flag = !flag;
 
-        //if (SceneManager.GetActiveScene().buildIndex == 8) FindObjectOfType<DragAndDrop>().move = flag;
+        if (start) { 
+
+        if (SceneManager.GetActiveScene().buildIndex > 7) FindObjectOfType<DragAndDrop>().pause = flag;
 
         if (SceneManager.GetActiveScene().buildIndex != 7) FindObjectOfType<Timer>().toggleClock(!flag);
+        }
+
+        if (!start && !flag) start = true;
     }
 }

@@ -25,6 +25,8 @@ public class DragAndDrop : MonoBehaviour
 
     bool gameStarted = false;
 
+    public bool pause = true;
+
     // Objeto y posicion correcta objeto
     GameObject objeto;
     Transform lugar;
@@ -37,13 +39,13 @@ public class DragAndDrop : MonoBehaviour
 
     void Update()
     {
+        if (pause) return;
+        
         // Generar rayo para "clickear" bloque
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         // Determina si un rayo pego contra un objeto
         if (Physics.Raycast(ray, out hit, 100.0f) && hit.transform != null) {
-
-            if (hit.transform.gameObject.name == "Boton") return;
 
             if (Input.GetMouseButton(0))
             {
@@ -81,8 +83,6 @@ public class DragAndDrop : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-
-
     void mouseButtonDown()
     {
         Debug.Log("Item Picked Up");
@@ -99,9 +99,12 @@ public class DragAndDrop : MonoBehaviour
 
     void mouseButtonUp()
     {
-        if (hit.transform == null || hit.transform.gameObject.name == "Boton") return;
+        if (hit.transform == null)  return;
 
-        if (objeto == null || objeto.transform == null) return;
+        if (objeto == null || objeto.transform == null) {
+            Debug.Log("Se retorno en funcion dos");
+            return;
+        }
 
         // When item dropped
         Debug.Log("Item dropped");
