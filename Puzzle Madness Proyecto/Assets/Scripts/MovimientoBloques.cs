@@ -18,10 +18,12 @@ public class MovimientoBloques : MonoBehaviour
     // Cantidad de movimientos
     int movimientos;
 
-    // Bool juego Ganado
+    // Bool juego ganado
     bool gano = false;
     // Bool juego empezado
-    bool start = false;
+    public bool start = false;
+    // Bool de juego pausado
+    public bool pause = false;
 
     // Texto movimientos
     Text textoMovimiento;
@@ -38,23 +40,27 @@ public class MovimientoBloques : MonoBehaviour
     // Se actualiza una vez por fotograma
     void Update()
     {
-        if (GanarHack) { ganarHACK(); }
-
-        if (!gano && start)
-        {
-            // Generar rayo para "clickear" bloque
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            // Si el rayo hace contacto con un bloque y se tiene el click IZQUIERDO persionado
-            if (Physics.Raycast(ray, out RaycastHit hit, 100.0f) && hit.transform != null && Input.GetMouseButtonDown(0))
-            {
-                // Asignar slot correcto y escanear si movimiento es posible
-                int slot = int.Parse(hit.transform.gameObject.name);
-                scanEmptySlot(slot);
-            }
-            // Analizar si se gano con ese movimiento
-            analizarGano();
+        if (GanarHack)
+        { 
+            ganarHACK();
+            GanarHack = false;
         }
+
+        if (gano || !start || pause) return;
+
+        // Generar rayo para "clickear" bloque
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        // Si el rayo hace contacto con un bloque y se tiene el click IZQUIERDO persionado
+        if (Physics.Raycast(ray, out RaycastHit hit, 100.0f) && hit.transform != null && Input.GetMouseButtonDown(0))
+        {
+            // Asignar slot correcto y escanear si movimiento es posible
+            int slot = int.Parse(hit.transform.gameObject.name);
+            scanEmptySlot(slot);
+        }
+        // Analizar si se gano con ese movimiento
+        analizarGano();
+        
     }
 
     /* -------------------------------------------------------------------------------- */

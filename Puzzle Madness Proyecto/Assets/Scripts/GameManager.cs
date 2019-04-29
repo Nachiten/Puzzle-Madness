@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
 
             // Si es juego2
             else if (SceneManager.GetActiveScene().buildIndex > 7)
-            FindObjectOfType<DragAndDrop>().pause = false;
+            FindObjectOfType<DragAndDrop>().start = true;
 
             // Activar reloj
             FindObjectOfType<Timer>().toggleClock(true);

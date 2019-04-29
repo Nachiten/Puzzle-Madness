@@ -23,9 +23,14 @@ public class DragAndDrop : MonoBehaviour
     // Flag para no cambiar de bloque al tener uno seleccionado
     bool flag = true;
 
-    bool gameStarted = false;
+    bool gano = false;
 
-    public bool pause = true;
+    //bool gameStarted = false;
+
+    // Flag de pausado
+    public bool pause = false;
+    // Flag de comenzado
+    public bool start = false;
 
     // Objeto y posicion correcta objeto
     GameObject objeto;
@@ -39,7 +44,7 @@ public class DragAndDrop : MonoBehaviour
 
     void Update()
     {
-        if (pause) return;
+        if (pause || !start || gano) return;
         
         // Generar rayo para "clickear" bloque
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -49,11 +54,11 @@ public class DragAndDrop : MonoBehaviour
 
             if (Input.GetMouseButton(0))
             {
-                if (!gameStarted)
+                /*if (!gameStarted)
                 {
                     GameObject.Find("GameManager").GetComponent<Timer>().toggleClock(true);
                     gameStarted = true;
-                }
+                }*/
 
                 if (flag)
                 {
@@ -112,8 +117,6 @@ public class DragAndDrop : MonoBehaviour
         // Distance from object to correct place
         float distancia = Vector3.Distance(objeto.transform.position, lugar.position);
 
-        //Debug.Log("Distance: " + distancia + " | " + "Limit of Distance: " + limite);
-
         // If its inside the limit
         if (distancia < limite)
         {
@@ -165,7 +168,12 @@ public class DragAndDrop : MonoBehaviour
                 contador++;
             }
         }
-            Debug.Log("GANO !!");
+
+        Debug.Log("GANO !!");
+
+        FindObjectOfType<GameManager>().ganoJuego();
+
+        gano = true;
     }
 
     /* -------------------------------------------------------------------------------- */

@@ -219,7 +219,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   "tama\xF1oMatriz": 3
-  pause: 1
+  pause: 0
+  start: 0
 --- !u!1 &106548522
 GameObject:
   m_ObjectHideFlags: 0
