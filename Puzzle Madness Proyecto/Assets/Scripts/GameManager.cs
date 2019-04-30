@@ -25,13 +25,21 @@ public class GameManager : MonoBehaviour
     /* -------------------------------------------------------------------------------- */
 
     public void ganoJuego() {
+
+        // Index
+        int index = SceneManager.GetActiveScene().buildIndex;
+
+        // Variable gano
         gano = true;
+
         // Desactivar reloj
         GetComponent<Timer>().toggleClock(false);
-        // Modificar texto
 
-        if (SceneManager.GetActiveScene().buildIndex == 6) textoBoton.text = "Regresar a Inicio";
-                                                      else textoBoton.text = "Siguiente Nivel";
+        // Modificar texto
+        if (index == 10 || index == 11 || index == 22) textoBoton.text = "Regresar a Inicio";
+                                                  else textoBoton.text = "Siguiente Nivel";
+
+
         // Mostrar boton
         boton.SetActive(true);
     }
@@ -40,6 +48,8 @@ public class GameManager : MonoBehaviour
 
     public void comenzarNivel()
     {
+        int index = SceneManager.GetActiveScene().buildIndex;
+
         Debug.Log("ENTROO");
 
         if (!gano) // Si no gano, comenzar juego
@@ -49,11 +59,11 @@ public class GameManager : MonoBehaviour
             boton.SetActive(false);
 
             // Si es juego1
-            if (SceneManager.GetActiveScene().buildIndex < 8 || SceneManager.GetActiveScene().buildIndex == 9)
+            if (index < 11)
             FindObjectOfType<MovimientoBloques>().comenzarNivel();
 
             // Si es juego2
-            else if (SceneManager.GetActiveScene().buildIndex > 7 && SceneManager.GetActiveScene().buildIndex != 9)
+            else if (index > 12)
             FindObjectOfType<DragAndDrop>().start = true;
 
             // Activar reloj
@@ -61,7 +71,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Si es custom level o nivel 5, regresar a inicio
-        else if (SceneManager.GetActiveScene().buildIndex == 6 || SceneManager.GetActiveScene().buildIndex == 5) 
+        else if (index == 10 || index == 11 || index == 22 || index == 23) 
         {
             FindObjectOfType<LevelLoader>().cargarNivel(0);
         }
@@ -70,7 +80,7 @@ public class GameManager : MonoBehaviour
         else
         { 
             Debug.Log("Avanzando al siguiente nivel...");
-            FindObjectOfType<LevelLoader>().cargarNivel(SceneManager.GetActiveScene().buildIndex + 1);
+            FindObjectOfType<LevelLoader>().cargarNivel(index + 1);
         }
     }
 

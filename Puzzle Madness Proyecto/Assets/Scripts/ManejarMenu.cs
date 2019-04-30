@@ -6,16 +6,24 @@ using UnityEngine.UI;
 
 public class ManejarMenu : MonoBehaviour
 {
+    // Flag de menu abierto
     static bool flag = true;
+
+    // Menu pausa
     static GameObject menu;
+
+    // Boton Continuar/Comenzar
     static Text boton;
 
-    //bool start = false;
+    // Index de escena actual
+    int index;
 
     /* -------------------------------------------------------------------------------- */
 
     void Start()
     {
+        index = SceneManager.GetActiveScene().buildIndex;
+
         if (flag)
         {
             menu = GameObject.Find("Menu");
@@ -23,7 +31,7 @@ public class ManejarMenu : MonoBehaviour
             flag = false;
         }
 
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        if (index != 0)
         {
             boton.text = "Continuar";
             menu.SetActive(false);
@@ -38,20 +46,32 @@ public class ManejarMenu : MonoBehaviour
 
     void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0) return;
+        index = SceneManager.GetActiveScene().buildIndex;
+
+        if (index == 0) return;
 
         else if (Input.GetKeyDown("escape")) manejarMenu();
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     public void manejarMenu() {
 
         menu.SetActive(!flag);
         flag = !flag;
 
-        if (SceneManager.GetActiveScene().buildIndex > 7 && FindObjectOfType<DragAndDrop>().start) FindObjectOfType<DragAndDrop>().pause = flag;
+        // Si es Juego1
+        if (index < 11 && FindObjectOfType<MovimientoBloques>().start) activarTimer();
 
-        if ( ( SceneManager.GetActiveScene().buildIndex < 8 && FindObjectOfType<MovimientoBloques>().start) || ( SceneManager.GetActiveScene().buildIndex > 7 && FindObjectOfType<DragAndDrop>().start ) ) FindObjectOfType<Timer>().toggleClock(!flag);
-        
-
+        // Si es Juego2
+        if (index > 12 && FindObjectOfType<DragAndDrop>().start)
+        { 
+            FindObjectOfType<DragAndDrop>().pause = flag;
+            activarTimer();
+        }
     }
+
+    /* -------------------------------------------------------------------------------- */
+
+    void activarTimer() { FindObjectOfType<Timer>().toggleClock(!flag); }
 }

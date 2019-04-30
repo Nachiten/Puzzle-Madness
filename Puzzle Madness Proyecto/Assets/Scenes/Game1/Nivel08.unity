@@ -1999,8 +1999,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GanarHack: 0
+  columnas: 9
   filas: 7
-  columnas: 7
   start: 0
   pause: 0
   RandomMoves: 200

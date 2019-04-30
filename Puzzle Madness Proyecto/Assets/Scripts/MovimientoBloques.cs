@@ -5,12 +5,29 @@ using UnityEngine.SceneManagement;
 
 public class MovimientoBloques : MonoBehaviour
 {
-    // HACK
+    // << --- Varbiables publicas --- >>
+
+    // Ganar juego [Debug Only]
     public bool GanarHack = false;
 
+    // Flag de juego empezado
+    public bool start = false;
+
+    // Flag de juego pausado
+    public bool pause = false;
+
+    // Activar random
+    public bool activarRandom = true;
+
     // Tamaño de tabla
-    public int filas = 3;
     public int columnas = 3;
+    public int filas = 3;
+
+    // Cantidad de movimientos aleatorios para mezclar
+    public int RandomMoves = 30;
+
+
+    // << --- Varbiables privadas --- >>
 
     // Matrices para almacenar posiciones
     int[,] matriz;
@@ -19,20 +36,15 @@ public class MovimientoBloques : MonoBehaviour
     // Cantidad de movimientos
     int movimientos;
 
-    // Bool juego ganado
+    // Flag juego ganado
     bool gano = false;
-    // Bool juego empezado
-    public bool start = false;
-    // Bool de juego pausado
-    public bool pause = false;
-
+    
     // Texto movimientos
-    Text textoMovimiento;
+    Text textoMovimientos;
 
-    // Cantidad de movimientos aleatorios para mezclar
-    public int RandomMoves = 30;
-    // Activar random
-    public bool activarRandom = true;
+    // Nombre e index de escena actual
+    string nombre;
+    int index;
 
     /* -------------------------------------------------------------------------------- */
 
@@ -41,7 +53,7 @@ public class MovimientoBloques : MonoBehaviour
     {
         if (GanarHack)
         { 
-            ganarHACK();
+            ganarJuego();
             GanarHack = false;
         }
 
@@ -68,14 +80,20 @@ public class MovimientoBloques : MonoBehaviour
     // Al iniciar juego
     void Start()
     {
+        // Nombre e index de escena actual
+        nombre = SceneManager.GetActiveScene().name;
+        index = SceneManager.GetActiveScene().buildIndex;
+
+        // Se calcula cantidad de random moves
         RandomMoves = (filas * columnas) * 5;
 
-        if (SceneManager.GetActiveScene().buildIndex < 6 || SceneManager.GetActiveScene().buildIndex == 9)
+        // Si estamos en Juego1
+        if (index < 11)
         {
+            // Generar bloques del mapa
             GetComponent<GameManager>().generarBloques();
 
             ajustarPosiciones();
-
             comenzar();
         }
     }
@@ -89,30 +107,26 @@ public class MovimientoBloques : MonoBehaviour
         matrizGano = new int[filas, columnas];
 
         // Asignar Texto Movimientos
-        textoMovimiento = GameObject.Find("Numero Movimientos").GetComponent<Text>();
+        textoMovimientos = GameObject.Find("Numero Movimientos").GetComponent<Text>();
 
         // Llenar matrices de datos
         llenarMatrizes();
 
         if (activarRandom)
         {
-            do // Se repite si queda en posicion ganada y hasta que haya 30 movimientos
-            {
-                // Generar movimiento random
-                scanEmptySlot(Random.Range(1, (filas * columnas)));
+            // Se repite hasta llegar a la cantidad de random moves o si se queda en posicion ganada
+            do scanEmptySlot(Random.Range(1, (filas * columnas)));
 
-            } while (movimientos < RandomMoves || gano);
+            while (movimientos < RandomMoves || gano);
 
-            // Reiniviar movimientos
+            // Reiniciar movimientos
             movimientos = 0;
-            textoMovimiento.text = "0";
+            textoMovimientos.text = "0";
 
             Debug.Log("Movimientos aleatorios terminados | Comenzando juego...");
         }
-        else
-        {
-            Debug.LogError("RANDOM DESACTIVADO");
-        }
+        else Debug.LogError("RANDOM DESACTIVADO");
+        
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -125,29 +139,11 @@ public class MovimientoBloques : MonoBehaviour
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
 
-                if (matriz[i, j] != matrizGano[i, j])
-                {
-                    gano = false;   
-                }
+                if (matriz[i, j] != matrizGano[i, j]) gano = false;   
             }
         }
-        
-
-        // Si termino el juego parar el timer
-        if (gano)
-        {
-            AnalyticsResult result = AnalyticsEvent.Custom("Ganado_" + SceneManager.GetActiveScene().name);
-            Debug.Log("Analytics Result: " + result + " | DATA: " + "Ganado_" + SceneManager.GetActiveScene().name);
-
-            PlayerPrefs.SetString(SceneManager.GetActiveScene().name, "Ganado");
-            Debug.Log(PlayerPrefs.GetString(SceneManager.GetActiveScene().name));
-
-            FindObjectOfType<Timer>().setPlayerPref();
-            
-            Debug.Log("Se gano el juego !! Llamando GameManager");
-            FindObjectOfType<GameManager>().ganoJuego();
-        }
-
+        // Si gano el nivel
+        if (gano) ganarJuego();
     }
 
      /* -------------------------------------------------------------------------------- */
@@ -194,19 +190,22 @@ public class MovimientoBloques : MonoBehaviour
         }
         else { Debug.Log("No hay espacio a donde mover este bloque"); }
 
-        textoMovimiento.text = movimientos.ToString();
+        // Actualizar movimientos
+        textoMovimientos.text = movimientos.ToString();
 
         void accion(int offsetX, int offsetZ, string nombreAnimacion)
         {
             // Se modifica el vector posicion con la posicion correspondiente
             Vector3 posicionVector = new Vector3(posicion.position.x + offsetX, posicion.position.y, posicion.position.z + offsetZ);
 
+            // Se aplica la posicion
             posicion.position = posicionVector;
 
             // Se modifica la matriz para aplicar la nueva posicion
             matriz[fila + offsetZ / -5, columna + offsetX / 5] = slot;
             matriz[fila, columna] = 0;
 
+            // Se incrementan los movimientos
             movimientos++;
         }
     }
@@ -279,22 +278,19 @@ public class MovimientoBloques : MonoBehaviour
         }
     }
 
-    GameObject referencia;
-    Transform posiconClon;
-
     /* -------------------------------------------------------------------------------- */
 
     public void comenzarNivel() { start = true; }
 
     /* -------------------------------------------------------------------------------- */
 
-    void ganarHACK()
+   void ganarJuego()
     {
-        AnalyticsResult result = AnalyticsEvent.Custom("Ganado_" + SceneManager.GetActiveScene().name);
-        Debug.Log("Analytics Result: " + result + " | DATA: " + "Ganado_" + SceneManager.GetActiveScene().name);
+        AnalyticsResult result = AnalyticsEvent.Custom("Ganado_" + nombre);
+        Debug.Log("Analytics Result: " + result + " | DATA: " + "Ganado_" + nombre);
 
-        PlayerPrefs.SetString(SceneManager.GetActiveScene().name, "Ganado");
-        Debug.Log(PlayerPrefs.GetString(SceneManager.GetActiveScene().name));
+        PlayerPrefs.SetString(nombre, "Ganado");
+        Debug.Log(PlayerPrefs.GetString(nombre));
 
         FindObjectOfType<Timer>().setPlayerPref();
 

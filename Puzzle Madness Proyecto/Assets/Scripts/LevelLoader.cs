@@ -40,13 +40,13 @@ public class LevelLoader : MonoBehaviour
         // Ocultar pantalla de carga
         levelLoader.SetActive(false);
 
-        if (SceneManager.GetActiveScene().buildIndex == 7) {
+        if (SceneManager.GetActiveScene().buildIndex == 12) {
 
-            for (int i = 1; i < 6; i++) {
+            for (int i = 1; i < 11; i++) {
 
                 RawImage imagen = GameObject.Find("Image" + i.ToString()).GetComponent<RawImage>();
 
-                Text reloj = GameObject.Find("Timer " + i.ToString()).GetComponent<Text>();
+                Text reloj = GameObject.Find("Timer" + i.ToString()).GetComponent<Text>();
 
                 if (PlayerPrefs.GetString("Nivel0" + i.ToString()) == "Ganado")
                 {
@@ -74,7 +74,7 @@ public class LevelLoader : MonoBehaviour
     public void cargarNivel(int index)
     {
         StartCoroutine(cargarAsincronizadamente(index));
-        textoNivel.text ="Cargando '" + SceneManager.GetSceneByBuildIndex(index).name + "' ...";
+        textoNivel.text ="Cargando " + SceneManager.GetSceneByBuildIndex(index).name + " ...";
 
         if (index != 7) { 
             AnalyticsResult result =  AnalyticsEvent.Custom("Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);

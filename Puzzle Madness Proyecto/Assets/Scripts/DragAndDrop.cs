@@ -2,7 +2,27 @@
 
 public class DragAndDrop : MonoBehaviour
 {
+    // << --- Varbiables publicas --- >>
+
+    // Tamaño matriz
     public int tamañoMatriz = 3;
+
+    // Objeto y posicion correcta objeto
+    GameObject objeto;
+    Transform lugar;
+
+    // Flag de pausado
+    public bool pause = false;
+    // Flag de comenzado
+    public bool start = false;
+
+
+    // << --- Varbiables privadas --- >>
+
+    // Flag juego ganado
+    bool gano = false;
+    // Flag para no cambiar de bloque al tener uno seleccionado
+    bool flag = true;
 
     // Offset of position
     Vector3 offset;
@@ -19,22 +39,6 @@ public class DragAndDrop : MonoBehaviour
 
     // Rayo
     RaycastHit hit;
-
-    // Flag para no cambiar de bloque al tener uno seleccionado
-    bool flag = true;
-
-    bool gano = false;
-
-    //bool gameStarted = false;
-
-    // Flag de pausado
-    public bool pause = false;
-    // Flag de comenzado
-    public bool start = false;
-
-    // Objeto y posicion correcta objeto
-    GameObject objeto;
-    Transform lugar;
 
     /* -------------------------------------------------------------------------------- */
 
