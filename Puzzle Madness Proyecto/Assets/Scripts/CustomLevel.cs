@@ -51,45 +51,14 @@ public class CustomLevel : MonoBehaviour
             return;
         }
 
-        if (sizeSet)
-        {
-            FindObjectOfType<PopUps>().abrirPopUp(3);
-            return;
-        }
-
         sizeSet = true;
-        imagenPreview.SetActive(true);  
 
-        tamañoMatriz = FindObjectOfType<MovimientoBloques>().tamañoMatriz;
+        imagenPreview.SetActive(true);
 
-        char nombre = 'A';
-        char nombre2 = '-';
 
-        int contador = 1;
+        //tamañoMatriz = FindObjectOfType<MovimientoBloques>().tamañoMatriz;
 
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
-                if (i >= tamañoMatriz || j >= tamañoMatriz || (i == tamañoMatriz - 1 && j == tamañoMatriz - 1))
-                {
-                    if (nombre2 == '-') destruir(nombre, '\0');
-                                   else destruir(nombre, nombre2);
-                }
-                else {
-                    if (nombre2 == '-') asignarNombre(nombre, '\0', contador);
-                                   else asignarNombre(nombre, nombre2, contador);
-                    contador++;
-                }
-
-                if (nombre2 == '-') nombre++;
-
-                else if (nombre2 != '-') nombre2++;
-
-                if (nombre == 'Z' + 1) {
-                    nombre = 'A';
-                    nombre2 = 'A';
-                }
-            }
-        }
+        FindObjectOfType<GameManager>().generarBloques();
 
         GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = imagen.texture;
 
@@ -112,19 +81,27 @@ public class CustomLevel : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    public void dropDown(int valor){ FindObjectOfType<MovimientoBloques>().tamañoMatriz = valor + 3; }
+    public void dropDown(int valor)
+    {
+        //FindObjectOfType<MovimientoBloques>().tamañoMatriz = valor + 3;
+
+        Debug.Log((valor + 3).ToString() + "<- Valor+3");
+        FindObjectOfType<MovimientoBloques>().RandomMoves = (valor + 3) * (valor + 3) * (valor + 3);
+    }
 
     /* -------------------------------------------------------------------------------- */
+
+    Transform referencia;
 
     void ajustarUbicacion()
     {
         Transform plataforma = GameObject.Find("Piso Mapa").GetComponent<Transform>();
+
         plataforma.localScale = new Vector3((5 * tamañoMatriz) + 2, plataforma.localScale.y, (5 * tamañoMatriz) + 2);
 
         int contador = 1;
         Transform objeto;
-        Transform referencia;
-
+        
         float offsetX = 5;
         float offsetZ = 0;
 
@@ -136,7 +113,8 @@ public class CustomLevel : MonoBehaviour
             for (int j = 0; j < tamañoMatriz; j++)
             {
                 if (i == 0 && j == 0)
-                {
+                { 
+                    // Primer bloque es la referencia
                     referencia = GameObject.Find(contador.ToString()).GetComponent<Transform>();
 
                     posX = referencia.position.x;
@@ -149,7 +127,7 @@ public class CustomLevel : MonoBehaviour
                 {
                     objeto = GameObject.Find(contador.ToString()).GetComponent<Transform>();
 
-                    objeto.position = new Vector3(posX + offsetX, objeto.position.y, posZ + offsetZ);
+                    objeto.position = new Vector3(referencia.position.x + offsetX, objeto.position.y, referencia.position.z + offsetZ);
 
                     offsetX += 5;
                 }
@@ -164,27 +142,23 @@ public class CustomLevel : MonoBehaviour
 
     void determinarPos(ref float posicionX, ref float posicionZ)
     {
-        switch (tamañoMatriz)
-        {
-            case 3:
-                posicionX += 10;   posicionZ -= 10;
-                break;
+        float valor = 0;
 
-            case 4:
-                posicionX += 7.5f; posicionZ -= 7.5f;
-                break;
+        for (int i = 3; i <= tamañoMatriz; i++) {
 
-            case 5:
-                posicionX += 5;    posicionZ -= 5;
-                break;
+            if (i == tamañoMatriz) {
+                posicionX -= valor;
+                posicionZ += valor;
 
-            case 6:
-                posicionX += 2.5f; posicionZ -= 2.5f;
-                break;
+                Transform modelo = GameObject.Find("Modelo").GetComponent<Transform>();
+                modelo.position = new Vector3(modelo.position.x, modelo.position.y + valor, modelo.position.z);
 
-            case 7:
-                Debug.Log("Nothing");
-                break;
+                Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
+                camara.position = new Vector3(camara.position.x, camara.position.y + valor, camara.position.z);
+
+                Debug.Log("VALORX: " + posicionX + " | VALORZ: " + posicionZ);
+            }
+            valor += 2.5f;
         }
     }
 
@@ -192,10 +166,11 @@ public class CustomLevel : MonoBehaviour
 
     public string url = "";
 
-    public void abrirExplorer()
-    {
-        FindObjectOfType<PopUps>().abrirPopUp(4);
-    }
+    /* -------------------------------------------------------------------------------- */
+
+    public void abrirExplorer() { FindObjectOfType<PopUps>().abrirPopUp(4); }
+
+    /* -------------------------------------------------------------------------------- */
 
     public void asignTexture()
     {

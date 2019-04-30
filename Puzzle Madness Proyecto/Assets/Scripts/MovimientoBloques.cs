@@ -8,8 +8,9 @@ public class MovimientoBloques : MonoBehaviour
     // HACK
     public bool GanarHack = false;
 
-    // Tamaño del mapa
-    public int tamañoMatriz = 3;
+    // Tamaño de tabla
+    public int filas = 3;
+    public int columnas = 3;
 
     // Matrices para almacenar posiciones
     int[,] matriz;
@@ -33,8 +34,6 @@ public class MovimientoBloques : MonoBehaviour
     // Activar random
     public bool activarRandom = true;
 
-    Renderer modelo;
-
     /* -------------------------------------------------------------------------------- */
 
     // Se actualiza una vez por fotograma
@@ -52,12 +51,13 @@ public class MovimientoBloques : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         // Si el rayo hace contacto con un bloque y se tiene el click IZQUIERDO persionado
-        if (Physics.Raycast(ray, out RaycastHit hit, 100.0f) && hit.transform != null && Input.GetMouseButtonDown(0))
+        if (Physics.Raycast(ray, out RaycastHit hit, 5000f) && hit.transform != null && Input.GetMouseButtonDown(0))
         {
             // Asignar slot correcto y escanear si movimiento es posible
             int slot = int.Parse(hit.transform.gameObject.name);
             scanEmptySlot(slot);
         }
+
         // Analizar si se gano con ese movimiento
         analizarGano();
         
@@ -68,11 +68,15 @@ public class MovimientoBloques : MonoBehaviour
     // Al iniciar juego
     void Start()
     {
-        modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
+        RandomMoves = (filas * columnas) * 5;
 
-        if (SceneManager.GetActiveScene().buildIndex < 6) {
-            comenzar();
+        if (SceneManager.GetActiveScene().buildIndex < 6 || SceneManager.GetActiveScene().buildIndex == 9)
+        {
+            GetComponent<GameManager>().generarBloques();
+
             ajustarPosiciones();
+
+            comenzar();
         }
     }
 
@@ -81,8 +85,8 @@ public class MovimientoBloques : MonoBehaviour
     public void comenzar(){
 
         // Inicializar Matrices
-        matriz = new int[tamañoMatriz, tamañoMatriz];
-        matrizGano = new int[tamañoMatriz, tamañoMatriz];
+        matriz = new int[filas, columnas];
+        matrizGano = new int[filas, columnas];
 
         // Asignar Texto Movimientos
         textoMovimiento = GameObject.Find("Numero Movimientos").GetComponent<Text>();
@@ -95,7 +99,7 @@ public class MovimientoBloques : MonoBehaviour
             do // Se repite si queda en posicion ganada y hasta que haya 30 movimientos
             {
                 // Generar movimiento random
-                scanEmptySlot(Random.Range(1, (tamañoMatriz * tamañoMatriz)));
+                scanEmptySlot(Random.Range(1, (filas * columnas)));
 
             } while (movimientos < RandomMoves || gano);
 
@@ -118,8 +122,8 @@ public class MovimientoBloques : MonoBehaviour
         gano = true;
 
         // Analizar si matrizes juego y gano son identicas
-        for (int i = 0; i < tamañoMatriz; i++) {
-            for (int j = 0; j < tamañoMatriz; j++) {
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
 
                 if (matriz[i, j] != matrizGano[i, j])
                 {
@@ -146,7 +150,7 @@ public class MovimientoBloques : MonoBehaviour
 
     }
 
-    /* -------------------------------------------------------------------------------- */
+     /* -------------------------------------------------------------------------------- */
 
     int fila, columna;
 
@@ -154,8 +158,8 @@ public class MovimientoBloques : MonoBehaviour
     void scanEmptySlot(int slot)
     {
         // Analizar en que espacio estoy ahora
-        for (int i = 0; i < tamañoMatriz; i++) {
-            for (int j = 0; j < tamañoMatriz; j++) {
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
 
                 if (matriz[i, j] == slot)
                 {
@@ -168,7 +172,7 @@ public class MovimientoBloques : MonoBehaviour
         Transform posicion = GameObject.Find(slot.ToString()).GetComponent<Transform>();
 
         // Analizar movimientos posibles de bloque
-        if (columna + 1 < tamañoMatriz && matriz[fila, columna + 1] == 0)
+        if (columna + 1 < columnas && matriz[fila, columna + 1] == 0)
         {
             // Se mueve hacia derecha
             accion(5, 0, "ActivarIzquierda");
@@ -178,7 +182,7 @@ public class MovimientoBloques : MonoBehaviour
             // Se mueve hacia izquierda
             accion(-5, 0, "ActivarDerecha");
         }
-        else if (fila + 1 < tamañoMatriz && matriz[fila + 1, columna] == 0)
+        else if (fila + 1 < filas && matriz[fila + 1, columna] == 0)
         {
             // Se mueve hacia abajo
             accion(0, -5, "ActivarArriba");
@@ -188,7 +192,7 @@ public class MovimientoBloques : MonoBehaviour
             // Se mueve hacia arriba
             accion(0, 5, "ActivarAbajo");
         }
-        //else { Debug.Log("No hay espacio a donde mover este bloque"); }
+        else { Debug.Log("No hay espacio a donde mover este bloque"); }
 
         textoMovimiento.text = movimientos.ToString();
 
@@ -197,8 +201,6 @@ public class MovimientoBloques : MonoBehaviour
             // Se modifica el vector posicion con la posicion correspondiente
             Vector3 posicionVector = new Vector3(posicion.position.x + offsetX, posicion.position.y, posicion.position.z + offsetZ);
 
-            // if (start) GameObject.Find(slot.ToString()).GetComponent<Animator>().SetTrigger(nombreAnimacion);
-            // else 
             posicion.position = posicionVector;
 
             // Se modifica la matriz para aplicar la nueva posicion
@@ -217,10 +219,10 @@ public class MovimientoBloques : MonoBehaviour
 
         contador = 1;
 
-        for (int i = 0; i < tamañoMatriz; i++) {
-            for (int j = 0; j < tamañoMatriz; j++) {
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
 
-                if (contador < tamañoMatriz * tamañoMatriz)
+                if (contador < filas * columnas)
                 {
                     matriz[i, j] = contador;
                     matrizGano[i, j] = contador;
@@ -236,25 +238,32 @@ public class MovimientoBloques : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    Renderer modelo;
+
     // Ajustar posiciones y offsets de imagenes
-    public void ajustarPosiciones() {
+    public void ajustarPosiciones()
+    {
+        modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
+
         Renderer objeto;
 
         int contador = 1;
 
-        float scale = 1f / tamañoMatriz;
-        float offsetX = 0f;
-        float offsetY = scale * (tamañoMatriz - 1);
+        float scaleX = 1f / columnas;
+        float scaleY = 1f / filas;
 
-        for (int i = 0; i < tamañoMatriz; i++) {
-            for (int j = 0; j < tamañoMatriz; j++)
+        float offsetX = 0f;
+        float offsetY = scaleY * (filas * columnas - 1);
+
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++)
             {
-                if (contador < tamañoMatriz * tamañoMatriz)
+                if (contador < filas * columnas)
                 {
                     // Asignar renderer
                     objeto = GameObject.Find(contador.ToString()).GetComponent<Renderer>();
                     // Cambiar "Tiling" de textura
-                    objeto.material.mainTextureScale = new Vector2(scale, scale);
+                    objeto.material.mainTextureScale = new Vector2(scaleX, scaleY);
                     // Ajustar "Offeset" de textura
                     objeto.material.mainTextureOffset = new Vector2(offsetX, offsetY);
 
@@ -263,12 +272,15 @@ public class MovimientoBloques : MonoBehaviour
                     contador++;
                 }
 
-                offsetX += scale;
+                offsetX += scaleX;
             }
             offsetX = 0;
-            offsetY -= scale;
+            offsetY -= scaleY;
         }
     }
+
+    GameObject referencia;
+    Transform posiconClon;
 
     /* -------------------------------------------------------------------------------- */
 

@@ -4,9 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // Pixeles para canvas
-    //public float ReferencePixelUnit = 80;
-
     bool gano = false;
 
     // Boton "Comenzar"
@@ -52,11 +49,11 @@ public class GameManager : MonoBehaviour
             boton.SetActive(false);
 
             // Si es juego1
-            if (SceneManager.GetActiveScene().buildIndex < 8)
+            if (SceneManager.GetActiveScene().buildIndex < 8 || SceneManager.GetActiveScene().buildIndex == 9)
             FindObjectOfType<MovimientoBloques>().comenzarNivel();
 
             // Si es juego2
-            else if (SceneManager.GetActiveScene().buildIndex > 7)
+            else if (SceneManager.GetActiveScene().buildIndex > 7 && SceneManager.GetActiveScene().buildIndex != 9)
             FindObjectOfType<DragAndDrop>().start = true;
 
             // Activar reloj
@@ -75,5 +72,50 @@ public class GameManager : MonoBehaviour
             Debug.Log("Avanzando al siguiente nivel...");
             FindObjectOfType<LevelLoader>().cargarNivel(SceneManager.GetActiveScene().buildIndex + 1);
         }
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    GameObject referencia;
+
+    public void generarBloques() {
+
+        int filas = GetComponent<MovimientoBloques>().filas;
+        int columnas = GetComponent<MovimientoBloques>().columnas;
+
+        GameObject referencia = GameObject.Find("_Reference");
+
+        int contador = 1;
+
+        float offsetX = 0f;
+        float offsetZ = 0f;
+
+        for (int i = 0; i < filas; i++)
+        {
+            for (int j = 0; j < columnas; j++)
+            {
+                if (contador < filas * columnas)
+                {
+
+                    GameObject clon = Instantiate(Resources.Load("1", typeof(GameObject))) as GameObject;
+
+                    clon.name = contador.ToString();
+
+                    clon.transform.position = new Vector3(referencia.transform.position.x + offsetX, referencia.transform.position.y, referencia.transform.position.z + offsetZ);
+
+                    clon.transform.rotation = referencia.transform.rotation;
+
+                }
+
+                contador++;
+
+                offsetX += 5f;
+            }
+            offsetX = 0f;
+            offsetZ -= 5f;
+        }
+
+        Destroy(referencia);
+
     }
 }
