@@ -83,6 +83,20 @@ public class PopUps : MonoBehaviour
             textoPrincipal.text = "Debes seleccionar una imagen valida en formato .PNG .JPG o .JPEG.";
            
             break;
+
+        case 6:
+            //currentImage = 1;
+            TextoBanner.text = "Tamaño no valido";
+            textoPrincipal.text = "El tamaño de la matriz debe ser 3x3 o mas";
+
+            break;
+
+        case 7:
+            //currentImage = 1;
+            TextoBanner.text = "Tamaño no valido";
+            textoPrincipal.text = "El tamaño de la matriz debe ser 12x12 o menos";
+
+            break;
         }
 
         simbolo.texture = Textura[currentImage];

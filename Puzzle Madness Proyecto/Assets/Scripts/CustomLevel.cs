@@ -2,18 +2,23 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System;
 
 public class CustomLevel : MonoBehaviour
 {
-    int tamañoMatriz;
+    // Tamaño de tabla
+    public int columnas = 3;
+    public int filas = 3;
+
+    public bool imageSet = false;
+    public bool sizeSet = false;
 
     RawImage imagen;
 
     GameObject imagenPreview;
     Text inputField;
 
-    public bool imageSet = false;
-    public bool sizeSet = false;
+    int mayor;
 
     /* -------------------------------------------------------------------------------- */
 
@@ -36,14 +41,14 @@ public class CustomLevel : MonoBehaviour
             return;
         }
 
-        FindObjectOfType<MovimientoBloques>().comenzar();
+        FindObjectOfType<Juego1>().comenzar();
 
         GameObject.Find("Panel Seleccion").SetActive(false);
     }
 
-    /* -------------------------------------------------------------------------------- */
+    /* --------------------------------------------------------------------------------  */
 
-    public void eliminarSobrantes() {
+    public void ajustarTamaño() {
 
         if (!imageSet)
         {
@@ -51,23 +56,44 @@ public class CustomLevel : MonoBehaviour
             return;
         }
 
+        filas = Int32.Parse(GameObject.Find("TextoFilas").GetComponent<Text>().text);
+        columnas = Int32.Parse(GameObject.Find("TextoColumnas").GetComponent<Text>().text);
+
+        if (filas < 3 || columnas < 3)
+        {
+            FindObjectOfType<PopUps>().abrirPopUp(6);
+            return;
+        }
+        else if (filas > 12 || columnas > 12)
+        {
+            FindObjectOfType<PopUps>().abrirPopUp(7);
+            return;
+        }
+
         sizeSet = true;
 
-        imagenPreview.SetActive(true);
+        FindObjectOfType<Juego1>().filas = filas;
+        FindObjectOfType<Juego1>().columnas = columnas;
 
+        FindObjectOfType<GameManager>().filas = filas;
+        FindObjectOfType<GameManager>().columnas = columnas;
 
-        //tamañoMatriz = FindObjectOfType<MovimientoBloques>().tamañoMatriz;
+        if (filas > columnas) mayor = filas;
+        else mayor = columnas;
 
-        FindObjectOfType<GameManager>().generarBloques();
+        FindObjectOfType<Juego1>().RandomMoves = (mayor) * (mayor) * (mayor);
 
         GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = imagen.texture;
 
-        FindObjectOfType<MovimientoBloques>().ajustarPosiciones();
+        FindObjectOfType<GameManager>().generarBloques();
+        FindObjectOfType<GameManager>().ajustarPosiciones();
 
         ajustarUbicacion();
+
+        imagenPreview.SetActive(true);
     }
 
-    /* -------------------------------------------------------------------------------- */
+   /*  -------------------------------------------------------------------------------- */
 
     void asignarNombre(char nombre, char nombre2, int contador) 
     {
@@ -80,24 +106,14 @@ public class CustomLevel : MonoBehaviour
     private void destruir(char nombre, char nombre2) { Destroy(GameObject.Find(nombre.ToString() + nombre2.ToString())); }
 
     /* -------------------------------------------------------------------------------- */
-
-    public void dropDown(int valor)
-    {
-        //FindObjectOfType<MovimientoBloques>().tamañoMatriz = valor + 3;
-
-        Debug.Log((valor + 3).ToString() + "<- Valor+3");
-        FindObjectOfType<MovimientoBloques>().RandomMoves = (valor + 3) * (valor + 3) * (valor + 3);
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
+    
     Transform referencia;
 
     void ajustarUbicacion()
     {
         Transform plataforma = GameObject.Find("Piso Mapa").GetComponent<Transform>();
 
-        plataforma.localScale = new Vector3((5 * tamañoMatriz) + 2, plataforma.localScale.y, (5 * tamañoMatriz) + 2);
+        plataforma.localScale = new Vector3((5 * columnas) + 2, plataforma.localScale.y, (5 * filas) + 2);
 
         int contador = 1;
         Transform objeto;
@@ -108,9 +124,9 @@ public class CustomLevel : MonoBehaviour
         float posX = 0;
         float posZ = 0;
 
-        for (int i = 0; i < tamañoMatriz; i++)
+        for (int i = 0; i < filas; i++)
         {
-            for (int j = 0; j < tamañoMatriz; j++)
+            for (int j = 0; j < columnas; j++)
             {
                 if (i == 0 && j == 0)
                 { 
@@ -123,7 +139,7 @@ public class CustomLevel : MonoBehaviour
                     determinarPos(ref posX, ref posZ);
                     referencia.position = new Vector3(posX, referencia.position.y, posZ);
                 }
-                else if (!(i == tamañoMatriz - 1 && j == tamañoMatriz - 1))
+                else if (!(i == filas - 1 && j == columnas - 1))
                 {
                     objeto = GameObject.Find(contador.ToString()).GetComponent<Transform>();
 
@@ -144,9 +160,9 @@ public class CustomLevel : MonoBehaviour
     {
         float valor = 0;
 
-        for (int i = 3; i <= tamañoMatriz; i++) {
+        for (int i = 3; i <= mayor; i++) {
 
-            if (i == tamañoMatriz) {
+            if (i == mayor) {
                 posicionX -= valor;
                 posicionZ += valor;
 
@@ -188,9 +204,8 @@ public class CustomLevel : MonoBehaviour
 
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
 
-        //WWW wwwLoader = new WWW(url);
-
         yield return www.SendWebRequest();
+
         Debug.Log("Loaded");
 
         imagen.material.color = Color.white;

@@ -61,12 +61,12 @@ public class ManejarMenu : MonoBehaviour
         flag = !flag;
 
         // Si es Juego1
-        if (index < 11 && FindObjectOfType<MovimientoBloques>().start) activarTimer();
+        if (index < 11 && FindObjectOfType<Juego1>().start) activarTimer();
 
         // Si es Juego2
-        if (index > 12 && FindObjectOfType<DragAndDrop>().start)
+        if (index > 12 && FindObjectOfType<Juego2>().start)
         { 
-            FindObjectOfType<DragAndDrop>().pause = flag;
+            FindObjectOfType<Juego2>().pause = flag;
             activarTimer();
         }
     }

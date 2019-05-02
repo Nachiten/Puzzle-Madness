@@ -16,6 +16,9 @@ public class LevelLoader : MonoBehaviour
     public bool DeleteKeys = false;
     static bool flag = true;
 
+    GameObject juego1;
+    GameObject juego2;
+
     /* -------------------------------------------------------------------------------- */
 
     void Start()
@@ -42,28 +45,50 @@ public class LevelLoader : MonoBehaviour
 
         if (SceneManager.GetActiveScene().buildIndex == 12) {
 
-            for (int i = 1; i < 11; i++) {
+            juego1 = GameObject.Find("Canvas Juego1");
+            juego2 = GameObject.Find("Canvas Juego2");
 
-                RawImage imagen = GameObject.Find("Image" + i.ToString()).GetComponent<RawImage>();
+            juego1.SetActive(false);
+            scanJuego(2);
 
-                Text reloj = GameObject.Find("Timer" + i.ToString()).GetComponent<Text>();
+            juego1.SetActive(true);
+            juego2.SetActive(false);
+            scanJuego(1);
+            
+        }
+    }
 
-                if (PlayerPrefs.GetString("Nivel0" + i.ToString()) == "Ganado")
-                {
-                    float time = PlayerPrefs.GetFloat("Time_" + i.ToString());
+    /* -------------------------------------------------------------------------------- */
 
-                    string minutes = Mathf.Floor((time % 3600) / 60).ToString("00");
-                    string seconds = Mathf.Floor(time % 60).ToString("00");
-                    string miliseconds = Mathf.Floor(time % 6 * 10 % 10).ToString("0");
+    void scanJuego(int nivel)
+    {
+        for (int i = 1; i < 11; i++)
+        {
+            RawImage imagen = GameObject.Find("Image" + i.ToString()).GetComponent<RawImage>();
 
-                    reloj.text = minutes + ":" + seconds + ":" + miliseconds;
+            Text reloj = GameObject.Find("Timer" + i.ToString()).GetComponent<Text>();
 
-                    imagen.texture = textura[0];
-                }
-                else { 
-                    imagen.texture = textura[1];
-                    reloj.text = "";
-                }
+            string index;
+
+            if (nivel == 1) index = i.ToString();
+            else index = index = (i + 12).ToString();
+
+            if (PlayerPrefs.GetString(index) == "Ganado")
+            {
+                float time = PlayerPrefs.GetFloat("Time_" + index);
+
+                string minutes = Mathf.Floor((time % 3600) / 60).ToString("00");
+                string seconds = Mathf.Floor(time % 60).ToString("00");
+                string miliseconds = Mathf.Floor(time % 6 * 10 % 10).ToString("0");
+
+                reloj.text = minutes + ":" + seconds + ":" + miliseconds;
+
+                imagen.texture = textura[0];
+            }
+            else
+            {
+                imagen.texture = textura[1];
+                reloj.text = "";
             }
         }
     }
@@ -87,7 +112,6 @@ public class LevelLoader : MonoBehaviour
     // Iniciar Corutina para cargar nivel en background
     IEnumerator cargarAsincronizadamente (int index)
     {
-
         // Iniciar carga de escena
         AsyncOperation operacion = SceneManager.LoadSceneAsync(index);
 
@@ -114,5 +138,15 @@ public class LevelLoader : MonoBehaviour
 
     public void salir() { Application.Quit(); }
 
+    /* -------------------------------------------------------------------------------- */
 
+    bool nivel2 = false;
+
+    public void cambiarNivel()
+    {
+        juego1.SetActive(nivel2);
+        juego2.SetActive(!nivel2);
+
+        nivel2 = !nivel2;
+    }
 }

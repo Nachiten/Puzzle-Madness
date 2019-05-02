@@ -42,7 +42,7 @@ public class Timer : MonoBehaviour
 
         playerPref = PlayerPrefs.GetFloat("Time_" + SceneManager.GetActiveScene().buildIndex);
 
-        Debug.Log(playerPref );
+        Debug.Log(playerPref);
 
         if (time < playerPref || playerPref == 0)
         {
