@@ -18,7 +18,7 @@ public class CustomLevel : MonoBehaviour
     GameObject imagenPreview;
     Text inputField;
 
-    int mayor;
+    int mayor; 
 
     /* -------------------------------------------------------------------------------- */
 
@@ -87,8 +87,10 @@ public class CustomLevel : MonoBehaviour
 
         FindObjectOfType<GameManager>().generarBloques();
         FindObjectOfType<GameManager>().ajustarPosiciones();
+        FindObjectOfType<GameManager>().ajustarUbicacion();
 
-        ajustarUbicacion();
+
+        //ajustarUbicacion();
 
         imagenPreview.SetActive(true);
     }
@@ -105,84 +107,10 @@ public class CustomLevel : MonoBehaviour
 
     private void destruir(char nombre, char nombre2) { Destroy(GameObject.Find(nombre.ToString() + nombre2.ToString())); }
 
-    /* -------------------------------------------------------------------------------- */
-    
-    Transform referencia;
-
-    void ajustarUbicacion()
-    {
-        Transform plataforma = GameObject.Find("Piso Mapa").GetComponent<Transform>();
-
-        plataforma.localScale = new Vector3((5 * columnas) + 2, plataforma.localScale.y, (5 * filas) + 2);
-
-        int contador = 1;
-        Transform objeto;
-        
-        float offsetX = 5;
-        float offsetZ = 0;
-
-        float posX = 0;
-        float posZ = 0;
-
-        for (int i = 0; i < filas; i++)
-        {
-            for (int j = 0; j < columnas; j++)
-            {
-                if (i == 0 && j == 0)
-                { 
-                    // Primer bloque es la referencia
-                    referencia = GameObject.Find(contador.ToString()).GetComponent<Transform>();
-
-                    posX = referencia.position.x;
-                    posZ = referencia.position.z;
-
-                    determinarPos(ref posX, ref posZ);
-                    referencia.position = new Vector3(posX, referencia.position.y, posZ);
-                }
-                else if (!(i == filas - 1 && j == columnas - 1))
-                {
-                    objeto = GameObject.Find(contador.ToString()).GetComponent<Transform>();
-
-                    objeto.position = new Vector3(referencia.position.x + offsetX, objeto.position.y, referencia.position.z + offsetZ);
-
-                    offsetX += 5;
-                }
-                contador++;
-            }
-            offsetX = 0;
-            offsetZ -= 5;
-        }
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    void determinarPos(ref float posicionX, ref float posicionZ)
-    {
-        float valor = 0;
-
-        for (int i = 3; i <= mayor; i++) {
-
-            if (i == mayor) {
-                posicionX -= valor;
-                posicionZ += valor;
-
-                Transform modelo = GameObject.Find("Modelo").GetComponent<Transform>();
-                modelo.position = new Vector3(modelo.position.x, modelo.position.y + valor, modelo.position.z);
-
-                Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
-                camara.position = new Vector3(camara.position.x, camara.position.y + valor, camara.position.z);
-
-                Debug.Log("VALORX: " + posicionX + " | VALORZ: " + posicionZ);
-            }
-            valor += 2.5f;
-        }
-    }
 
     /* ----------------------------------- Explorer ----------------------------------- */
 
     public string url = "";
-
-    /* -------------------------------------------------------------------------------- */
 
     public void abrirExplorer() { FindObjectOfType<PopUps>().abrirPopUp(4); }
 

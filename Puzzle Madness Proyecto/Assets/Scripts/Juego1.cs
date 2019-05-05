@@ -76,9 +76,10 @@ public class Juego1 : MonoBehaviour
 
             // Generar bloques del mapa
             FindObjectOfType<GameManager>().generarBloques();
-
             // Ajustar texturas
             FindObjectOfType<GameManager>().ajustarPosiciones();
+            // Ajustar ubicacion de bloques
+            FindObjectOfType<GameManager>().ajustarUbicacion();
 
             // Comenzar Juego
             comenzar();

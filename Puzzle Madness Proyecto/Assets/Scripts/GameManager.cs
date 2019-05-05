@@ -5,12 +5,14 @@ using UnityEngine.Analytics;
 
 public class GameManager : MonoBehaviour
 {
+    // Juego ganado
     bool gano = false;
 
     // Boton "Comenzar"
     GameObject boton;
     Text textoBoton;
 
+    // Cantidad de bloques
     public int filas = 3;
     public int columnas = 3;
 
@@ -19,14 +21,13 @@ public class GameManager : MonoBehaviour
 
     // Numero y nombre de escena actual
     int index;
-    string name;
-
+    
     /* -------------------------------------------------------------------------------- */
 
     void Start()
     {
         index = SceneManager.GetActiveScene().buildIndex;
-        name = SceneManager.GetActiveScene().name;
+        string name = SceneManager.GetActiveScene().name;
 
         GameObject.Find("Nivel").GetComponent<Text>().text = name;
 
@@ -178,5 +179,81 @@ public class GameManager : MonoBehaviour
             offsetX = 0;
             offsetY -= scaleY;
         }
+    }
+
+    Transform referenciaAjuste;
+    Transform plataforma;
+
+    // Determinar posicion correcta de juego
+    public void ajustarUbicacion()
+    {
+        if (index < 12)
+        { 
+            plataforma = GameObject.Find("Piso Mapa").GetComponent<Transform>();
+            plataforma.localScale = new Vector3((5 * columnas) + 2, plataforma.localScale.y, (5 * filas) + 2);
+        }
+
+        int contador = 1;
+        Transform objeto;
+
+        float offsetX = 5;
+        float offsetZ = 0;
+
+        float posX = 0;
+        float posZ = 0;
+
+        for (int i = 0; i < filas; i++)
+        {
+            for (int j = 0; j < columnas; j++)
+            {
+                if (i == 0 && j == 0)
+                {
+                    // Primer bloque es la referencia
+                    referenciaAjuste = GameObject.Find(contador.ToString()).GetComponent<Transform>();
+
+                    posX = referenciaAjuste.position.x;
+                    posZ = referenciaAjuste.position.z;
+
+                    determinarPos(ref posX, ref posZ);
+                    referenciaAjuste.position = new Vector3(posX, referenciaAjuste.position.y, posZ);
+                }
+                else if (!(i == filas - 1 && j == columnas - 1))
+                {
+                    objeto = GameObject.Find(contador.ToString()).GetComponent<Transform>();
+
+                    objeto.position = new Vector3(referenciaAjuste.position.x + offsetX, objeto.position.y, referenciaAjuste.position.z + offsetZ);
+
+                    offsetX += 5;
+                }
+                contador++;
+            }
+            offsetX = 0;
+            offsetZ -= 5;
+        }
+    }
+
+    int mayor;
+
+    // Hijo de ajustarUbicacion
+    void determinarPos(ref float posicionX, ref float posicionZ)
+    {
+        if (filas > columnas) mayor = filas;
+        else mayor = columnas;
+
+        float valorX = (columnas - 3) * 2.5f;
+        float valorZ = (filas - 3) * 2.5f;
+
+        posicionX -= valorX;
+        posicionZ += valorZ;
+
+        float offset = (mayor - 3) * 2.5f;
+
+        Transform modelo = GameObject.Find("Modelo").GetComponent<Transform>();
+        modelo.position = new Vector3(modelo.position.x, modelo.position.y + offset, modelo.position.z);
+
+        Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
+        camara.position = new Vector3(camara.position.x, camara.position.y + offset, camara.position.z);
+
+        Debug.Log("VALORX: " + valorX + " | VALOR Z:" + valorZ);
     }
 }

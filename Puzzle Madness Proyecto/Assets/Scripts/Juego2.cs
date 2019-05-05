@@ -65,11 +65,12 @@ public class Juego2 : MonoBehaviour
 
         // Generar bloques del mapa
         FindObjectOfType<GameManager>().generarBloques();
-
-        generarLugares();
-
         // Ajustar texturas
         FindObjectOfType<GameManager>().ajustarPosiciones();
+        // Ajustar ubicacion de bloques
+        FindObjectOfType<GameManager>().ajustarUbicacion();
+
+        generarLugares();
 
         // Randomizar lugares de piezas
         mezclarLugares();
