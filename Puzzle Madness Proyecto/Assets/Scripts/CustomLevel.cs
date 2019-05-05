@@ -41,9 +41,10 @@ public class CustomLevel : MonoBehaviour
             return;
         }
 
+        GameObject.Find("Panel Seleccion").SetActive(false);
+
         FindObjectOfType<Juego1>().comenzar();
 
-        GameObject.Find("Panel Seleccion").SetActive(false);
     }
 
     /* --------------------------------------------------------------------------------  */
