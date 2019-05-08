@@ -85,14 +85,12 @@ public class PopUps : MonoBehaviour
             break;
 
         case 6:
-            //currentImage = 1;
             TextoBanner.text = "Tamaño no valido";
             textoPrincipal.text = "El tamaño de la matriz debe ser 3x3 o mas";
 
             break;
 
         case 7:
-            //currentImage = 1;
             TextoBanner.text = "Tamaño no valido";
             textoPrincipal.text = "El tamaño de la matriz debe ser 12x12 o menos";
 

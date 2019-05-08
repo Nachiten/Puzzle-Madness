@@ -139,7 +139,7 @@ public class Juego1 : MonoBehaviour
             movimientos = 0;
             textoMovimientos.text = "0";
 
-            Debug.Log("Movimientos aleatorios terminados | Comenzando juego...");
+            Debug.Log("Movimientos aleatorios terminados. Comenzando juego...");
         }
         else Debug.LogError("RANDOM DESACTIVADO");
         

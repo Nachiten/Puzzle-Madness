@@ -33,8 +33,8 @@ public class CustomLevel : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    public void comenzarNivel() {
-
+    public void comenzarNivel()
+    {
         if ( !(imageSet && sizeSet) )
         {
             FindObjectOfType<PopUps>().abrirPopUp(1);
@@ -44,13 +44,12 @@ public class CustomLevel : MonoBehaviour
         GameObject.Find("Panel Seleccion").SetActive(false);
 
         FindObjectOfType<Juego1>().comenzar();
-
     }
 
     /* --------------------------------------------------------------------------------  */
 
-    public void ajustarTamaño() {
-
+    public void ajustarTamaño()
+    {
         if (!imageSet)
         {
             FindObjectOfType<PopUps>().abrirPopUp(2);
@@ -90,9 +89,6 @@ public class CustomLevel : MonoBehaviour
         FindObjectOfType<GameManager>().ajustarPosiciones();
         FindObjectOfType<GameManager>().ajustarUbicacion();
 
-
-        //ajustarUbicacion();
-
         imagenPreview.SetActive(true);
     }
 
@@ -129,13 +125,13 @@ public class CustomLevel : MonoBehaviour
 
     IEnumerator GetTexture()
     {
-        Debug.Log("Loading ...");
+        Debug.Log("Cargando imagen...");
 
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
 
         yield return www.SendWebRequest();
 
-        Debug.Log("Loaded");
+        Debug.Log("Imagen cargada.");
 
         imagen.material.color = Color.white;
         imagen.texture = ((DownloadHandlerTexture)www.downloadHandler).texture;

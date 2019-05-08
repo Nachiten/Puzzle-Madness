@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject referencia = GameObject.Find("_Reference");
 
-        Debug.Log(referencia);
+        //Debug.Log(referencia);
 
         int contador = 1;
 
@@ -254,6 +254,6 @@ public class GameManager : MonoBehaviour
         Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
         camara.position = new Vector3(camara.position.x, camara.position.y + offset, camara.position.z);
 
-        Debug.Log("VALORX: " + valorX + " | VALOR Z:" + valorZ);
+        //Debug.Log("VALORX: " + valorX + " | VALOR Z:" + valorZ);
     }
 }
