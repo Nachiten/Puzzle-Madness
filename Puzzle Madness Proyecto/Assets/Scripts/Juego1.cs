@@ -103,7 +103,7 @@ public class Juego1 : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         // Si el rayo hace contacto con un bloque y se tiene el click IZQUIERDO persionado
-        if (Physics.Raycast(ray, out RaycastHit hit, 5000f) && hit.transform != null && Input.GetMouseButtonDown(0))
+        if (Physics.Raycast(ray, out RaycastHit hit, 3000f) && hit.transform != null && Input.GetMouseButtonDown(0))
         {
             // Asignar slot correcto y escanear si movimiento es posible
             int slot = int.Parse(hit.transform.gameObject.name);

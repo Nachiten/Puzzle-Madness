@@ -46,12 +46,14 @@ public class Juego2 : MonoBehaviour
     RaycastHit hit;
 
     Texture[] texturas;
+     
+    int index;
 
     /* -------------------------------------------------------------------------------- */
 
     void Start()
     {
-        int index = SceneManager.GetActiveScene().buildIndex;
+        index = SceneManager.GetActiveScene().buildIndex;
 
         cambiarTexturas();
 
@@ -71,6 +73,9 @@ public class Juego2 : MonoBehaviour
         FindObjectOfType<GameManager>().ajustarUbicacion();
 
         generarLugares();
+
+
+        ajustarUbicacion();
 
         // Randomizar lugares de piezas
         mezclarLugares();
@@ -92,7 +97,7 @@ public class Juego2 : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         // Determina si un rayo pego contra un objeto
-        if (Physics.Raycast(ray, out hit, 100.0f) && hit.transform != null) {
+        if (Physics.Raycast(ray, out hit, 3000.0f) && hit.transform != null) {
 
             if (Input.GetMouseButton(0))
             {
@@ -328,5 +333,76 @@ public class Juego2 : MonoBehaviour
             }
             valor += 2.5f;
         }
+    }
+
+    Transform referenciaAjuste;
+    Transform plataforma;
+
+    // Determinar posicion correcta de juego
+    public void ajustarUbicacion()
+    {
+        // Modificar tamaño de plataforma
+        plataforma = GameObject.Find("Piso").GetComponent<Transform>();
+        plataforma.localScale = new Vector3((5 * columnas) + 2, plataforma.localScale.y, (5 * filas) + 2);
+
+        int contador = 1;
+        Transform objeto;
+
+        float offsetX = 5;
+        float offsetZ = 0;
+
+        float posX = 0;
+        float posZ = 0;
+
+        for (int i = 0; i < filas; i++)
+        {
+            for (int j = 0; j < columnas; j++)
+            {
+                if (i == 0 && j == 0)
+                {
+                    // Primer bloque es la referencia
+                    referenciaAjuste = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
+
+                    posX = referenciaAjuste.position.x;
+                    posZ = referenciaAjuste.position.z;
+
+                    determinarPos(ref posX, ref posZ);
+                    referenciaAjuste.position = new Vector3(posX, referenciaAjuste.position.y, posZ);
+                }
+                else
+                {
+                    objeto = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
+
+                    objeto.position = new Vector3(referenciaAjuste.position.x + offsetX, objeto.position.y, referenciaAjuste.position.z + offsetZ);
+
+                    offsetX += 5;
+                }
+                contador++;
+            }
+            offsetX = 0;
+            offsetZ -= 5;
+        }
+    }
+
+    int mayor;
+
+    // Hijo de ajustarUbicacion
+    void determinarPos(ref float posicionX, ref float posicionZ)
+    {
+        if (filas > columnas) mayor = filas;
+        else mayor = columnas;
+
+        float valorX = (columnas - 3) * 0.8f;
+        float valorZ = (filas - 3) * 2.5f;
+
+        posicionX += valorX;
+        posicionZ += valorZ;
+
+        Debug.Log("PosiciionX: " + (-valorX).ToString() + " | PosicionZ: " + valorZ);
+
+        float offset = (mayor - 3) * 1f;
+
+        // Modificar posicion de plataforma
+        plataforma.position = new Vector3(plataforma.position.x - offset, plataforma.position.y, plataforma.position.z);
     }
 }

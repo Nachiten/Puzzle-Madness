@@ -1858,7 +1858,7 @@ GameObject:
   - component: {fileID: 2020243920}
   - component: {fileID: 2020243919}
   m_Layer: 9
-  m_Name: Piso
+  m_Name: PisoModelo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
