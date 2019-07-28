@@ -1,4 +1,4 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Analytics;
@@ -19,9 +19,9 @@ public class GameManager : MonoBehaviour
     // Numero de nivel
     Text textoNivel;
 
-    // Numero y nombre de escena actual
+    // Numero de escena actual
     int index;
-    
+
     /* -------------------------------------------------------------------------------- */
 
     void Start()
@@ -37,6 +37,21 @@ public class GameManager : MonoBehaviour
 
         // Modificar texto
         textoBoton.text = "Comenzar Nivel";
+    }
+
+    /* -------------------------------------------------------------------------------- */
+    
+    public void comenzarJuego1(){
+        // Asignar filas y columnas de Juego1
+        filas    = FindObjectOfType<Juego1>().filas;        
+        columnas = FindObjectOfType<Juego1>().columnas;
+        
+        // Generar bloques del mapa
+        generarBloques();
+        // Ajustar Texturas
+        ajustarPosiciones();
+        // Ajustar ubicacion de bloques
+        ajustarUbicacion();
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -89,9 +104,9 @@ public class GameManager : MonoBehaviour
             FindObjectOfType<Timer>().toggleClock(true);
         }
 
-        // Si es custom level o nivel 5, regresar a inicio
+        // Si es custom level o nivel 10, regresar a inicio
         else if (index == 10 || index == 11 || index == 22 || index == 23) FindObjectOfType<LevelLoader>().cargarNivel(0);
-        
+
         // En otros, pasar al siguiente nivel
         else
         {
@@ -104,6 +119,7 @@ public class GameManager : MonoBehaviour
 
     GameObject referencia;
 
+    // Intanciar los bloques necesarios para el nivel
     public void generarBloques()
     {
         GameObject referencia = GameObject.Find("_Reference");
@@ -141,11 +157,27 @@ public class GameManager : MonoBehaviour
     /* -------------------------------------------------------------------------------- */
 
     Renderer modelo;
+    Transform modeloTransform;
 
     // Ajustar posiciones y offsets de imagenes
     public void ajustarPosiciones()
     {
+        // Textura de imagen modelo
         modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
+
+        // Transform de iamgen modelo
+        modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
+
+        Debug.Log("Posicion Antes | " + modeloTransform.position.ToString());
+        
+        index = SceneManager.GetActiveScene().buildIndex;
+        modeloTransform.position = new Vector3(modeloTransform.position.x - (index - 1) * 1.5111f, modeloTransform.position.y - (index - 1) * 2f, modeloTransform.position.z);
+
+        Debug.Log("Posicion Despues | " + modeloTransform.position.ToString());
+        Debug.Log("Index | " + index.ToString());
+
+        // Ajustar tamaño de imagen modelo a nivel actual
+        modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y , 1.5f * filas );
 
         Renderer objeto;
 
