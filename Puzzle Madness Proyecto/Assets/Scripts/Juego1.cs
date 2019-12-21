@@ -70,16 +70,8 @@ public class Juego1 : MonoBehaviour
         {
             GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = texturas[index - 1];
 
-            // Asignar filas y columnas de GameManager
-            FindObjectOfType<GameManager>().filas = filas;
-            FindObjectOfType<GameManager>().columnas = columnas;
-
-            // Generar bloques del mapa
-            FindObjectOfType<GameManager>().generarBloques();
-            // Ajustar texturas
-            FindObjectOfType<GameManager>().ajustarPosiciones();
-            // Ajustar ubicacion de bloques
-            FindObjectOfType<GameManager>().ajustarUbicacion();
+            // Comenzar juego desde GameManager
+            FindObjectOfType<GameManager>().comenzarJuego1();
 
             // Comenzar Juego
             comenzar();
@@ -118,6 +110,8 @@ public class Juego1 : MonoBehaviour
 
     public void comenzar(){
 
+
+
         // Inicializar Matrices
         matriz = new int[filas, columnas];
         matrizGano = new int[filas, columnas];
@@ -132,7 +126,6 @@ public class Juego1 : MonoBehaviour
         {
             // Se repite hasta llegar a la cantidad de random moves o si se queda en posicion ganada
             do scanEmptySlot(Random.Range(1, (filas * columnas)));
-
             while (movimientos < RandomMoves || gano);
 
             // Reiniciar movimientos
