@@ -24,8 +24,7 @@ public class LevelLoader : MonoBehaviour
     void Start()
     {
         if (DeleteKeys) {
-        Debug.LogError("BORRANDO TODAS LAS KEYS !!!!");
-        PlayerPrefs.DeleteAll();
+            borrarTodasLasKeys();
         }
 
         if (flag) { 
@@ -66,7 +65,7 @@ public class LevelLoader : MonoBehaviour
         {
             RawImage imagen = GameObject.Find("Image" + i.ToString()).GetComponent<RawImage>();
 
-            Text reloj = GameObject.Find("Timer" + i.ToString()).GetComponent<Text>();
+            Text textoReloj = GameObject.Find("Timer" + i.ToString()).GetComponent<Text>();
 
             string index;
 
@@ -81,14 +80,14 @@ public class LevelLoader : MonoBehaviour
                 string seconds = Mathf.Floor(time % 60).ToString("00");
                 string miliseconds = Mathf.Floor(time % 6 * 10 % 10).ToString("0");
 
-                reloj.text = minutes + ":" + seconds + ":" + miliseconds;
+                textoReloj.text = minutes + ":" + seconds + ":" + miliseconds;
 
                 imagen.texture = textura[0];
             }
             else
             {
                 imagen.texture = textura[1];
-                reloj.text = "";
+                textoReloj.text = "";
             }
         }
     }
@@ -148,5 +147,10 @@ public class LevelLoader : MonoBehaviour
         juego2.SetActive(!nivel2);
 
         nivel2 = !nivel2;
+    }
+
+    public void borrarTodasLasKeys() {
+        Debug.LogError("BORRANDO TODAS LAS KEYS !!!!");
+        PlayerPrefs.DeleteAll();
     }
 }

@@ -97,30 +97,28 @@ public class Juego2 : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         // Determina si un rayo pego contra un objeto
-        if (Physics.Raycast(ray, out hit, 3000.0f) && hit.transform != null) {
-
-            if (Input.GetMouseButton(0))
+        if (Physics.Raycast(ray, out hit, 3000.0f) && hit.transform != null && Input.GetMouseButton(0))
+        {
+            if (flag)
             {
-                if (flag)
-                {
-                    // Asignar bloque seleccionado
-                    objeto = hit.transform.gameObject;
+                // Asignar bloque seleccionado
+                objeto = hit.transform.gameObject;
 
-                    // Lugar correcto del bloque
-                    lugar = GameObject.Find("Lugar_" + objeto.name).GetComponent<Transform>();
+                // Lugar correcto del bloque
+                lugar = GameObject.Find("Lugar_" + objeto.name).GetComponent<Transform>();
 
-                    // Si el bloque esta en lugar correcto retornar void
-                    if (objeto.transform.position == new Vector3(lugar.position.x, lugar.position.y + 0.2f, lugar.position.z)) return;
+                // Si el bloque esta en lugar correcto retornar void
+                if (objeto.transform.position == new Vector3(lugar.position.x, lugar.position.y + 0.2f, lugar.position.z)) return;
 
-                    flag = false;
-                }
-                // Al agarrar el bloque
-                if (Input.GetMouseButtonDown(0)) mouseButtonDown();
-
-                // Mover bloque
-                else objeto.transform.position = GetMouseAsWorldPoint() + offset + new Vector3(0, elevamiento, 0);
+                flag = false;
             }
+            // Al agarrar el bloque
+            if ( Input.GetMouseButtonDown(0) ) mouseButtonDown();
+
+            // Mover bloque
+            else objeto.transform.position = GetMouseAsWorldPoint() + offset + new Vector3(0, elevamiento, 0);
         }
+
         if (Input.GetMouseButtonUp(0)) mouseButtonUp();
 
         analizarGano();

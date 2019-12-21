@@ -23,4 +23,12 @@ public class Buttons : MonoBehaviour
     /* -------------------------------------------------------------------------------- */
 
     public void loadLevel(int index) { GameObject.Find("GameManager").GetComponent<LevelLoader>().cargarNivel(index); }
+
+    public void borrarProgreso() {
+        GameObject.Find("GameManager").GetComponent<LevelLoader>().borrarTodasLasKeys();
+
+        int indexLevelSelector = 12;
+
+        if (SceneManager.GetActiveScene().buildIndex == indexLevelSelector) GameObject.Find("GameManager").GetComponent<LevelLoader>().cargarNivel(indexLevelSelector);
+    }
 }
