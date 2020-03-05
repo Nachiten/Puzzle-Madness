@@ -84,7 +84,7 @@ public class Juego1 : MonoBehaviour
     void Update()
     {
         if (GanarHack)
-        { 
+        {
             ganarJuego();
             GanarHack = false;
         }
@@ -109,8 +109,6 @@ public class Juego1 : MonoBehaviour
     /* -------------------------------------------------------------------------------- */
 
     public void comenzar(){
-
-
 
         // Inicializar Matrices
         matriz = new int[filas, columnas];
