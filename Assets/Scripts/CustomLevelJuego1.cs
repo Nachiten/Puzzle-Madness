@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System;
 
-public class CustomLevel : MonoBehaviour
+public class CustomLevelJuego1 : MonoBehaviour
 {
     // Tamaño de tabla
     public int columnas = 3;
@@ -14,7 +14,6 @@ public class CustomLevel : MonoBehaviour
     public bool sizeSet = false;
 
     RawImage imagen;
-
     GameObject imagenPreview;
     Text inputField;
 
@@ -43,7 +42,7 @@ public class CustomLevel : MonoBehaviour
 
         GameObject.Find("Panel Seleccion").SetActive(false);
 
-        FindObjectOfType<Juego1>().comenzar();
+        FindObjectOfType<Juego1>().inicializar();
     }
 
     /* --------------------------------------------------------------------------------  */
@@ -75,9 +74,6 @@ public class CustomLevel : MonoBehaviour
         FindObjectOfType<Juego1>().filas = filas;
         FindObjectOfType<Juego1>().columnas = columnas;
 
-        FindObjectOfType<GameManager>().filas = filas;
-        FindObjectOfType<GameManager>().columnas = columnas;
-
         if (filas > columnas) mayor = filas;
         else mayor = columnas;
 
@@ -85,9 +81,7 @@ public class CustomLevel : MonoBehaviour
 
         GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = imagen.texture;
 
-        FindObjectOfType<GameManager>().generarBloques();
-        FindObjectOfType<GameManager>().ajustarPosiciones();
-        FindObjectOfType<GameManager>().ajustarUbicacion();
+        FindObjectOfType<GameManager>().comenzarJuego1();
 
         imagenPreview.SetActive(true);
     }
@@ -136,6 +130,6 @@ public class CustomLevel : MonoBehaviour
         imagen.material.color = Color.white;
         imagen.texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
 
-        FindObjectOfType<CustomLevel>().imageSet = true;
+        FindObjectOfType<CustomLevelJuego1>().imageSet = true;
     }
 }

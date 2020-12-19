@@ -57,28 +57,16 @@ public class Juego2 : MonoBehaviour
 
         cambiarTexturas();
 
-        GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = texturas[index - 13];
+        if (index < 23) {
+            GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = texturas[index - 13];
 
-        // Asignar filas y columnas de GameManager
-        FindObjectOfType<GameManager>().filas = filas;
-        FindObjectOfType<GameManager>().columnas = columnas;
+            // Comenzar juego desde GameManager
+            FindObjectOfType<GameManager>().comenzarJuego2();
 
-        determinarPos();
-
-        // Generar bloques del mapa
-        FindObjectOfType<GameManager>().generarBloques();
-        // Ajustar texturas
-        FindObjectOfType<GameManager>().ajustarPosiciones();
-        // Ajustar ubicacion de bloques
-        FindObjectOfType<GameManager>().ajustarUbicacion();
-
-        generarLugares();
-
-
-        ajustarUbicacion();
-
-        // Randomizar lugares de piezas
-        mezclarLugares();
+            // Inicializacion del juego
+            inicializar();
+        }
+        
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -91,6 +79,7 @@ public class Juego2 : MonoBehaviour
             GanarHack = false;
         }
 
+        // No se hace nada en caso de estar en pausa, no haber comenzado o haber ganado
         if (pause || !start || gano) return;
 
         // Generar rayo para "clickear" bloque
@@ -126,6 +115,27 @@ public class Juego2 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    public void inicializar() 
+    {
+        Debug.Log("Entre a inicializar Juego2");
+
+        // Determina la posicion del modelo y de la camara
+        determinarPos();
+
+        // Generar los slots donde se colocarán las piezas al resolver
+        generarLugares();
+
+        // Ajustar los slots donde corresponde
+        ajustarUbicacion();
+
+        // Randomizar lugares de piezas
+        mezclarLugares();
+    }
+
+    public void comenzarNivel() {
+        start = true;
+    }
+
     // Cuando se agarra un bloque
     void mouseButtonDown()
     {
@@ -154,7 +164,7 @@ public class Juego2 : MonoBehaviour
         // If its inside the limit
         if (distancia < limite)
         {
-            Debug.Log("Correctly Placed");
+            Debug.Log("Posicionado correctamente");
 
             // Place in correct place
             objeto.transform.position = new Vector3(lugar.position.x, lugar.position.y + 0.2f, lugar.position.z);
@@ -162,7 +172,7 @@ public class Juego2 : MonoBehaviour
         else // Return to start position
         {
             objeto.transform.position = new Vector3(objeto.transform.position.x, objeto.transform.position.y - elevamiento, objeto.transform.position.z);
-            Debug.Log("Not correctly placed");
+            Debug.Log("No está en una posicion correcta");
         }
         flag = true;
 

@@ -74,4 +74,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game2/Nivel10.unity
     guid: 7a30ac0c1be289c4bb12529563d77f4e
+  - enabled: 1
+    path: Assets/Scenes/Game2/CustomLevel.unity
+    guid: f053a8c01d4a79d4e8cf739161a158f1
   m_configObjects: {}

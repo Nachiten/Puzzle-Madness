@@ -42,10 +42,26 @@ public class GameManager : MonoBehaviour
     /* -------------------------------------------------------------------------------- */
     
     public void comenzarJuego1(){
+
         // Asignar filas y columnas de Juego1
         filas    = FindObjectOfType<Juego1>().filas;        
         columnas = FindObjectOfType<Juego1>().columnas;
         
+        // Generar bloques del mapa
+        generarBloques();
+        // Ajustar Texturas
+        ajustarPosiciones();
+        // Ajustar ubicacion de bloques
+        ajustarUbicacion();
+    }
+
+    public void comenzarJuego2()
+    {
+
+        // Asignar filas y columnas de Juego1
+        filas = FindObjectOfType<Juego2>().filas;
+        columnas = FindObjectOfType<Juego2>().columnas;
+
         // Generar bloques del mapa
         generarBloques();
         // Ajustar Texturas
@@ -98,7 +114,7 @@ public class GameManager : MonoBehaviour
 
             // Si es juego2
             else if (index > 12)
-            FindObjectOfType<Juego2>().start = true;
+            FindObjectOfType<Juego2>().comenzarNivel();
 
             // Activar reloj
             FindObjectOfType<Timer>().toggleClock(true);
@@ -122,9 +138,12 @@ public class GameManager : MonoBehaviour
     // Intanciar los bloques necesarios para el nivel
     public void generarBloques()
     {
+
+        Debug.Log("Entre a generar bloques");
+
         GameObject referencia = GameObject.Find("_Reference");
 
-        //Debug.Log(referencia);
+        Debug.Log(referencia);
 
         int contador = 1;
 
@@ -134,10 +153,14 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < filas; i++){
             for (int j = 0; j < columnas; j++) {
 
+                // En el juego 1 no genero el ultimo bloque, en el juego2 si
                 if (contador < filas * columnas || SceneManager.GetActiveScene().buildIndex > 12)
                 {
                     // Crear el clon
                     GameObject clon = Instantiate(Resources.Load("1", typeof(GameObject))) as GameObject;
+
+                    Debug.Log(clon);
+
                     // Asignar nombre correcto
                     clon.name = contador.ToString();
                     // Asignar posicion de clon
@@ -151,6 +174,7 @@ public class GameManager : MonoBehaviour
             offsetX = 0f;
             offsetZ -= 5f;
         }
+
         Destroy(referencia);
     }
 

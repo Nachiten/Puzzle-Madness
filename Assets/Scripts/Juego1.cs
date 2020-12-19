@@ -58,7 +58,7 @@ public class Juego1 : MonoBehaviour
     {
         // Nombre e index de escena actual
         nombre = SceneManager.GetActiveScene().name;
-        index = SceneManager.GetActiveScene().buildIndex;
+        index  = SceneManager.GetActiveScene().buildIndex;
 
         cambiarTexturas();
 
@@ -73,8 +73,8 @@ public class Juego1 : MonoBehaviour
             // Comenzar juego desde GameManager
             FindObjectOfType<GameManager>().comenzarJuego1();
 
-            // Comenzar Juego
-            comenzar();
+            // Inicializacion del juego
+            inicializar();
         }
     }
 
@@ -108,7 +108,7 @@ public class Juego1 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    public void comenzar(){
+    public void inicializar(){
 
         // Inicializar Matrices
         matriz = new int[filas, columnas];

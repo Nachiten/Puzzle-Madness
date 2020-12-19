@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System;
 
 public class PopUps : MonoBehaviour
 {
     int popUpOpen = 0;
     int currentImage = 0;
+    int index;
 
     public Texture[] Textura;
     RawImage simbolo;
@@ -32,10 +34,10 @@ public class PopUps : MonoBehaviour
 
         simbolo = GameObject.Find("Icono").GetComponent<RawImage>();
 
-
         inputField.SetActive(false);
         popUp.SetActive(false);
-        
+
+        index = SceneManager.GetActiveScene().buildIndex;
     }
 
     public void abrirPopUp(int num) {
@@ -115,8 +117,14 @@ public class PopUps : MonoBehaviour
             case 4:
                 path = (inputFieldTexto.text).ToString();
 
-                if (path != "" && ( path.Substring(Math.Max(0, path.Length - 4)) == ".png" || path.Substring(Math.Max(0, path.Length - 4)) == ".jpg" || path.Substring(Math.Max(0, path.Length - 4)) == "jpeg") )
-                    FindObjectOfType<CustomLevel>().asignTexture();
+                if (path != "" && (path.Substring(Math.Max(0, path.Length - 4)) == ".png" 
+                                || path.Substring(Math.Max(0, path.Length - 4)) == ".jpg" 
+                                || path.Substring(Math.Max(0, path.Length - 4)) == "jpeg")) {
+                    if (index == 11)
+                        FindObjectOfType<CustomLevelJuego1>().asignTexture();
+                    else
+                        FindObjectOfType<CustomLevelJuego2>().asignTexture();
+                }
                 else
                     abrirPopUp(5);
                 
