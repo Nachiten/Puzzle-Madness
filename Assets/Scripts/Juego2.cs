@@ -323,6 +323,7 @@ public class Juego2 : MonoBehaviour
 
         valor = 0;
 
+        // ---- REVISAR CODIGO ----
         for (int i = 3; i <= mayor; i++)
         {
 
@@ -331,8 +332,8 @@ public class Juego2 : MonoBehaviour
                 //posicionX -= valor;
                 //posicionZ += valor;
 
-                Transform modelo = GameObject.Find("Modelo").GetComponent<Transform>();
-                modelo.position = new Vector3(modelo.position.x, modelo.position.y + valor, modelo.position.z);
+                //Transform modelo = GameObject.Find("Modelo").GetComponent<Transform>();
+                //modelo.position = new Vector3(modelo.position.x + 11, modelo.position.y + valor + 16, modelo.position.z);
 
                 Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
                 camara.position = new Vector3(camara.position.x, camara.position.y + valor, camara.position.z);
