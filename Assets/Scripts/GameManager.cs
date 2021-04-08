@@ -186,22 +186,34 @@ public class GameManager : MonoBehaviour
     // Ajustar posiciones y offsets de imagenes
     public void ajustarPosiciones()
     {
+
+        index = SceneManager.GetActiveScene().buildIndex;
+
         // Textura de imagen modelo
         modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
 
         // Transform de iamgen modelo
         modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
 
-        Debug.Log("Posicion Antes | " + modeloTransform.position.ToString());
-        
-        index = SceneManager.GetActiveScene().buildIndex;
-        modeloTransform.position = new Vector3(modeloTransform.position.x - (index - 1) * 1.5111f, modeloTransform.position.y - (index - 1) * 2f, modeloTransform.position.z);
+        // Offset = -1 -> Game1
+        // offset = -13 -> Game2
+        if (index < 12)
+        {
+            
+            Debug.Log("Posicion Antes | " + modeloTransform.position.ToString());
 
-        Debug.Log("Posicion Despues | " + modeloTransform.position.ToString());
-        Debug.Log("Index | " + index.ToString());
+            modeloTransform.position = new Vector3(modeloTransform.position.x - (index - 1) * 1.5111f, modeloTransform.position.y - (index - 1) * 2f, modeloTransform.position.z);
 
-        // Ajustar tamaño de imagen modelo a nivel actual
-        modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y , 1.5f * filas );
+            Debug.Log("Posicion Despues | " + modeloTransform.position.ToString());
+            Debug.Log("Index | " + index.ToString());
+
+            // Ajustar tamaño de imagen modelo a nivel actual
+            modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y, 1.5f * filas);
+        }
+        else 
+        {
+            //modeloTransform.position = new Vector3(modeloTransform.position.x - 5f, modeloTransform.position.y, modeloTransform.position.z);
+        }
 
         Renderer objeto;
 
