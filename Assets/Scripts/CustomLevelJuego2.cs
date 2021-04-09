@@ -86,15 +86,17 @@ public class CustomLevelJuego2 : MonoBehaviour
 
    /*  -------------------------------------------------------------------------------- */
 
+    /*
     void asignarNombre(char nombre, char nombre2, int contador) 
     {
         GameObject.Find( nombre.ToString() + nombre2.ToString() ).name = contador.ToString();
         GameObject.Find(contador.ToString()).GetComponent<Renderer>().material.mainTexture = imagen.texture;
     }
+    */
 
     /* -------------------------------------------------------------------------------- */
 
-    private void destruir(char nombre, char nombre2) { Destroy(GameObject.Find(nombre.ToString() + nombre2.ToString())); }
+    //private void destruir(char nombre, char nombre2) { Destroy(GameObject.Find(nombre.ToString() + nombre2.ToString())); }
 
 
     /* ----------------------------------- Explorer ----------------------------------- */

@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<Timer>().setPlayerPref();
 
         // Modificar texto
-        if (index == 10 || index == 11 || index == 22) textoBoton.text = "Regresar a Inicio";
+        if (index == 10 || index == 11 || index == 22 || index == 23) textoBoton.text = "Regresar a Inicio";
                                                   else textoBoton.text = "Siguiente Nivel";
 
         // Mostrar boton
@@ -195,11 +195,8 @@ public class GameManager : MonoBehaviour
         // Transform de iamgen modelo
         modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
 
-        // Offset = -1 -> Game1
-        // offset = -13 -> Game2
-        if (index < 12)
+        if (index < 11)
         {
-            
             Debug.Log("Posicion Antes | " + modeloTransform.position.ToString());
 
             modeloTransform.position = new Vector3(modeloTransform.position.x - (index - 1) * 1.5111f, modeloTransform.position.y - (index - 1) * 2f, modeloTransform.position.z);
@@ -209,10 +206,9 @@ public class GameManager : MonoBehaviour
 
             // Ajustar tamaño de imagen modelo a nivel actual
             modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y, 1.5f * filas);
-        }
-        else 
+        } else if (index == 23) 
         {
-            //modeloTransform.position = new Vector3(modeloTransform.position.x - 5f, modeloTransform.position.y, modeloTransform.position.z);
+            //modeloTransform.position = new Vector3(modeloTransform.position.x - (index - 17) * 1.5111f, modeloTransform.position.y, modeloTransform.position.z);
         }
 
         Renderer objeto;
@@ -305,6 +301,8 @@ public class GameManager : MonoBehaviour
     // Hijo de ajustarUbicacion
     void determinarPos(ref float posicionX, ref float posicionZ)
     {
+        index = SceneManager.GetActiveScene().buildIndex;
+
         if (filas > columnas) mayor = filas;
         else mayor = columnas;
 
@@ -317,8 +315,17 @@ public class GameManager : MonoBehaviour
         float offset = (mayor - 3) * 2.5f;
 
         Transform modelo = GameObject.Find("Modelo").GetComponent<Transform>();
-        modelo.position = new Vector3(modelo.position.x, modelo.position.y + offset, modelo.position.z);
 
+        if (index != 23)
+        {
+            modelo.position = new Vector3(modelo.position.x, modelo.position.y + offset, modelo.position.z);
+        }
+        else 
+        {
+            Debug.Log("Mayor: " + mayor);
+            modelo.position = new Vector3(modelo.position.x - 22 * (mayor / 12), modelo.position.y + 12 * (mayor / 12), modelo.position.z);
+        }
+        
         Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
         camara.position = new Vector3(camara.position.x, camara.position.y + offset, camara.position.z);
 
