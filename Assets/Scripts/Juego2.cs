@@ -26,8 +26,6 @@ public class Juego2 : MonoBehaviour
 
     // Flag juego ganado
     bool gano = false;
-    // Flag para no cambiar de bloque al tener uno seleccionado
-    bool flag = true;
 
     // Offset de posicion
     Vector3 offset;
@@ -71,6 +69,8 @@ public class Juego2 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    bool hayObjetoAgarrado = false;
+
     void Update()
     {
         if (GanarHack)
@@ -85,10 +85,13 @@ public class Juego2 : MonoBehaviour
         // Generar rayo para "clickear" bloque
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        // Determina si un rayo pego contra un objeto
-        if (Physics.Raycast(ray, out hit, 3000.0f) && hit.transform != null && Input.GetMouseButton(0))
+        // Si no hay un objeto anterior agarrado
+        if (!hayObjetoAgarrado) 
         {
-            if (flag)
+            bool rayoTiradoYObjetoTocado = Physics.Raycast(ray, out hit, 3000.0f) && hit.transform != null;
+
+            // Si tiro un rayo, toca un objeto, y clickié el mouse
+            if (rayoTiradoYObjetoTocado && Input.GetMouseButtonDown(0))
             {
                 // Asignar bloque seleccionado
                 objetoAgarrado = hit.transform.gameObject;
@@ -99,16 +102,27 @@ public class Juego2 : MonoBehaviour
                 // Si el bloque esta en lugar correcto retornar void
                 if (objetoAgarrado.transform.position == new Vector3(lugarCorrectoObjeto.position.x, lugarCorrectoObjeto.position.y + 0.2f, lugarCorrectoObjeto.position.z)) return;
 
-                flag = false;
+                // Se agarra el bloque
+                mouseButtonDown();
+                hayObjetoAgarrado = true;
+                Debug.Log("hayObjetoAgarrado: TRUE");
+                
             }
-            // Al agarrar el bloque
-            if ( Input.GetMouseButtonDown(0) ) mouseButtonDown();
 
-            // Mover bloque
-            else objetoAgarrado.transform.position = GetMouseAsWorldPoint() + offset + new Vector3(0, elevamiento, 0);
+        }
+        // Se mueve el bloque si hay algun objeto agarrado
+        else  
+        {
+            objetoAgarrado.transform.position = GetMouseAsWorldPoint() + offset + new Vector3(0, elevamiento, 0);
         }
 
-        if (Input.GetMouseButtonUp(0)) mouseButtonUp();
+        // Si solte el boton
+        if (Input.GetMouseButtonUp(0))
+        {
+            mouseButtonUp();
+            hayObjetoAgarrado = false;
+            Debug.Log("hayObjetoAgarrado: FALSE");
+        }
 
         analizarGano();
     }
@@ -176,9 +190,8 @@ public class Juego2 : MonoBehaviour
             objetoAgarrado.transform.position = new Vector3(objetoAgarrado.transform.position.x, objetoAgarrado.transform.position.y - elevamiento, objetoAgarrado.transform.position.z);
             Debug.Log("No está en una posicion correcta");
         }
-        flag = true;
-
-        reajustarPosiciones();
+ 
+        //reajustarPosiciones();
     }
 
     /* -------------------------------------------------------------------------------- */
