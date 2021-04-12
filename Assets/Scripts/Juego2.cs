@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class Juego2 : MonoBehaviour
 {
-    // << -------- Varbiables publicas -------- >>
+    #region Variables Publicas
 
     // Ganar juego [Debug Only]
     public bool GanarHack = false;
@@ -15,14 +15,19 @@ public class Juego2 : MonoBehaviour
     // Objeto y posicion correcta objeto
     GameObject objetoAgarrado;
     Transform lugarCorrectoObjeto;
+    // Flag para saber si hay algun objeto agarrado
+    bool hayObjetoAgarrado = false;
 
     // Flag de pausado
     public bool pause = false;
-    // Flag de comenzado
+    // Flag de comienzo
     public bool start = false;
 
+    #endregion
 
-    // << -------- Varbiables privadas -------- >>
+    /* -------------------------------------------------------------------------------- */
+
+    #region Variables Privadas
 
     // Flag juego ganado
     bool gano = false;
@@ -37,21 +42,17 @@ public class Juego2 : MonoBehaviour
     float limite = 1.6f;
     float elevamiento = 0.5f;
 
-    // Position when you pick it up
-    //Vector3 inicialPos;
 
-    // Rayo
-    RaycastHit hit;
 
     Texture[] texturas;
-     
-    int index;
+
+    #endregion
 
     /* -------------------------------------------------------------------------------- */
 
     void Start()
     {
-        index = SceneManager.GetActiveScene().buildIndex;
+        int index = SceneManager.GetActiveScene().buildIndex;
 
         cambiarTexturas();
 
@@ -69,8 +70,6 @@ public class Juego2 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    bool hayObjetoAgarrado = false;
-
     void Update()
     {
         if (GanarHack)
@@ -82,49 +81,54 @@ public class Juego2 : MonoBehaviour
         // No se hace nada en caso de estar en pausa, no haber comenzado o haber ganado
         if (pause || !start || gano) return;
 
-        // Generar rayo para "clickear" bloque
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        // Si no hay un objeto anterior agarrado
+        // Si no hay un objeto agarrado, se trata de agarrar
         if (!hayObjetoAgarrado) 
         {
-            bool rayoTiradoYObjetoTocado = Physics.Raycast(ray, out hit, 3000.0f) && hit.transform != null;
-
-            // Si tiro un rayo, toca un objeto, y clickié el mouse
-            if (rayoTiradoYObjetoTocado && Input.GetMouseButtonDown(0))
-            {
-                // Asignar bloque seleccionado
-                objetoAgarrado = hit.transform.gameObject;
-
-                // Lugar correcto del bloque
-                lugarCorrectoObjeto = GameObject.Find("Lugar_" + objetoAgarrado.name).GetComponent<Transform>();
-
-                // Si el bloque esta en lugar correcto retornar void
-                if (objetoAgarrado.transform.position == new Vector3(lugarCorrectoObjeto.position.x, lugarCorrectoObjeto.position.y + 0.2f, lugarCorrectoObjeto.position.z)) return;
-
-                // Se agarra el bloque
-                mouseButtonDown();
-                hayObjetoAgarrado = true;
-                Debug.Log("hayObjetoAgarrado: TRUE");
-                
-            }
-
+            tirarRayoParaTocarObjeto();
         }
-        // Se mueve el bloque si hay algun objeto agarrado
+        // Si hay un objeto agarrado, se mueve el bloque
         else  
         {
             objetoAgarrado.transform.position = GetMouseAsWorldPoint() + offset + new Vector3(0, elevamiento, 0);
-        }
 
-        // Si solte el boton
-        if (Input.GetMouseButtonUp(0))
-        {
-            mouseButtonUp();
-            hayObjetoAgarrado = false;
-            Debug.Log("hayObjetoAgarrado: FALSE");
+            // Si solte el boton
+            if (Input.GetMouseButtonUp(0))
+            {
+                mouseButtonUp();
+                hayObjetoAgarrado = false;
+                Debug.Log("hayObjetoAgarrado: FALSE");
+            }
         }
 
         analizarGano();
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    void tirarRayoParaTocarObjeto() {
+        // Generar rayo para "clickear" bloque
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        bool rayoTiradoYObjetoTocado = Physics.Raycast(ray, out RaycastHit hit, 3000.0f) && hit.transform != null;
+
+        // Si tiro un rayo, toca un objeto, y clickié el mouse
+        if (rayoTiradoYObjetoTocado && Input.GetMouseButtonDown(0))
+        {
+            // Asignar bloque seleccionado
+            objetoAgarrado = hit.transform.gameObject;
+
+            // Lugar correcto del bloque
+            lugarCorrectoObjeto = GameObject.Find("Lugar_" + objetoAgarrado.name).GetComponent<Transform>();
+
+            // Si el bloque esta en lugar correcto retornar void
+            if (objetoAgarrado.transform.position == new Vector3(lugarCorrectoObjeto.position.x, lugarCorrectoObjeto.position.y + 0.2f, lugarCorrectoObjeto.position.z)) return;
+
+            // Se agarra el bloque
+            mouseButtonDown();
+            hayObjetoAgarrado = true;
+            Debug.Log("hayObjetoAgarrado: TRUE");
+
+        }
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -146,19 +150,21 @@ public class Juego2 : MonoBehaviour
         mezclarLugares();
     }
 
-    public void comenzarNivel() {
-        start = true;
-    }
+    /* -------------------------------------------------------------------------------- */
+
+    public void comenzarNivel() { start = true; }
+
+    /* -------------------------------------------------------------------------------- */
 
     // Cuando se agarra un bloque
     void mouseButtonDown()
     {
-        Debug.Log("mouseButtonDown");
+        //Debug.Log("mouseButtonDown");
 
         // Set Z coordinate
         coordZ = Camera.main.WorldToScreenPoint(objetoAgarrado.transform.position).z;
 
-        // ???
+        // Se actualiza offset
         offset = objetoAgarrado.transform.position - GetMouseAsWorldPoint();
 
     }
@@ -168,10 +174,7 @@ public class Juego2 : MonoBehaviour
     // Cuando se suelta un bloque
     void mouseButtonUp()
     {
-        Debug.Log("mouseButtonUp");
-
-        // Si se clickeo algo que no es un bloque se retorna
-        if (hit.transform == null) return;
+        //Debug.Log("mouseButtonUp");
 
         // Distancia desde objeto hasta lugar correcto
         float distancia = Vector3.Distance(objetoAgarrado.transform.position, lugarCorrectoObjeto.position);
@@ -184,38 +187,40 @@ public class Juego2 : MonoBehaviour
             // Se coloca en el lugar correcto
             objetoAgarrado.transform.position = new Vector3(lugarCorrectoObjeto.position.x, lugarCorrectoObjeto.position.y + 0.2f, lugarCorrectoObjeto.position.z);
         }
-        // Dejarlo en la posicion que estaba
+        // Dejarlo en la posicion donde se soltó
         else
         {
             objetoAgarrado.transform.position = new Vector3(objetoAgarrado.transform.position.x, objetoAgarrado.transform.position.y - elevamiento, objetoAgarrado.transform.position.z);
-            Debug.Log("No está en una posicion correcta");
+            //Debug.Log("No está en una posicion correcta");
         }
- 
-        //reajustarPosiciones();
     }
 
     /* -------------------------------------------------------------------------------- */
 
-    void reajustarPosiciones() {
-        int contador;
+    // DEPRACATED
 
-        contador = 1;
+    //void reajustarPosiciones() {
+    //    int contador;
 
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                Transform posicion = GameObject.Find(contador.ToString()).transform;
+    //    contador = 1;
 
-                if (posicion.position.y > 1)
-                {
-                    Debug.Log("Arreglando Posicion");
-                    posicion.position = new Vector3(posicion.position.x, 0.9452782f, posicion.position.z);
-                }
-                //Debug.Log("Posicion Y de: " + GameObject.Find(contador.ToString()).name + " | " + posicion.position.y);
+    //    for (int i = 0; i < filas; i++) {
+    //        for (int j = 0; j < columnas; j++) {
+    //            Transform posicion = GameObject.Find(contador.ToString()).transform;
 
-                contador++;
-            }
-        }
-    }   
+    //            if (posicion.position.y > 1)
+    //            {
+    //                Debug.Log("Arreglando Posicion");
+    //                posicion.position = new Vector3(posicion.position.x, 0.9452782f, posicion.position.z);
+    //            }
+    //            //Debug.Log("Posicion Y de: " + GameObject.Find(contador.ToString()).name + " | " + posicion.position.y);
+
+    //            contador++;
+    //        }
+    //    }
+    //}
+
+    /* -------------------------------------------------------------------------------- */
 
     Vector3 GetMouseAsWorldPoint()
     {
@@ -231,9 +236,6 @@ public class Juego2 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    Transform bloque;
-    Transform lugarCorrecto;
-
     void analizarGano()
     {
         int contador;
@@ -243,8 +245,8 @@ public class Juego2 : MonoBehaviour
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
 
-                bloque = GameObject.Find(contador.ToString()).transform.GetComponent<Transform>();
-                lugarCorrecto = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
+                Transform bloque = GameObject.Find(contador.ToString()).transform.GetComponent<Transform>();
+                Transform lugarCorrecto = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
 
                 if (bloque.position != new Vector3(lugarCorrecto.position.x, lugarCorrecto.position.y + 0.2f, lugarCorrecto.position.z))
                     return;
@@ -296,6 +298,8 @@ public class Juego2 : MonoBehaviour
             texturas[i] = Resources.Load("Juego2/Image" + (i + 1).ToString()) as Texture;
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     void generarLugares() {
 
         GameObject referencia = GameObject.Find("Lugar_Reference");
@@ -326,6 +330,8 @@ public class Juego2 : MonoBehaviour
         }
         Destroy(referencia);
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     void determinarPos()
     {
@@ -359,8 +365,10 @@ public class Juego2 : MonoBehaviour
         }
     }
 
-    Transform referenciaAjuste;
+    /* -------------------------------------------------------------------------------- */
+
     Transform plataforma;
+    Transform referenciaAjuste;
 
     // Determinar posicion correcta de juego
     public void ajustarUbicacion()
@@ -408,11 +416,13 @@ public class Juego2 : MonoBehaviour
         }
     }
 
-    int mayor;
+    /* -------------------------------------------------------------------------------- */
 
     // Hijo de ajustarUbicacion
     void determinarPos(ref float posicionX, ref float posicionZ)
     {
+        int mayor;
+
         if (filas > columnas) mayor = filas;
         else mayor = columnas;
 

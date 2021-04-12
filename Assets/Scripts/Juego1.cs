@@ -94,8 +94,10 @@ public class Juego1 : MonoBehaviour
         // Generar rayo para "clickear" bloque
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        bool rayoTiradoYObjetoTocado = Physics.Raycast(ray, out RaycastHit hit, 3000f) && hit.transform != null;
+
         // Si el rayo hace contacto con un bloque y se tiene el click IZQUIERDO persionado
-        if (Physics.Raycast(ray, out RaycastHit hit, 3000f) && hit.transform != null && Input.GetMouseButtonDown(0))
+        if (rayoTiradoYObjetoTocado && Input.GetMouseButtonDown(0))
         {
             // Asignar slot correcto y escanear si movimiento es posible
             int slot = int.Parse(hit.transform.gameObject.name);
@@ -195,7 +197,7 @@ public class Juego1 : MonoBehaviour
             // Se mueve hacia arriba
             accion(0, 5, "ActivarAbajo");
         }
-        //else { Debug.Log("No hay espacio a donde mover este bloque"); }
+        else { Debug.Log("No hay espacio a donde mover este bloque"); }
 
         // Actualizar movimientos
         textoMovimientos.text = movimientos.ToString();

@@ -419,7 +419,7 @@ GameObject:
   - component: {fileID: 352361414}
   - component: {fileID: 352361413}
   m_Layer: 5
-  m_Name: Franja Abajo (1)
+  m_Name: Franja Abajo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1385,7 +1385,7 @@ GameObject:
   - component: {fileID: 731687108}
   - component: {fileID: 731687107}
   m_Layer: 5
-  m_Name: Franja
+  m_Name: FranjaGrande
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2525,7 +2525,7 @@ GameObject:
   - component: {fileID: 1471258630}
   - component: {fileID: 1471258629}
   m_Layer: 5
-  m_Name: Franja Arriba (1)
+  m_Name: Franja Arriba
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2892,7 +2892,7 @@ GameObject:
   - component: {fileID: 1834847972}
   - component: {fileID: 1834847971}
   m_Layer: 5
-  m_Name: Franja Derecha (1)
+  m_Name: Franja Derecha
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2967,7 +2967,7 @@ GameObject:
   - component: {fileID: 1989890171}
   - component: {fileID: 1989890170}
   m_Layer: 5
-  m_Name: Franja Izquierda (1)
+  m_Name: Franja Izquierda
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
