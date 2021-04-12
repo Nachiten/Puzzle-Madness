@@ -11,8 +11,11 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 *Versión 1.1* : 
 - Solucionado bug importante en custom level de juego1.
 
+# Changelog
+*Versión 2.0* [EN DESARROLLO]: 
+- Se genera un checkeo adicional antes de borrar todo el progreso del juego. 
+
 # TODOs
 - Fixear agarre incorrecto de bloques en puzzle comun.
 - Fixear posiciones diferentes de template resuelta.
 - Fixear soporte para distintas resoluciones.
-- Agregar alert box para confirmar borrar todas las claves.

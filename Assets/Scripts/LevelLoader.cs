@@ -13,7 +13,6 @@ public class LevelLoader : MonoBehaviour
 
     public Texture[] textura;
 
-    public bool DeleteKeys = false;
     static bool flag = true;
 
     GameObject juego1;
@@ -23,11 +22,9 @@ public class LevelLoader : MonoBehaviour
 
     void Start()
     {
-        if (DeleteKeys) {
-            borrarTodasLasKeys();
-        }
 
-        if (flag) { 
+        if (flag)
+        {
             // Aisgnar variables
             levelLoader = GameObject.Find("Panel Carga");
             textoProgreso = GameObject.Find("TextoProgreso").GetComponent<Text>();
@@ -42,7 +39,8 @@ public class LevelLoader : MonoBehaviour
         // Ocultar pantalla de carga
         levelLoader.SetActive(false);
 
-        if (SceneManager.GetActiveScene().buildIndex == 12) {
+        if (SceneManager.GetActiveScene().buildIndex == 12)
+        {
 
             juego1 = GameObject.Find("Canvas Juego1");
             juego2 = GameObject.Find("Canvas Juego2");
@@ -53,7 +51,7 @@ public class LevelLoader : MonoBehaviour
             juego1.SetActive(true);
             juego2.SetActive(false);
             scanJuego(1);
-            
+
         }
     }
 
@@ -98,10 +96,11 @@ public class LevelLoader : MonoBehaviour
     public void cargarNivel(int index)
     {
         StartCoroutine(cargarAsincronizadamente(index));
-        textoNivel.text ="Cargando " + SceneManager.GetSceneByBuildIndex(index).name + " ...";
+        textoNivel.text = "Cargando " + SceneManager.GetSceneByBuildIndex(index).name + " ...";
 
-        if (index != 7) { 
-            AnalyticsResult result =  AnalyticsEvent.Custom("Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
+        if (index != 7)
+        {
+            AnalyticsResult result = AnalyticsEvent.Custom("Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
             Debug.Log("Analytics Result: " + result + " | DATA: " + "Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
         }
     }
@@ -109,7 +108,7 @@ public class LevelLoader : MonoBehaviour
     /* -------------------------------------------------------------------------------- */
 
     // Iniciar Corutina para cargar nivel en background
-    IEnumerator cargarAsincronizadamente (int index)
+    IEnumerator cargarAsincronizadamente(int index)
     {
         // Iniciar carga de escena
         AsyncOperation operacion = SceneManager.LoadSceneAsync(index);
@@ -149,8 +148,4 @@ public class LevelLoader : MonoBehaviour
         nivel2 = !nivel2;
     }
 
-    public void borrarTodasLasKeys() {
-        Debug.LogError("BORRANDO TODAS LAS KEYS !!!!");
-        PlayerPrefs.DeleteAll();
-    }
 }

@@ -13,8 +13,8 @@ public class Juego2 : MonoBehaviour
     public int filas = 3;
 
     // Objeto y posicion correcta objeto
-    GameObject objeto;
-    Transform lugar;
+    GameObject objetoAgarrado;
+    Transform lugarCorrectoObjeto;
 
     // Flag de pausado
     public bool pause = false;
@@ -91,13 +91,13 @@ public class Juego2 : MonoBehaviour
             if (flag)
             {
                 // Asignar bloque seleccionado
-                objeto = hit.transform.gameObject;
+                objetoAgarrado = hit.transform.gameObject;
 
                 // Lugar correcto del bloque
-                lugar = GameObject.Find("Lugar_" + objeto.name).GetComponent<Transform>();
+                lugarCorrectoObjeto = GameObject.Find("Lugar_" + objetoAgarrado.name).GetComponent<Transform>();
 
                 // Si el bloque esta en lugar correcto retornar void
-                if (objeto.transform.position == new Vector3(lugar.position.x, lugar.position.y + 0.2f, lugar.position.z)) return;
+                if (objetoAgarrado.transform.position == new Vector3(lugarCorrectoObjeto.position.x, lugarCorrectoObjeto.position.y + 0.2f, lugarCorrectoObjeto.position.z)) return;
 
                 flag = false;
             }
@@ -105,7 +105,7 @@ public class Juego2 : MonoBehaviour
             if ( Input.GetMouseButtonDown(0) ) mouseButtonDown();
 
             // Mover bloque
-            else objeto.transform.position = GetMouseAsWorldPoint() + offset + new Vector3(0, elevamiento, 0);
+            else objetoAgarrado.transform.position = GetMouseAsWorldPoint() + offset + new Vector3(0, elevamiento, 0);
         }
 
         if (Input.GetMouseButtonUp(0)) mouseButtonUp();
@@ -139,15 +139,14 @@ public class Juego2 : MonoBehaviour
     // Cuando se agarra un bloque
     void mouseButtonDown()
     {
-        //Debug.Log("Item Picked Up");
+        Debug.Log("mouseButtonDown");
 
-        // Set Z coordinateF
-        coordZ = Camera.main.WorldToScreenPoint(objeto.transform.position).z;
+        // Set Z coordinate
+        coordZ = Camera.main.WorldToScreenPoint(objetoAgarrado.transform.position).z;
 
-        offset = objeto.transform.position - GetMouseAsWorldPoint();
+        // ???
+        offset = objetoAgarrado.transform.position - GetMouseAsWorldPoint();
 
-        // Set inicial position
-        //inicialPos = GetMouseAsWorldPoint() + offset;
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -155,23 +154,26 @@ public class Juego2 : MonoBehaviour
     // Cuando se suelta un bloque
     void mouseButtonUp()
     {
+        Debug.Log("mouseButtonUp");
+
         // Si se clickeo algo que no es un bloque se retorna
         if (hit.transform == null) return;
 
-        // Distance from object to correct place
-        float distancia = Vector3.Distance(objeto.transform.position, lugar.position);
+        // Distancia desde objeto hasta lugar correcto
+        float distancia = Vector3.Distance(objetoAgarrado.transform.position, lugarCorrectoObjeto.position);
 
-        // If its inside the limit
+        // Si está dentro del rango
         if (distancia < limite)
         {
             Debug.Log("Posicionado correctamente");
 
-            // Place in correct place
-            objeto.transform.position = new Vector3(lugar.position.x, lugar.position.y + 0.2f, lugar.position.z);
+            // Se coloca en el lugar correcto
+            objetoAgarrado.transform.position = new Vector3(lugarCorrectoObjeto.position.x, lugarCorrectoObjeto.position.y + 0.2f, lugarCorrectoObjeto.position.z);
         }
-        else // Return to start position
+        // Dejarlo en la posicion que estaba
+        else
         {
-            objeto.transform.position = new Vector3(objeto.transform.position.x, objeto.transform.position.y - elevamiento, objeto.transform.position.z);
+            objetoAgarrado.transform.position = new Vector3(objetoAgarrado.transform.position.x, objetoAgarrado.transform.position.y - elevamiento, objetoAgarrado.transform.position.z);
             Debug.Log("No está en una posicion correcta");
         }
         flag = true;
