@@ -13,6 +13,9 @@ public class Juego1 : MonoBehaviour
     // Flag de juego empezado
     public bool start = false;
 
+    // Retraso de la animacion al mover bloques
+    float tiempoAnimacion = 0.1f;
+
     // Flag de juego pausado
     public bool pause = false;
 
@@ -27,10 +30,6 @@ public class Juego1 : MonoBehaviour
     public int RandomMoves = 30;
 
     Texture[] texturas;
-
-    // static Texture[] texturasImportadas;
-
-    //static bool flagTexture = true;
 
     // << -------- Varbiables privadas -------- >>
 
@@ -48,7 +47,6 @@ public class Juego1 : MonoBehaviour
     Text textoMovimientos;
 
     // Nombre e index de escena actual
-    string nombre;
     int index;
 
     /* -------------------------------------------------------------------------------- */
@@ -56,8 +54,6 @@ public class Juego1 : MonoBehaviour
     // Al iniciar juego
     void Start()
     {
-        // Nombre e index de escena actual
-        nombre = SceneManager.GetActiveScene().name;
         index  = SceneManager.GetActiveScene().buildIndex;
 
         cambiarTexturas();
@@ -174,8 +170,6 @@ public class Juego1 : MonoBehaviour
             }
         }
 
-        Transform posicion = GameObject.Find(slot.ToString()).GetComponent<Transform>();
-
         // Analizar movimientos posibles de bloque
         if (columna + 1 < columnas && matriz[fila, columna + 1] == 0)
         {
@@ -204,11 +198,18 @@ public class Juego1 : MonoBehaviour
 
         void accion(int offsetX, int offsetZ, string nombreAnimacion)
         {
+
+            GameObject bloque = GameObject.Find(slot.ToString());
+            Transform posicion = bloque.GetComponent<Transform>();
+
             // Se modifica el vector posicion con la posicion correspondiente
             Vector3 posicionVector = new Vector3(posicion.position.x + offsetX, posicion.position.y, posicion.position.z + offsetZ);
 
-            // Se aplica la posicion
-            posicion.position = posicionVector;
+            if (start)
+                // Se aplica la animacion
+                LeanTween.moveLocal(bloque, posicionVector, tiempoAnimacion);
+            else
+                posicion.position = posicionVector;
 
             // Se modifica la matriz para aplicar la nueva posicion
             matriz[fila + offsetZ / -5, columna + offsetX / 5] = slot;

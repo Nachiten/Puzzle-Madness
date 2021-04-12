@@ -25,32 +25,32 @@ public class LeanTweenManager : MonoBehaviour
             GameObject.Find("Borrar Progreso"),
             GameObject.Find("Salir")
         };
-
-        //Debug.Log("Corri start");
     }
 
     /* -------------------------------------------------------------------------------- */
-
-    public void ocultarMenusInicialmente() 
-    {
-        // Posicion inicial
-        LeanTween.scale(panel, new Vector3(0, 0, 1), 0f).setOnComplete(cerrarMenu);
-    }
-
+    // ---------------------------- ANIMACION ARBRIR MENU ----------------------------- //
     /* -------------------------------------------------------------------------------- */
 
     public void abrirMenu() 
     {
+        panel.SetActive(false);
+
+        foreach (GameObject boton in botones) {
+            boton.SetActive(false);
+        }
+
         animacionEnEjecucion = true;
         Debug.Log("Inicio Animacion [ABRIR]");
 
         // Posicion inicial
-        LeanTween.scale(panel, new Vector3(0,0,1), 0f);
-
-        LeanTween.scale(panel, new Vector3(1, 1, 1), tiempoAnimacionPanel).setOnComplete(abrirBotones);
+        LeanTween.scale(panel, new Vector3(0,0,1), 0f).setOnComplete(abrirPanel);
     }
 
-    /* -------------------------------------------------------------------------------- */
+    void abrirPanel() {
+
+        panel.SetActive(true);
+        LeanTween.scale(panel, new Vector3(1, 1, 1), tiempoAnimacionPanel).setOnComplete(abrirBotones);
+    }
 
     void abrirBotones() 
     {
@@ -58,36 +58,34 @@ public class LeanTweenManager : MonoBehaviour
         {
             GameObject boton = botones[i];
 
-            bool terminarAnimacion = false;
+            bool terminarAnimacion = i == botones.Length - 1;
 
             // Posiciones iniciales
-            LeanTween.scaleX(boton, 0, 0f);
-            LeanTween.scaleY(boton, 0.2f, 0f);
-
-            if (i == botones.Length - 1)
-                terminarAnimacion = true;
-
-            LeanTween.scaleX(boton, 2.3f, tiempoAnimacionBotones).setOnComplete(_ => abrirMenuEnY(boton, terminarAnimacion));
+            LeanTween.scale(boton, new Vector3(0,0.2f, 1), 0f).setOnComplete(_ => abrirBotonEnX(boton, terminarAnimacion));
         }
     }
 
-    /* -------------------------------------------------------------------------------- */
+    void abrirBotonEnX(GameObject boton, bool terminarAnimacion) 
+    {
+        boton.SetActive(true);
+        LeanTween.scaleX(boton, 2.3f, tiempoAnimacionBotones).setOnComplete(_ => abrirBotonEnY(boton, terminarAnimacion));
+    }
 
-    void abrirMenuEnY(GameObject unBoton, bool terminarAnimacion)
+    void abrirBotonEnY(GameObject unBoton, bool terminarAnimacion)
     {
         if (terminarAnimacion)
-            LeanTween.scaleY(unBoton, 3.1f, tiempoAnimacionBotones).setOnComplete(loguearTerminarAnimacion);
+            LeanTween.scaleY(unBoton, 3.1f, tiempoAnimacionBotones).setOnComplete(terminarAnimacionAbrir);
         else
             LeanTween.scaleY(unBoton, 3.1f, tiempoAnimacionBotones);
     }
 
-    /* -------------------------------------------------------------------------------- */
-
-    void loguearTerminarAnimacion() {
+    void terminarAnimacionAbrir() {
         animacionEnEjecucion = false;
         Debug.Log("Termino Animacion [ABRIR]");
     }
 
+    /* -------------------------------------------------------------------------------- */
+    // ---------------------------- ANIMACION CERRAR MENU ----------------------------- //
     /* -------------------------------------------------------------------------------- */
 
     public void cerrarMenu()
@@ -99,45 +97,37 @@ public class LeanTweenManager : MonoBehaviour
         {
             GameObject botonActual = botones[i];
 
+            bool cerrarMenu = i == botones.Length - 1;
+
             // Posiciones iniciales
-            LeanTween.scaleX(botonActual, 2.3f, 0f);
-            LeanTween.scaleY(botonActual, 3.1f, 0f);
-
-            bool cerrarMenu = false;
-
-            if (i == botones.Length - 1)
-                cerrarMenu = true;
-
-            LeanTween.scaleY(botonActual, 0.2f, tiempoAnimacionBotones).setOnComplete(_ => cerrarMenuEnX(botonActual, cerrarMenu));
+            LeanTween.scale(botonActual, new Vector3( 2.3f,3.1f,1), 0f).setOnComplete(_ => cerrarBotonEnY(botonActual, cerrarMenu));
         }
 
     }
 
-    /* -------------------------------------------------------------------------------- */
+    void cerrarBotonEnY(GameObject boton, bool cerrarMenu) {
+        LeanTween.scaleY(boton, 0.2f, tiempoAnimacionBotones).setOnComplete(_ => cerrarBotonEnX(boton, cerrarMenu));
+    }
 
-    void cerrarMenuEnX(GameObject unBoton, bool cerrarMenu) 
+    void cerrarBotonEnX(GameObject unBoton, bool cerrarMenu) 
     {
         //Debug.Log("Entre en cerrarMenuX");
 
         if (cerrarMenu)
-            LeanTween.scaleX(unBoton, 0f, tiempoAnimacionBotones).setOnComplete(ocularPanelYCerrarMenu);
+            LeanTween.scaleX(unBoton, 0f, tiempoAnimacionBotones).setOnComplete(cerrarPanel);
         else
             LeanTween.scaleX(unBoton, 0f, tiempoAnimacionBotones);
     }
 
-    /* -------------------------------------------------------------------------------- */
-
-    void ocularPanelYCerrarMenu() 
+    void cerrarPanel() 
     {
         // Posicion inicial
         LeanTween.scale(panel, new Vector3(1, 1, 1), 0f);
 
-        LeanTween.scale(panel, new Vector3(0, 0, 1), tiempoAnimacionPanel).setOnComplete(desactivarMenuYDesactivarAnimacion);
+        LeanTween.scale(panel, new Vector3(0, 0, 1), tiempoAnimacionPanel).setOnComplete(terminarAnimacionCerrar);
     }
 
-    /* -------------------------------------------------------------------------------- */
-
-    void desactivarMenuYDesactivarAnimacion() {
+    void terminarAnimacionCerrar() {
         Debug.Log("Termino Animacion [CERRAR]");
         animacionEnEjecucion = false;
         menu.SetActive(false);

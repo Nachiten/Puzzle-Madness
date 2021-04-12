@@ -9,10 +9,13 @@ public class ManejarMenu : MonoBehaviour
     // Flag de menu abierto
     public bool menuActivo = true;
 
+    // Flag de ya asigne las variables
+    static bool variablesAsignadas = false;
+
     // Menu pausa
     static GameObject menu;
     static LeanTweenManager tweenManager;
-
+    
     // Boton Continuar/Comenzar
     static Text boton;
 
@@ -28,17 +31,20 @@ public class ManejarMenu : MonoBehaviour
 
         if (menuActivo)
         {
-            menu = GameObject.Find("Menu");
-            boton = GameObject.Find("TextoBotonComenzar").GetComponent<Text>();
-            
+            if (!variablesAsignadas)
+            {
+                menu = GameObject.Find("Menu");
+                boton = GameObject.Find("TextoBotonComenzar").GetComponent<Text>();
+                variablesAsignadas = false;
+            }
+
             menuActivo = false;
         }
 
         if (index != 0)
         {
             boton.text = "Continuar";
-            menu.SetActive(false);
-            tweenManager.ocultarMenusInicialmente();
+            tweenManager.cerrarMenu();
         }
         else {
             boton.text = "Comenzar";
