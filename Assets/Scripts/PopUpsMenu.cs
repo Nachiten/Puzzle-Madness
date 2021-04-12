@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 
-public class PopUpBorrarClaves : MonoBehaviour
+public class PopUpsMenu : MonoBehaviour
 {
     int popUpOpen = 0;
     int currentImage = 0;
@@ -48,24 +48,31 @@ public class PopUpBorrarClaves : MonoBehaviour
 
         switch (num)
         {
-        case 0:
-            TextoBanner.text = "Confirmación de Borrado";
-            textoPrincipal.text = "Está seguro que desea borrar TODO el progreso actual del juego?";
-            botonSiTexto.text = "Si";
-            botonNo.SetActive(true);
+            case 0:
+                TextoBanner.text = "Confirmación de Borrado";
+                textoPrincipal.text = "Está seguro que desea borrar TODO el progreso actual del juego?";
+                botonSiTexto.text = "Si";
+                botonNo.SetActive(true);
 
-            break;
-        case 1:
-            TextoBanner.text = "Aviso Importante";
-            textoPrincipal.text = "Todo el progreso del juego fue borrado satisfactoriamente.";
+                break;
+            case 1:
+                TextoBanner.text = "Aviso Importante";
+                textoPrincipal.text = "Todo el progreso del juego fue borrado satisfactoriamente.";
 
-            break;
-        case 2:
-            TextoBanner.text = "Acción Cancelada";
-            textoPrincipal.text = "La acción fue cancelada con éxito.";
-            currentImage = 2;
+                break;
+            case 2:
+                TextoBanner.text = "Acción Cancelada";
+                textoPrincipal.text = "La acción fue cancelada con éxito.";
+                currentImage = 4;
 
-            break;
+                break;
+            case 3:
+                TextoBanner.text = "Confirmacion";
+                textoPrincipal.text = "Está seguro que desea salir?";
+                currentImage = 4;
+                botonSiTexto.text = "Si";
+                botonNo.SetActive(true);
+                break;
         }
 
         simbolo.texture = Textura[currentImage];
@@ -76,7 +83,8 @@ public class PopUpBorrarClaves : MonoBehaviour
 
         popUp.SetActive(false);
 
-        if (popUpOpen == 0) { 
+        if (popUpOpen == 0)
+        {
 
             if (accionUsada)
             {
@@ -86,6 +94,13 @@ public class PopUpBorrarClaves : MonoBehaviour
             else
             {
                 abrirPopUp(2);
+            }
+        }
+        else if (popUpOpen == 3) 
+        {
+            if (accionUsada)
+            {
+                GameObject.Find("GameManager").GetComponent<LevelLoader>().salir();
             }
         }
     }

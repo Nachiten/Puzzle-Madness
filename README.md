@@ -15,10 +15,12 @@ Juego2 = Puzzle Normal.
 
 # Changelog
 *Versión 2.0* [EN DESARROLLO]: 
-- Se genera un checkeo adicional antes de borrar todo el progreso del juego. 
+- Se genera un checkeo adicional antes de borrar el progreso del juego.
+- Se hace un checkeo para salir.
 - Se mueven y sueltan correctamente los bloques en Juego2.
 
 # TODOs
 - Fixear posiciones diferentes de template resuelta.
 - Fixear soporte para distintas resoluciones.
 - Agregar animaciones (al mover los bloques en Juego1).
+- Musica.

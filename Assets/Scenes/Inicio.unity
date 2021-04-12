@@ -2172,14 +2172,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1575246850}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: Salir
-        m_Mode: 1
+      - m_Target: {fileID: 1372057395}
+        m_TargetAssemblyTypeName: PopUpsMenu, Assembly-CSharp
+        m_MethodName: abrirPopUp
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2434,6 +2434,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: afd958581550d2849829ebaba864ad71, type: 3}
   - {fileID: 2800000, guid: f9d0e741b5c1b004eb72106f31bf1a98, type: 3}
   - {fileID: 2800000, guid: c78323b383a3fc846ad850a31eabc1a4, type: 3}
+  - {fileID: 2800000, guid: aabf57fbe39cedf4996efe535d125138, type: 3}
 --- !u!1 &1464173695
 GameObject:
   m_ObjectHideFlags: 0
