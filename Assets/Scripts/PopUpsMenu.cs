@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System;
 
 public class PopUpsMenu : MonoBehaviour
 {
@@ -18,6 +17,8 @@ public class PopUpsMenu : MonoBehaviour
     Text textoPrincipal;
     Text TextoBanner;
     Text botonSiTexto;
+
+    float tiempoAnimacion = 0.18f;
 
     void Start()
     {
@@ -39,7 +40,9 @@ public class PopUpsMenu : MonoBehaviour
     public void abrirPopUp(int num) {
 
         popUpOpen = num;
-        popUp.SetActive(true);
+
+        animarApertura();
+
         botonNo.SetActive(false);
 
         currentImage = 0;
@@ -80,6 +83,34 @@ public class PopUpsMenu : MonoBehaviour
 
     public void cerrarPopUp( bool accionUsada) // TRUE = si FALSE = no
     {
+        Debug.Log("Cerrando popup");
+        LeanTween.moveLocalX(popUp, 1500, tiempoAnimacion).setOnComplete(_ => realizarAccionAlCerrar(accionUsada));
+    }
+
+    public void borrarTodasLasKeys()
+    {
+        Debug.LogError("BORRANDO TODAS LAS KEYS !!!!");
+        PlayerPrefs.DeleteAll();
+
+        int indexLevelSelector = 12;
+
+        if (SceneManager.GetActiveScene().buildIndex == indexLevelSelector) GameObject.Find("GameManager").GetComponent<LevelLoader>().cargarNivel(indexLevelSelector);
+    }
+
+    void animarApertura() 
+    {
+        // Posicion inicial
+        LeanTween.moveLocalX(popUp, -1500, 0f).setOnComplete(_ => popUp.SetActive(true));
+
+        Debug.Log("Animando apertura");
+
+        LeanTween.moveLocalX(popUp, 0, tiempoAnimacion);  
+    }
+
+    void realizarAccionAlCerrar(bool accionUsada) 
+    {
+
+        Debug.Log("Entre en accion a realizar");
 
         popUp.SetActive(false);
 
@@ -96,23 +127,13 @@ public class PopUpsMenu : MonoBehaviour
                 abrirPopUp(2);
             }
         }
-        else if (popUpOpen == 3) 
+        else if (popUpOpen == 3)
         {
             if (accionUsada)
             {
                 GameObject.Find("GameManager").GetComponent<LevelLoader>().salir();
             }
         }
-    }
-
-    public void borrarTodasLasKeys()
-    {
-        Debug.LogError("BORRANDO TODAS LAS KEYS !!!!");
-        PlayerPrefs.DeleteAll();
-
-        int indexLevelSelector = 12;
-
-        if (SceneManager.GetActiveScene().buildIndex == indexLevelSelector) GameObject.Find("GameManager").GetComponent<LevelLoader>().cargarNivel(indexLevelSelector);
     }
 }
 

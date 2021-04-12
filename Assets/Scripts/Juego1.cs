@@ -197,7 +197,7 @@ public class Juego1 : MonoBehaviour
             // Se mueve hacia arriba
             accion(0, 5, "ActivarAbajo");
         }
-        else { Debug.Log("No hay espacio a donde mover este bloque"); }
+        //else { Debug.Log("No hay espacio a donde mover este bloque"); }
 
         // Actualizar movimientos
         textoMovimientos.text = movimientos.ToString();

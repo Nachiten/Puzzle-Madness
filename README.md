@@ -17,6 +17,8 @@ Juego2 = Puzzle Normal.
 - Se hace un checkeo para salir.
 - Se mueven y sueltan correctamente los bloques en Juego2.
 - Corregidos colores poco visibles de textos del menu.
+- Agregadas animaciones al abrir y cerrar menu.
+- Agregadas animaciones en pop up de menu.
 
 # TODOs
 - Fixear posiciones diferentes de template resuelta.

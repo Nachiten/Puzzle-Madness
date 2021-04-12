@@ -7,10 +7,11 @@ using UnityEngine.UI;
 public class ManejarMenu : MonoBehaviour
 {
     // Flag de menu abierto
-    static bool flag = true;
+    public bool menuActivo = true;
 
     // Menu pausa
     static GameObject menu;
+    static LeanTweenManager tweenManager;
 
     // Boton Continuar/Comenzar
     static Text boton;
@@ -23,18 +24,21 @@ public class ManejarMenu : MonoBehaviour
     void Start()
     {
         index = SceneManager.GetActiveScene().buildIndex;
+        tweenManager = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>();
 
-        if (flag)
+        if (menuActivo)
         {
             menu = GameObject.Find("Menu");
             boton = GameObject.Find("TextoBotonComenzar").GetComponent<Text>();
-            flag = false;
+            
+            menuActivo = false;
         }
 
         if (index != 0)
         {
             boton.text = "Continuar";
             menu.SetActive(false);
+            tweenManager.ocultarMenusInicialmente();
         }
         else {
             boton.text = "Comenzar";
@@ -50,15 +54,27 @@ public class ManejarMenu : MonoBehaviour
 
         if (index == 0) return;
 
-        else if (Input.GetKeyDown("escape")) manejarMenu();
+        bool animacionEnEjecucion = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>().animacionEnEjecucion;
+
+        if (Input.GetKeyDown("escape") && !animacionEnEjecucion) 
+            manejarMenu();
     }
 
     /* -------------------------------------------------------------------------------- */
 
     public void manejarMenu() {
+        
+        menuActivo = !menuActivo;
 
-        menu.SetActive(!flag);
-        flag = !flag;
+        if (menuActivo)
+        {
+            menu.SetActive(true);
+            tweenManager.abrirMenu();
+        }
+        else 
+        {
+            tweenManager.cerrarMenu();
+        }
 
         // Si es Juego1
         if (index < 11 && FindObjectOfType<Juego1>().start) activarTimer();
@@ -66,12 +82,12 @@ public class ManejarMenu : MonoBehaviour
         // Si es Juego2
         if (index > 12 && FindObjectOfType<Juego2>().start)
         { 
-            FindObjectOfType<Juego2>().pause = flag;
+            FindObjectOfType<Juego2>().pause = menuActivo;
             activarTimer();
         }
     }
 
     /* -------------------------------------------------------------------------------- */
 
-    void activarTimer() { FindObjectOfType<Timer>().toggleClock(!flag); }
+    void activarTimer() { FindObjectOfType<Timer>().toggleClock(!menuActivo); }
 }

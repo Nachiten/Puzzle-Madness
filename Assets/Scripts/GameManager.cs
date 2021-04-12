@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
 
         GameObject referencia = GameObject.Find("_Reference");
 
-        Debug.Log(referencia);
+        //Debug.Log(referencia);
 
         int contador = 1;
 
@@ -159,7 +159,7 @@ public class GameManager : MonoBehaviour
                     // Crear el clon
                     GameObject clon = Instantiate(Resources.Load("1", typeof(GameObject))) as GameObject;
 
-                    Debug.Log(clon);
+                    //Debug.Log(clon);
 
                     // Asignar nombre correcto
                     clon.name = contador.ToString();
@@ -197,12 +197,12 @@ public class GameManager : MonoBehaviour
 
         if (index < 11)
         {
-            Debug.Log("Posicion Antes | " + modeloTransform.position.ToString());
+            //Debug.Log("Posicion Antes | " + modeloTransform.position.ToString());
 
             modeloTransform.position = new Vector3(modeloTransform.position.x - (index - 1) * 1.5111f, modeloTransform.position.y - (index - 1) * 2f, modeloTransform.position.z);
 
-            Debug.Log("Posicion Despues | " + modeloTransform.position.ToString());
-            Debug.Log("Index | " + index.ToString());
+            //Debug.Log("Posicion Despues | " + modeloTransform.position.ToString());
+            //Debug.Log("Index | " + index.ToString());
 
             // Ajustar tamaño de imagen modelo a nivel actual
             modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y, 1.5f * filas);
