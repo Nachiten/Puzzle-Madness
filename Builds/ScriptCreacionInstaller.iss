@@ -9,8 +9,8 @@
 #define MyAppAssocName MyAppName
 #define MyAppAssocExt ".myp"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
-#define PathProyecto "D:\Programas Unity\Puzzle-Madness"
-; #define PathProyecto "Ubicacion en la notebook"
+#define PathProyecto "D:\Programas Unity\Puzzle-Madness" ; PATH EN PC ESCRITORIO
+; #define PathProyecto "C:\Programas Unity\Puzzle-Madness" ; PATH EN NOTEBOOK
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
