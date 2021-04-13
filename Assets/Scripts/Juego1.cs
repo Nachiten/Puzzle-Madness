@@ -71,13 +71,6 @@ public class Juego1 : MonoBehaviour
             Mesh mesh = rendererModelo.GetComponent<MeshFilter>().mesh;
             Vector2[] UVs = new Vector2[mesh.vertices.Length];
 
-            // ------ MODIFICAR PARA TENER BORDE -----
-
-            // Cambiar "Tiling" de textura
-            //objeto.material.mainTextureScale = new Vector2(scaleX, scaleY);
-            // Ajustar "Offeset" de textura
-            //objeto.material.mainTextureOffset = new Vector2(offsetX, offsetY);
-
             float xMin = 0.334f;
             float xMax = 0.666f;
 

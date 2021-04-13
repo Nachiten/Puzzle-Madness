@@ -14,10 +14,6 @@ public class Buttons : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    //public void SeleccionarNivel() { loadLevel(7);}
-
-    /* -------------------------------------------------------------------------------- */
-
     public void Salir() { GameObject.Find("GameManager").GetComponent<LevelLoader>().salir(); }
 
     /* -------------------------------------------------------------------------------- */

@@ -230,63 +230,68 @@ public class GameManager : MonoBehaviour
                     Mesh mesh = objeto.GetComponent<MeshFilter>().mesh;
                     Vector2[] UVs = new Vector2[mesh.vertices.Length];
 
-                    // ------ MODIFICAR PARA TENER BORDE -----
-
-                    // Cambiar "Tiling" de textura
-                    //objeto.material.mainTextureScale = new Vector2(scaleX, scaleY);
-                    // Ajustar "Offeset" de textura
-                    //objeto.material.mainTextureOffset = new Vector2(offsetX, offsetY);
-
-                    float xMin = 0.334f;
-                    float yMin = (0.33333f / filas) * (filas - 1);
-
-                    xMin = xMin + 0.33333f / columnas * j;
-                    float xMax = xMin + 0.33333f / columnas;
-
-                    yMin = yMin - 0.33333f / filas * i;
-                    float yMax = yMin + 0.33333f / filas;
-
-                    // Top
-                    UVs[4] = new Vector2(xMin, yMax);
-                    UVs[5] = new Vector2(xMax, yMax);
-                    UVs[8] = new Vector2(xMin, yMin);
-                    UVs[9] = new Vector2(xMax, yMin);
-
-                    // Front
-                    UVs[0] = new Vector2(0.0f, 0.0f);
-                    UVs[1] = new Vector2(0.333f, 0.0f);
-                    UVs[2] = new Vector2(0.0f, 0.333f);
-                    UVs[3] = new Vector2(0.333f, 0.333f);
-
-                    // Back
-                    UVs[6] = new Vector2(1.0f, 0.0f);
-                    UVs[7] = new Vector2(0.667f, 0.0f);
-                    UVs[10] = new Vector2(1.0f, 0.333f);
-                    UVs[11] = new Vector2(0.667f, 0.333f);
-
-                    // Bottom
-                    UVs[12] = new Vector2(0.0f, 0.334f);
-                    UVs[13] = new Vector2(0.0f, 0.666f);
-                    UVs[14] = new Vector2(0.333f, 0.666f);
-                    UVs[15] = new Vector2(0.333f, 0.334f);
-
-                    // Left
-                    UVs[16] = new Vector2(0.334f, 0.334f);
-                    UVs[17] = new Vector2(0.334f, 0.666f);
-                    UVs[18] = new Vector2(0.666f, 0.666f);
-                    UVs[19] = new Vector2(0.666f, 0.334f);
-
-                    // Right        
-                    UVs[20] = new Vector2(0.667f, 0.334f);
-                    UVs[21] = new Vector2(0.667f, 0.666f);
-                    UVs[22] = new Vector2(1.0f, 0.666f);
-                    UVs[23] = new Vector2(1.0f, 0.334f);
-                    mesh.uv = UVs;
-
-                    // ---------------------------------------
 
                     // Cambiar la textura al modelo
                     objeto.material.mainTexture = modelo.material.mainTexture;
+
+                    index = SceneManager.GetActiveScene().buildIndex;
+
+                    // Si es un custom level, usar forma standard de poner textura
+                    if (index == 11 || index == 23)
+                    {
+                        // Cambiar "Tiling" de textura
+                        objeto.material.mainTextureScale = new Vector2(scaleX, scaleY);
+                        // Ajustar "Offeset" de textura
+                        objeto.material.mainTextureOffset = new Vector2(offsetX, offsetY);
+                    }
+                    // Si es Juego1 o Juego2, usar los bordes negros
+                    else 
+                    {
+                        float xMin = 0.334f + 0.33333f / columnas * j;
+                        float yMin = (0.33333f / filas) * (filas - 1) - 0.33333f / filas * i;
+
+                        float xMax = xMin + 0.33333f / columnas;
+                        float yMax = yMin + 0.33333f / filas;
+
+                        // Top
+                        UVs[4] = new Vector2(xMin, yMax);
+                        UVs[5] = new Vector2(xMax, yMax);
+                        UVs[8] = new Vector2(xMin, yMin);
+                        UVs[9] = new Vector2(xMax, yMin);
+
+                        // Front
+                        UVs[0] = new Vector2(0.0f, 0.0f);
+                        UVs[1] = new Vector2(0.333f, 0.0f);
+                        UVs[2] = new Vector2(0.0f, 0.333f);
+                        UVs[3] = new Vector2(0.333f, 0.333f);
+
+                        // Back
+                        UVs[6] = new Vector2(1.0f, 0.0f);
+                        UVs[7] = new Vector2(0.667f, 0.0f);
+                        UVs[10] = new Vector2(1.0f, 0.333f);
+                        UVs[11] = new Vector2(0.667f, 0.333f);
+
+                        // Bottom
+                        UVs[12] = new Vector2(0.0f, 0.334f);
+                        UVs[13] = new Vector2(0.0f, 0.666f);
+                        UVs[14] = new Vector2(0.333f, 0.666f);
+                        UVs[15] = new Vector2(0.333f, 0.334f);
+
+                        // Left
+                        UVs[16] = new Vector2(0.334f, 0.334f);
+                        UVs[17] = new Vector2(0.334f, 0.666f);
+                        UVs[18] = new Vector2(0.666f, 0.666f);
+                        UVs[19] = new Vector2(0.666f, 0.334f);
+
+                        // Right        
+                        UVs[20] = new Vector2(0.667f, 0.334f);
+                        UVs[21] = new Vector2(0.667f, 0.666f);
+                        UVs[22] = new Vector2(1.0f, 0.666f);
+                        UVs[23] = new Vector2(1.0f, 0.334f);
+                        mesh.uv = UVs;
+                    }
+
+                    
 
                     contador++;
                 }
