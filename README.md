@@ -19,8 +19,10 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 - Agregadas animaciones en pop ups del menu.
 - Agregadas animaciones al mover bloques en Juego1.
 
+*Versión 3.0*: 
+- Fixeado problema de texturas aplastadas en costados de bloques.
+
 # TODOs
 - Fixear posiciones diferentes de template resuelta.
 - Fixear soporte para distintas resoluciones.
-- Fixear costados de bloques con texturas aplastadas.
 - Musica y Sonidos.

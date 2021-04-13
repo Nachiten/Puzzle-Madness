@@ -35,7 +35,7 @@ public class ManejarMenu : MonoBehaviour
             {
                 menu = GameObject.Find("Menu");
                 boton = GameObject.Find("TextoBotonComenzar").GetComponent<Text>();
-                variablesAsignadas = false;
+                variablesAsignadas = true;
             }
 
             menuActivo = false;
