@@ -7,13 +7,13 @@ using UnityEngine.UI;
 public class ManejarMenu : MonoBehaviour
 {
     // Flag de menu abierto
-    public bool menuActivo = true;
+    public bool menuActivo = true, opcionesActivas = false;
 
     // Flag de ya asigne las variables
     static bool variablesAsignadas = false;
 
     // Menu pausa
-    static GameObject menu;
+    static GameObject menu, opciones;
     static LeanTweenManager tweenManager;
     
     // Boton Continuar/Comenzar
@@ -27,7 +27,7 @@ public class ManejarMenu : MonoBehaviour
     void Start()
     {
         index = SceneManager.GetActiveScene().buildIndex;
-        tweenManager = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>();
+       
 
         if (menuActivo)
         {
@@ -35,6 +35,8 @@ public class ManejarMenu : MonoBehaviour
             {
                 menu = GameObject.Find("Menu");
                 boton = GameObject.Find("TextoBotonComenzar").GetComponent<Text>();
+                tweenManager = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>();
+                opciones = GameObject.Find("MenuOpciones");
                 variablesAsignadas = true;
             }
 
@@ -50,6 +52,8 @@ public class ManejarMenu : MonoBehaviour
             boton.text = "Comenzar";
             menu.SetActive(true);
         }
+
+        opciones.SetActive(false);
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -96,4 +100,21 @@ public class ManejarMenu : MonoBehaviour
     /* -------------------------------------------------------------------------------- */
 
     void activarTimer() { FindObjectOfType<Timer>().toggleClock(!menuActivo); }
+
+    public void manejarOpciones()
+    {
+        opcionesActivas = !opcionesActivas;
+
+        if (opcionesActivas) 
+        { 
+            Debug.Log("Abriendo Opciones"); 
+        }
+        else
+        { 
+            Debug.Log("Cerrando Opciones"); 
+        }
+
+        menu.SetActive(!opcionesActivas);
+        opciones.SetActive(opcionesActivas);
+    }
 }

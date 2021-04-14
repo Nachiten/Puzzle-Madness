@@ -5,11 +5,15 @@ using UnityEngine.UI;
 
 public class LeanTweenManager : MonoBehaviour
 {
+    #region Variables
+
     public GameObject[] botones;
     float tiempoAnimacionBotones = 0.2f, tiempoAnimacionPanel = 0.15f; // 0.3, 0.2
-    public GameObject menu, panel;
+    GameObject menu, panel;
 
     public bool animacionEnEjecucion = false;
+
+    #endregion
 
     /* -------------------------------------------------------------------------------- */
 

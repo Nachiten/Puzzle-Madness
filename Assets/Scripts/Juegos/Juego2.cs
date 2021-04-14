@@ -5,23 +5,11 @@ public class Juego2 : MonoBehaviour
 {
     #region Variables Publicas
 
-    // Ganar juego [Debug Only]
-    public bool GanarHack = false;
-
     // Tamaño de tabla
-    public int columnas = 3;
-    public int filas = 3;
+    public int columnas = 3, filas = 3;
 
-    // Objeto y posicion correcta objeto
-    GameObject objetoAgarrado;
-    Transform lugarCorrectoObjeto;
-    // Flag para saber si hay algun objeto agarrado
-    bool hayObjetoAgarrado = false;
-
-    // Flag de pausado
-    public bool pause = false;
-    // Flag de comienzo
-    public bool start = false;
+    // Flag de pausado, comienzo, ganarHack
+    public bool pause = false, start = false, ganarHack = false;
 
     #endregion
 
@@ -29,20 +17,18 @@ public class Juego2 : MonoBehaviour
 
     #region Variables Privadas
 
-    // Flag juego ganado
-    bool gano = false;
+    // Objeto y posicion correcta objeto
+    GameObject objetoAgarrado;
+    Transform lugarCorrectoObjeto;
+
+    // Objeto agarrado, juego ganado
+    bool hayObjetoAgarrado = false, gano = false;
 
     // Offset de posicion
     Vector3 offset;
 
     // Posicion Z
-    float coordZ;
-
-    // Limite de distancia
-    float limite = 1.6f;
-    float elevamiento = 0.5f;
-
-
+    float coordZ, limite = 1.6f, elevamiento = 0.5f;
 
     Texture[] texturas;
 
@@ -53,7 +39,7 @@ public class Juego2 : MonoBehaviour
     void Start()
     {
         int index = SceneManager.GetActiveScene().buildIndex;
-
+         
         cambiarTexturas();
 
         if (index < 23) {
@@ -120,10 +106,10 @@ public class Juego2 : MonoBehaviour
 
     void Update()
     {
-        if (GanarHack)
+        if (ganarHack)
         {
             ganarJuego();
-            GanarHack = false;
+            ganarHack = false;
         }
 
         // No se hace nada en caso de estar en pausa, no haber comenzado o haber ganado
@@ -234,6 +220,8 @@ public class Juego2 : MonoBehaviour
 
             // Se coloca en el lugar correcto
             objetoAgarrado.transform.position = new Vector3(lugarCorrectoObjeto.position.x, lugarCorrectoObjeto.position.y + 0.2f, lugarCorrectoObjeto.position.z);
+
+            this.GetComponent<SoundManager>().reproducirSonido(0);
         }
         // Dejarlo en la posicion donde se soltó
         else
@@ -245,39 +233,12 @@ public class Juego2 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    // DEPRACATED
-
-    //void reajustarPosiciones() {
-    //    int contador;
-
-    //    contador = 1;
-
-    //    for (int i = 0; i < filas; i++) {
-    //        for (int j = 0; j < columnas; j++) {
-    //            Transform posicion = GameObject.Find(contador.ToString()).transform;
-
-    //            if (posicion.position.y > 1)
-    //            {
-    //                Debug.Log("Arreglando Posicion");
-    //                posicion.position = new Vector3(posicion.position.x, 0.9452782f, posicion.position.z);
-    //            }
-    //            //Debug.Log("Posicion Y de: " + GameObject.Find(contador.ToString()).name + " | " + posicion.position.y);
-
-    //            contador++;
-    //        }
-    //    }
-    //}
-
-    /* -------------------------------------------------------------------------------- */
-
     Vector3 GetMouseAsWorldPoint()
     {
         // Coordenadas de pixel de mouse (X,Y)
         Vector3 mousePoint = Input.mousePosition;
-
         // Coordenadas Z del objeto
         mousePoint.z = coordZ;
-
         // Convertir posicion de mouse en coordenadas 3D
         return Camera.main.ScreenToWorldPoint(mousePoint);
     }

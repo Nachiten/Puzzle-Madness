@@ -27,3 +27,5 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 - Fixear posiciones diferentes de template resuelta.
 - Fixear soporte para distintas resoluciones.
 - Musica y Sonidos.
+- Boton comenzar del menu principal debe llevar al primer nivel no ganado.
+- Ir a la pantalla principal cuando borras progreso.

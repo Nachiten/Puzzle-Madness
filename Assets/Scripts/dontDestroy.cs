@@ -12,9 +12,15 @@ public class dontDestroy : MonoBehaviour
     {
         if (flag)
         {
+            //Debug.Log("Objeto: " + gameObject.name + " NO es destruido.");
             DontDestroyOnLoad(gameObject);
             flag = false;
         }
-        else Destroy(gameObject);
+        else
+        {
+            //Debug.Log("Objeto: " + gameObject.name + " SI es destruido.");
+            Destroy(gameObject);
+        }
+            
     }
 }
