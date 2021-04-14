@@ -7,21 +7,38 @@ public class Controllers : MonoBehaviour
 {
     /* --------------------------- Volumen --------------------------- */
     
-    public AudioMixer mixer;
+    public AudioMixer mixerMusica, mixerSonidos;
     GameObject numeroVolumen;
     Text texto;
 
-    public void SetLevel(float valorSlider)
+    public void setMusicLevel(float valorSlider)
     {
-        numeroVolumen = GameObject.Find("Numero Volumen");
+        numeroVolumen = GameObject.Find("NumeroVolumenMusica");
 
         texto = numeroVolumen.GetComponent<Text>();
 
-        texto.text = (valorSlider * 100).ToString("F2");
+        texto.text = (valorSlider * 100).ToString("F0");
 
         valorSlider = valorSlider * 0.9999f + 0.0001f;
 
-        mixer.SetFloat("Volume", Mathf.Log10 (valorSlider) * 20);
+        mixerMusica.SetFloat("Volume", Mathf.Log10 (valorSlider) * 20);
+    }
+
+    /* --------------------------------------------------------------- */
+
+    public void setSoundLevel(float valorSlider)
+    {
+        numeroVolumen = GameObject.Find("NumeroVolumenSonidos");
+
+        texto = numeroVolumen.GetComponent<Text>();
+
+        texto.text = (valorSlider * 100).ToString("F0");
+
+        valorSlider = valorSlider * 0.9999f + 0.0001f;
+
+        mixerSonidos.SetFloat("Volume", Mathf.Log10(valorSlider) * 20);
+
+        GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(0);
     }
 
     /* --------------------------------------------------------------- */

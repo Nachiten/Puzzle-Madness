@@ -221,7 +221,7 @@ public class Juego2 : MonoBehaviour
             // Se coloca en el lugar correcto
             objetoAgarrado.transform.position = new Vector3(lugarCorrectoObjeto.position.x, lugarCorrectoObjeto.position.y + 0.2f, lugarCorrectoObjeto.position.z);
 
-            this.GetComponent<SoundManager>().reproducirSonido(0);
+            GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(0);
         }
         // Dejarlo en la posicion donde se soltó
         else

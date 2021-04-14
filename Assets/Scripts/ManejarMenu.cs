@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -13,11 +11,11 @@ public class ManejarMenu : MonoBehaviour
     static bool variablesAsignadas = false;
 
     // Menu pausa
-    static GameObject menu, opciones;
+    static GameObject menu, opciones, botonesInicio;
     static LeanTweenManager tweenManager;
     
     // Boton Continuar/Comenzar
-    static Text boton;
+    static Text textoBoton;
 
     // Index de escena actual
     int index;
@@ -28,15 +26,16 @@ public class ManejarMenu : MonoBehaviour
     {
         index = SceneManager.GetActiveScene().buildIndex;
        
-
         if (menuActivo)
         {
             if (!variablesAsignadas)
             {
                 menu = GameObject.Find("Menu");
-                boton = GameObject.Find("TextoBotonComenzar").GetComponent<Text>();
-                tweenManager = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>();
                 opciones = GameObject.Find("MenuOpciones");
+
+                textoBoton = GameObject.Find("TextoBotonComenzar").GetComponent<Text>();
+                tweenManager = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>();
+                
                 variablesAsignadas = true;
             }
 
@@ -45,11 +44,14 @@ public class ManejarMenu : MonoBehaviour
 
         if (index != 0)
         {
-            boton.text = "Continuar";
+            textoBoton.text = "Continuar";
             tweenManager.cerrarMenu();
+            opciones.SetActive(false);
         }
-        else {
-            boton.text = "Comenzar";
+        else 
+        {
+            botonesInicio = GameObject.Find("Botones Inicio");
+            textoBoton.text = "Comenzar";
             menu.SetActive(true);
         }
 
@@ -72,8 +74,8 @@ public class ManejarMenu : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    public void manejarMenu() {
-        
+    public void manejarMenu() 
+    {
         menuActivo = !menuActivo;
 
         if (menuActivo)
@@ -107,14 +109,13 @@ public class ManejarMenu : MonoBehaviour
 
         if (opcionesActivas) 
         { 
-            Debug.Log("Abriendo Opciones"); 
+            Debug.Log("Abriendo Opciones");
+            tweenManager.abrirOpciones();
         }
         else
         { 
-            Debug.Log("Cerrando Opciones"); 
+            Debug.Log("Cerrando Opciones");
+            tweenManager.cerrarOpciones();
         }
-
-        menu.SetActive(!opcionesActivas);
-        opciones.SetActive(opcionesActivas);
     }
 }
