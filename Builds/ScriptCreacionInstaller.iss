@@ -12,6 +12,7 @@
 #define PathProyecto "D:\Programas Unity\Puzzle-Madness" ; PATH EN PC ESCRITORIO
 ; #define PathProyecto "C:\Programas Unity\Puzzle-Madness" ; PATH EN NOTEBOOK
 
+
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
@@ -52,8 +53,6 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
-
-
 [Files]
 Source: "{#PathProyecto}\Builds\Windows\PuzzleMadness{#MyAppVersion}\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#PathProyecto}\Builds\Windows\PuzzleMadness{#MyAppVersion}\MonoBleedingEdge\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -75,4 +74,3 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-
