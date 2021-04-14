@@ -53,6 +53,8 @@ public class ManejarMenu : MonoBehaviour
             botonesInicio = GameObject.Find("Botones Inicio");
             textoBoton.text = "Comenzar";
             menu.SetActive(true);
+
+            mostrarUltimoNivelNoGanado();
         }
 
         opciones.SetActive(false);
@@ -72,6 +74,50 @@ public class ManejarMenu : MonoBehaviour
             manejarMenu();
     }
 
+    void mostrarUltimoNivelNoGanado() {
+
+
+        // 1 - 22
+
+        int indexNoGanado = 0;
+
+        for (int i = 1; i <= 22; i++)
+        {
+            if (i == 11 || i == 12)
+                continue;
+
+            float playerPrefGuardada = PlayerPrefs.GetFloat("Time_" + i);
+
+            if (playerPrefGuardada == 0.0f) {
+                indexNoGanado = i;
+                break;
+            }
+        }
+
+        int numeroJuego;
+        int nivelNoGanado;
+
+        if (indexNoGanado < 11)
+        {
+            numeroJuego = 1;
+            nivelNoGanado = indexNoGanado;
+        }
+        else if (indexNoGanado < 23)
+        {
+            numeroJuego = 2;
+            nivelNoGanado = indexNoGanado - 12;
+        }
+        else {
+            numeroJuego = 0;
+            nivelNoGanado = 0;
+        }
+
+        Debug.Log("Numero Juego: " + numeroJuego);
+        Debug.Log("Nivel no ganado: " + nivelNoGanado);
+
+        
+    }
+
     /* -------------------------------------------------------------------------------- */
 
     public void manejarMenu() 
@@ -86,6 +132,11 @@ public class ManejarMenu : MonoBehaviour
         else 
         {
             tweenManager.cerrarMenu();
+        }
+
+        if (opcionesActivas) {
+            tweenManager.cerrarOpciones();
+            opcionesActivas = false;
         }
 
         // Si es Juego1

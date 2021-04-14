@@ -20,17 +20,16 @@ public class LeanTweenManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         botonesInicio = GameObject.Find("Botones Inicio");
 
         menu = GameObject.Find("Menu");
-        panel = GameObject.Find("Panel");
+        panel = GameObject.Find("PanelMenu");
         opciones = GameObject.Find("MenuOpciones");
 
         botones = new GameObject[]{
             GameObject.Find("Comenzar"),
             GameObject.Find("Seleccionar Nivel"),
-            GameObject.Find("Borrar Progreso"),
+            GameObject.Find("Opciones"),
             GameObject.Find("Salir")
         };
     }
