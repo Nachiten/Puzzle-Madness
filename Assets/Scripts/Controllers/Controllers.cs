@@ -13,7 +13,7 @@ public class Controllers : MonoBehaviour
 
     public void SetLevel(float valorSlider)
     {
-        numeroVolumen = GameObject.FindGameObjectWithTag("Numero Volumen");
+        numeroVolumen = GameObject.Find("Numero Volumen");
 
         texto = numeroVolumen.GetComponent<Text>();
 

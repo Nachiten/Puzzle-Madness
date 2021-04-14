@@ -22,6 +22,8 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 *Versión 3.0*: 
 - Fixeado problema de texturas aplastadas en costados de bloques.
 - Agregadas animaciones a pop ups de custom level.
+- Implementado menu opciones.
+- Implementada musica en todo el juego.
 
 # TODOs
 - Fixear posiciones diferentes de template resuelta.
