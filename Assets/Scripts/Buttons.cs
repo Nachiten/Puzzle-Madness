@@ -25,4 +25,6 @@ public class Buttons : MonoBehaviour
     public void loadLevel(int index) { GameObject.Find("GameManager").GetComponent<LevelLoader>().cargarNivel(index); }
 
     public void manejarOpciones() { GameObject.Find("GameManager").GetComponent<ManejarMenu>().manejarOpciones(); }
+
+    public void manejarCreditos() { GameObject.Find("GameManager").GetComponent<ManejarMenu>().manejarCreditos(); }
 }

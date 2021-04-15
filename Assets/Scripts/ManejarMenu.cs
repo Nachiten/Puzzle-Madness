@@ -6,19 +6,16 @@ using TMPro;
 public class ManejarMenu : MonoBehaviour
 {
     // Flag de menu abierto
-    bool menuActivo = true, opcionesActivas = false, mostrandoContinuarDesdeNivel = false;
+    bool menuActivo = true, opcionesActivas = false, creditosActivos = false, mostrandoContinuarDesdeNivel = false;
 
     // Flag de ya asigne las variables
     static bool variablesAsignadas = false;
 
     // Menu pausa
-    static GameObject menu, opciones, continuarDesdeNivel;
+    static GameObject menu, opciones, creditos, continuarDesdeNivel;
     static LeanTweenManager tweenManager;
     
-    // Boton Continuar/Comenzar
-    static Text textoBoton;
-
-    static TMP_Text textoNivelNoGanado;
+    static TMP_Text textoNivelNoGanado, textoBoton;
 
     // Index de escena actual
     int index;
@@ -35,9 +32,10 @@ public class ManejarMenu : MonoBehaviour
             {
                 menu = GameObject.Find("Menu");
                 opciones = GameObject.Find("MenuOpciones");
+                creditos = GameObject.Find("MenuCreditos");
                 continuarDesdeNivel = GameObject.Find("ContinuarDesdeNivel");
 
-                textoBoton = GameObject.Find("TextoBotonComenzar").GetComponent<Text>();
+                textoBoton = GameObject.Find("TextoBotonComenzar").GetComponent<TMP_Text>();
                 textoNivelNoGanado = GameObject.Find("TextoContinuar").GetComponent<TMP_Text>();
 
                 tweenManager = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>();
@@ -52,7 +50,6 @@ public class ManejarMenu : MonoBehaviour
         {
             textoBoton.text = "Continuar";
             tweenManager.cerrarMenu();
-            opciones.SetActive(false);
         }
         else 
         {
@@ -72,7 +69,7 @@ public class ManejarMenu : MonoBehaviour
         }
 
         opciones.SetActive(false);
-
+        creditos.SetActive(false);
         
     }
 
@@ -202,6 +199,20 @@ public class ManejarMenu : MonoBehaviour
         else
         { 
             tweenManager.cerrarOpciones();
+        }
+    }
+
+    public void manejarCreditos() {
+
+        creditosActivos = !creditosActivos;
+
+        if (creditosActivos)
+        {
+            tweenManager.abrirCreditos();
+        }
+        else
+        {
+            tweenManager.cerrarCreditos();
         }
     }
 }
