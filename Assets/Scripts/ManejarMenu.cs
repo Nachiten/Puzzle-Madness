@@ -5,17 +5,17 @@ using UnityEngine.UI;
 public class ManejarMenu : MonoBehaviour
 {
     // Flag de menu abierto
-    public bool menuActivo = true, opcionesActivas = false;
+    bool menuActivo = true, opcionesActivas = false;
 
     // Flag de ya asigne las variables
     static bool variablesAsignadas = false;
 
     // Menu pausa
-    static GameObject menu, opciones, botonesInicio;
+    static GameObject menu, opciones, continuarDesdeNivel;
     static LeanTweenManager tweenManager;
     
     // Boton Continuar/Comenzar
-    static Text textoBoton;
+    static Text textoBoton, textoNivelNoGanado;
 
     // Index de escena actual
     int index;
@@ -32,8 +32,11 @@ public class ManejarMenu : MonoBehaviour
             {
                 menu = GameObject.Find("Menu");
                 opciones = GameObject.Find("MenuOpciones");
+                continuarDesdeNivel = GameObject.Find("ContinuarDesdeNivel");
 
                 textoBoton = GameObject.Find("TextoBotonComenzar").GetComponent<Text>();
+                textoNivelNoGanado = GameObject.Find("TextoContinuar").GetComponent<Text>();
+
                 tweenManager = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>();
                 
                 variablesAsignadas = true;
@@ -50,14 +53,34 @@ public class ManejarMenu : MonoBehaviour
         }
         else 
         {
-            botonesInicio = GameObject.Find("Botones Inicio");
             textoBoton.text = "Comenzar";
             menu.SetActive(true);
 
-            mostrarUltimoNivelNoGanado();
+            if (yaJugoAntes())
+            {
+                textoBoton.text = "Continuar";
+                mostrarUltimoNivelNoGanado();
+            }
+            else
+            {
+                continuarDesdeNivel.SetActive(false);
+            }
         }
 
         opciones.SetActive(false);
+
+        
+    }
+
+    bool yaJugoAntes() {
+        if (PlayerPrefs.GetInt("YaJugoAntes") == 1)
+        {
+            return true;
+        }
+        else {
+            PlayerPrefs.SetInt("YaJugoAntes", 1);
+            return false;
+        }
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -74,11 +97,8 @@ public class ManejarMenu : MonoBehaviour
             manejarMenu();
     }
 
-    void mostrarUltimoNivelNoGanado() {
-
-
-        // 1 - 22
-
+    void mostrarUltimoNivelNoGanado() 
+    {
         int indexNoGanado = 0;
 
         for (int i = 1; i <= 22; i++)
@@ -94,28 +114,31 @@ public class ManejarMenu : MonoBehaviour
             }
         }
 
-        int numeroJuego;
+        int juegoNoGanado;
         int nivelNoGanado;
 
         if (indexNoGanado < 11)
         {
-            numeroJuego = 1;
+            juegoNoGanado = 1;
             nivelNoGanado = indexNoGanado;
+            FindObjectOfType<Buttons>().nivelACargar = indexNoGanado;
         }
         else if (indexNoGanado < 23)
         {
-            numeroJuego = 2;
+            juegoNoGanado = 2;
             nivelNoGanado = indexNoGanado - 12;
+            FindObjectOfType<Buttons>().nivelACargar = indexNoGanado;
         }
         else {
-            numeroJuego = 0;
+            juegoNoGanado = 0;
             nivelNoGanado = 0;
         }
 
-        Debug.Log("Numero Juego: " + numeroJuego);
-        Debug.Log("Nivel no ganado: " + nivelNoGanado);
+        Debug.Log("Nivel: " + nivelNoGanado + " | Juego: " + juegoNoGanado);
 
-        
+        textoNivelNoGanado.text = "Nivel: " + nivelNoGanado + " | Juego: " + juegoNoGanado;
+
+        continuarDesdeNivel.SetActive(true);
     }
 
     /* -------------------------------------------------------------------------------- */

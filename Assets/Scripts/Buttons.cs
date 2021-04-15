@@ -3,13 +3,17 @@ using UnityEngine.SceneManagement;
 
 public class Buttons : MonoBehaviour
 {
+    public int nivelACargar = 1;
+
     /* -------------------------------------------------------------------------------- */
 
     public void Comenzar()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0) loadLevel(1);
+        if (SceneManager.GetActiveScene().buildIndex == 0) 
+            loadLevel(nivelACargar);
 
-        else FindObjectOfType<ManejarMenu>().manejarMenu();
+        else 
+            FindObjectOfType<ManejarMenu>().manejarMenu();
     }
 
     /* -------------------------------------------------------------------------------- */

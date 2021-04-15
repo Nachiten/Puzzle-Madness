@@ -24,10 +24,9 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 - Agregadas animaciones a pop ups de custom level.
 - Implementado menu opciones con animaciones.
 - Implementados managers para musica y sonidos en todo el juego.
+- Boton comenzar del menu principal lleva al primer nivel no ganado.
 
 # TODOs
 - Fixear posiciones diferentes de template resuelta.
 - Fixear soporte para distintas resoluciones.
-- Boton comenzar del menu principal debe llevar al primer nivel no ganado.
-- Ir a la pantalla principal cuando borras progreso.
 - Agregar boton en el menu para volver al menu principal.

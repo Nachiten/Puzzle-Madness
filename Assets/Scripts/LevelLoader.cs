@@ -95,7 +95,6 @@ public class LevelLoader : MonoBehaviour
     // Llamar a Corutina
     public void cargarNivel(int index)
     {
-
         StartCoroutine(cargarAsincronizadamente(index));
         textoNivel.text = "Cargando " + SceneManager.GetSceneByBuildIndex(index).name + " ...";
 
