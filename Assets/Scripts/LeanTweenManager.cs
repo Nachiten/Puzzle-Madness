@@ -20,6 +20,8 @@ public class LeanTweenManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        index = SceneManager.GetActiveScene().buildIndex;
+
         botonesInicio = GameObject.Find("Botones Inicio");
 
         menu = GameObject.Find("Menu");
@@ -30,9 +32,11 @@ public class LeanTweenManager : MonoBehaviour
             GameObject.Find("Comenzar"),
             GameObject.Find("Seleccionar Nivel"),
             GameObject.Find("Opciones"),
-            GameObject.Find("Salir")
+            GameObject.Find("Salir"),
         };
     }
+
+    #region AnimacionAbrirMenu
 
     /* --------------------------------------------------------------------------------- */
     // ----------------------------- ANIMACION ARBRIR MENU ----------------------------- //
@@ -86,10 +90,15 @@ public class LeanTweenManager : MonoBehaviour
             LeanTween.scaleY(unBoton, 3.1f, tiempoAnimacionBotonesMenu);
     }
 
-    void terminarAnimacionAbrir() {
+    void terminarAnimacionAbrir()
+    {
         animacionEnEjecucion = false;
         Debug.Log("Termino Animacion [ABRIR]");
     }
+
+    #endregion
+
+    #region AnimacionCerrarMenu
 
     /* --------------------------------------------------------------------------------- */
     // ----------------------------- ANIMACION CERRAR MENU ----------------------------- // 
@@ -118,8 +127,6 @@ public class LeanTweenManager : MonoBehaviour
 
     void cerrarBotonEnX(GameObject unBoton, bool cerrarMenu)
     {
-        //Debug.Log("Entre en cerrarMenuX");
-
         if (cerrarMenu)
             LeanTween.scaleX(unBoton, 0f, tiempoAnimacionBotonesMenu).setOnComplete(cerrarPanel);
         else
@@ -134,11 +141,16 @@ public class LeanTweenManager : MonoBehaviour
         LeanTween.scale(panel, new Vector3(0, 0, 1), tiempoAnimacionPanelMenu).setOnComplete(terminarAnimacionCerrar);
     }
 
-    void terminarAnimacionCerrar() {
+    void terminarAnimacionCerrar()
+    {
         Debug.Log("Termino Animacion [CERRAR]");
         animacionEnEjecucion = false;
         menu.SetActive(false);
     }
+
+    #endregion
+
+    #region AnimacionAbrirOpcionesMenu
 
     /* ----------------------------------------------------------------------------------------- */
     // ----------------------------- ANIMACION ABRIR OPCIONES MENU ----------------------------- // 
@@ -148,6 +160,8 @@ public class LeanTweenManager : MonoBehaviour
 
     public void abrirOpciones()
     {
+        ocultarContinuarDesdeNivelSiCorresponde();
+
         index = SceneManager.GetActiveScene().buildIndex;
 
         if (index == 0) {
@@ -170,7 +184,7 @@ public class LeanTweenManager : MonoBehaviour
         menu.SetActive(false);
     }
 
-    void ponerOpciones() 
+    void ponerOpciones()
     {
         opciones.SetActive(true);
         LeanTween.moveLocalX(opciones, 0f, tiempoAnimacionOpciones);
@@ -186,12 +200,18 @@ public class LeanTweenManager : MonoBehaviour
         botonesInicio.SetActive(false);
     }
 
+    #endregion
+
+    #region AnimacionCerrarOpcionesMenu
+
     /* ------------------------------------------------------------------------------------------ */
     // ----------------------------- ANIMACION CERRAR OPCIONES MENU ----------------------------- // 
     /* ------------------------------------------------------------------------------------------ */
 
     public void cerrarOpciones() 
     {
+        
+
         index = SceneManager.GetActiveScene().buildIndex;
 
         if (index == 0)
@@ -213,7 +233,11 @@ public class LeanTweenManager : MonoBehaviour
     void ponerMenu() 
     {
         menu.SetActive(true);
-        LeanTween.moveLocalX(menu, 0, tiempoAnimacionOpciones);
+        LeanTween.moveLocalX(menu, 0, tiempoAnimacionOpciones).setOnComplete(ocultarContinuarDesdeNivelSiCorresponde);
+    }
+
+    void ocultarContinuarDesdeNivelSiCorresponde() {
+        FindObjectOfType<ManejarMenu>().ocultarContinuarDesdeNivelSiCorresponde();
     }
 
     void quitarOpciones() 
@@ -224,4 +248,6 @@ public class LeanTweenManager : MonoBehaviour
     void ocultarOpciones() {
         opciones.SetActive(false);
     }
+
+    #endregion
 }

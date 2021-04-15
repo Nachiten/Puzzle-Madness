@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ManejarMenu : MonoBehaviour
 {
     // Flag de menu abierto
-    bool menuActivo = true, opcionesActivas = false;
+    bool menuActivo = true, opcionesActivas = false, mostrandoContinuarDesdeNivel = false;
 
     // Flag de ya asigne las variables
     static bool variablesAsignadas = false;
@@ -60,6 +60,7 @@ public class ManejarMenu : MonoBehaviour
             {
                 textoBoton.text = "Continuar";
                 mostrarUltimoNivelNoGanado();
+                mostrandoContinuarDesdeNivel = true;
             }
             else
             {
@@ -80,6 +81,16 @@ public class ManejarMenu : MonoBehaviour
         else {
             PlayerPrefs.SetInt("YaJugoAntes", 1);
             return false;
+        }
+    }
+
+    public void ocultarContinuarDesdeNivelSiCorresponde() 
+    {
+        if (mostrandoContinuarDesdeNivel) 
+        {
+            bool continuarDesdeNivelActivo = continuarDesdeNivel.activeSelf;
+
+            continuarDesdeNivel.SetActive(!continuarDesdeNivelActivo);
         }
     }
 
