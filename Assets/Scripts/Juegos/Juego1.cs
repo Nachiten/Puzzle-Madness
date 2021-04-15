@@ -1,55 +1,41 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Juego1 : MonoBehaviour
 {
+    #region Variables
+
     // << -------- Varbiables publicas -------- >>
 
-    // Ganar juego [Debug Only]
-    public bool GanarHack = false;
+    public bool pause = false, activarRandom = true, start = false, GanarHack = false;
 
-    // Flag de juego empezado
-    public bool start = false;
-
-    // Retraso de la animacion al mover bloques
-    float tiempoAnimacion = 0.1f;
-
-    // Flag de juego pausado
-    public bool pause = false;
-
-    // Activar random
-    public bool activarRandom = true;
-
-    // Tamaño de tabla
-    public int columnas = 3;
-    public int filas = 3;
-
-    // Cantidad de movimientos aleatorios para mezclar
-    public int RandomMoves = 30;
-
-    Texture[] texturas;
+    public int columnas = 3, filas = 3, RandomMoves = 30;
 
     // << -------- Varbiables privadas -------- >>
 
     // Matrices para almacenar posiciones
-    int[,] matriz;
-    int[,] matrizGano;
+    int[,] matriz, matrizGano;
 
     // Cantidad de movimientos
-    int movimientos;
+    int movimientos, index;
+
+    // Retraso de la animacion al mover bloques
+    float tiempoAnimacion = 0.1f;
 
     // Flag juego ganado
     bool gano = false;
     
     // Texto movimientos
-    Text textoMovimientos;
+    TMP_Text textoMovimientos;
 
-    // Nombre e index de escena actual
-    int index;
+    Texture[] texturas;
+
+    #endregion
 
     /* -------------------------------------------------------------------------------- */
+
+    #region FuncionStart
 
     // Al iniciar juego
     void Start()
@@ -122,7 +108,11 @@ public class Juego1 : MonoBehaviour
         }
     }
 
+    #endregion
+
     /* -------------------------------------------------------------------------------- */
+
+    #region FuncionUpdate
 
     // Se actualiza una vez por fotograma
     void Update()
@@ -152,6 +142,8 @@ public class Juego1 : MonoBehaviour
         analizarGano();
     }
 
+    #endregion
+
     /* -------------------------------------------------------------------------------- */
 
     public void inicializar(){
@@ -161,7 +153,7 @@ public class Juego1 : MonoBehaviour
         matrizGano = new int[filas, columnas];
 
         // Asignar Texto Movimientos
-        textoMovimientos = GameObject.Find("Numero Movimientos").GetComponent<Text>();
+        textoMovimientos = GameObject.Find("Numero Movimientos").GetComponent<TMP_Text>();
 
         // Llenar matrices de datos
         llenarMatrizes();

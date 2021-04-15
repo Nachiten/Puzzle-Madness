@@ -2,62 +2,74 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Analytics;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    #region Variables
+
     // Juego ganado
     bool gano = false;
 
     // Boton "Comenzar"
     GameObject boton;
-    Text textoBoton;
+    TMP_Text textoBoton, textoNivel;
 
     // Cantidad de bloques
-    public int filas = 3;
-    public int columnas = 3;
-
-    // Numero de nivel
-    Text textoNivel;
+    public int filas = 3, columnas = 3;
 
     // Numero de escena actual
     int index;
 
+    string comenzarNivelTexto = "COMENZAR NIVEL", regresarAInicio = "REGRESAR A INICIO", siguienteNivel = "SIGUIENTE NIVEL";
+
+    #endregion
+
     /* -------------------------------------------------------------------------------- */
+
+    #region FuncionStart
 
     void Start()
     {
         index = SceneManager.GetActiveScene().buildIndex;
-        string name = SceneManager.GetActiveScene().name;
+        string nombreNivel = SceneManager.GetActiveScene().name;
 
-        GameObject.Find("Nivel").GetComponent<Text>().text = name;
+        textoNivel = GameObject.Find("Nivel").GetComponent<TMP_Text>();
+
+        textoNivel.text = nombreNivel;
 
         // Asignar variables
         boton = GameObject.Find("Boton");
-        textoBoton = GameObject.Find("TextoBoton").GetComponent<Text>();
+        textoBoton = GameObject.Find("TextoBoton").GetComponent<TMP_Text>();
 
         // Modificar texto
-        textoBoton.text = "Comenzar Nivel";
+        textoBoton.text = comenzarNivelTexto;
     }
 
-    /* -------------------------------------------------------------------------------- */
-    
-    public void comenzarJuego1(){
+    #endregion
 
+    /* -------------------------------------------------------------------------------- */
+
+    public void comenzarJuego1()
+    {
         // Asignar filas y columnas de Juego1
         filas    = FindObjectOfType<Juego1>().filas;        
         columnas = FindObjectOfType<Juego1>().columnas;
         
         // Generar bloques del mapa
         generarBloques();
+
         // Ajustar Texturas
         ajustarPosiciones();
+
         // Ajustar ubicacion de bloques
         ajustarUbicacion();
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     public void comenzarJuego2()
     {
-
         // Asignar filas y columnas de Juego1
         filas = FindObjectOfType<Juego2>().filas;
         columnas = FindObjectOfType<Juego2>().columnas;
@@ -88,8 +100,8 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<Timer>().setPlayerPref();
 
         // Modificar texto
-        if (index == 10 || index == 11 || index == 22 || index == 23) textoBoton.text = "Regresar a Inicio";
-                                                  else textoBoton.text = "Siguiente Nivel";
+        if (index == 10 || index == 11 || index == 22 || index == 23) textoBoton.text = regresarAInicio;
+                                                  else textoBoton.text = siguienteNivel;
 
         // Mostrar boton
         boton.SetActive(true);
@@ -132,12 +144,9 @@ public class GameManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    GameObject referencia;
-
     // Intanciar los bloques necesarios para el nivel
     public void generarBloques()
     {
-
         Debug.Log("[GameManager] Generando Bloques...");
 
         GameObject referencia = GameObject.Find("_Reference");
@@ -169,26 +178,21 @@ public class GameManager : MonoBehaviour
             offsetX = 0f;
             offsetZ -= 5f;
         }
-
         Destroy(referencia);
     }
 
     /* -------------------------------------------------------------------------------- */
 
-    Renderer modelo;
-    Transform modeloTransform;
-
     // Ajustar posiciones y offsets de imagenes
     public void ajustarPosiciones()
     {
-
         index = SceneManager.GetActiveScene().buildIndex;
 
         // Textura de imagen modelo
-        modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
+        Renderer modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
 
         // Transform de iamgen modelo
-        modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
+        Transform modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
 
         if (index < 11)
         {
@@ -207,6 +211,7 @@ public class GameManager : MonoBehaviour
 
         float offsetX = 0f;
         float offsetY = scaleY * (filas * columnas - 1);
+
         contador = 1;
 
         for (int i = 0; i < filas; i++) {
@@ -280,9 +285,6 @@ public class GameManager : MonoBehaviour
                         UVs[23] = new Vector2(1.0f, 0.334f);
                         mesh.uv = UVs;
                     }
-
-                    
-
                     contador++;
                 }
                 offsetX += scaleX;
@@ -292,15 +294,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     Transform referenciaAjuste;
-    Transform plataforma;
 
     // Determinar posicion correcta de juego
     public void ajustarUbicacion()
     {
         if (index < 12)
-        { 
-            plataforma = GameObject.Find("Piso Mapa").GetComponent<Transform>();
+        {
+            Transform plataforma = GameObject.Find("Piso Mapa").GetComponent<Transform>();
             plataforma.localScale = new Vector3((5 * columnas) + 2, plataforma.localScale.y, (5 * filas) + 2);
         }
 
@@ -343,11 +346,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    int mayor;
+    /* -------------------------------------------------------------------------------- */
 
     // Hijo de ajustarUbicacion
     void determinarPos(ref float posicionX, ref float posicionZ)
     {
+        int mayor;
+
         index = SceneManager.GetActiveScene().buildIndex;
 
         if (filas > columnas) mayor = filas;
@@ -364,13 +369,10 @@ public class GameManager : MonoBehaviour
         Transform modelo = GameObject.Find("Modelo").GetComponent<Transform>();
 
         if (index != 23)
-        {
             modelo.position = new Vector3(modelo.position.x, modelo.position.y + offset, modelo.position.z);
-        }
+        
         else 
-        {
             modelo.position = new Vector3(modelo.position.x - 22 * (mayor / 12), modelo.position.y + 12 * (mayor / 12), modelo.position.z);
-        }
         
         Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
         camara.position = new Vector3(camara.position.x, camara.position.y + offset, camara.position.z);

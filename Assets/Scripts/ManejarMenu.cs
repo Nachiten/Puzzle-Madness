@@ -17,6 +17,8 @@ public class ManejarMenu : MonoBehaviour
     
     static TMP_Text textoNivelNoGanado, textoBoton;
 
+    string continuar = "CONTINUAR", comenzar = "COMENZAR";
+
     // Index de escena actual
     int index;
 
@@ -48,17 +50,17 @@ public class ManejarMenu : MonoBehaviour
 
         if (index != 0)
         {
-            textoBoton.text = "Continuar";
+            textoBoton.text = continuar;
             tweenManager.cerrarMenu();
         }
         else 
         {
-            textoBoton.text = "Comenzar";
+            textoBoton.text = comenzar;
             menu.SetActive(true);
 
             if (yaJugoAntes())
             {
-                textoBoton.text = "Continuar";
+                textoBoton.text = continuar;
                 mostrarUltimoNivelNoGanado();
                 mostrandoContinuarDesdeNivel = true;
             }
