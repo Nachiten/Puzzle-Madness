@@ -80,20 +80,20 @@ public class PopUpsMenu : MonoBehaviour
         // Posicion inicial
         LeanTween.moveLocalX(popUp, -1500, 0f).setOnComplete(_ => popUp.SetActive(true));
 
-        Debug.Log("Animando apertura");
+        Debug.Log("[PopUpsMenu] Animando apertura de PopUp");
 
         LeanTween.moveLocalX(popUp, 0, tiempoAnimacion);
     }
 
     public void cerrarPopUp( bool accionUsada) // TRUE = si FALSE = no
     {
-        Debug.Log("Cerrando popup");
+        Debug.Log("[PopUpsMenu] Animando cerrado de PopUp");
         LeanTween.moveLocalX(popUp, 1500, tiempoAnimacion).setOnComplete(_ => realizarAccionAlCerrar(accionUsada));
     }
 
     public void borrarTodasLasKeys()
     {
-        Debug.LogError("BORRANDO TODAS LAS KEYS !!!!");
+        Debug.LogError("[PopUpsMenu] BORRANDO TODAS LAS KEYS !!!!");
         PlayerPrefs.DeleteAll();
 
         int indexLevelSelector = 12;
@@ -105,14 +105,11 @@ public class PopUpsMenu : MonoBehaviour
 
     void realizarAccionAlCerrar(bool accionUsada) 
     {
-        Debug.Log("Entre en accion a realizar");
-
         // Cierro el popup
         popUp.SetActive(false);
 
         if (popUpOpen == 0)
         {
-
             if (accionUsada)
             {
                 borrarTodasLasKeys();

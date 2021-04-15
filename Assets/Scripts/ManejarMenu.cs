@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class ManejarMenu : MonoBehaviour
 {
@@ -15,7 +16,9 @@ public class ManejarMenu : MonoBehaviour
     static LeanTweenManager tweenManager;
     
     // Boton Continuar/Comenzar
-    static Text textoBoton, textoNivelNoGanado;
+    static Text textoBoton;
+
+    static TMP_Text textoNivelNoGanado;
 
     // Index de escena actual
     int index;
@@ -35,7 +38,7 @@ public class ManejarMenu : MonoBehaviour
                 continuarDesdeNivel = GameObject.Find("ContinuarDesdeNivel");
 
                 textoBoton = GameObject.Find("TextoBotonComenzar").GetComponent<Text>();
-                textoNivelNoGanado = GameObject.Find("TextoContinuar").GetComponent<Text>();
+                textoNivelNoGanado = GameObject.Find("TextoContinuar").GetComponent<TMP_Text>();
 
                 tweenManager = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>();
                 
@@ -145,7 +148,7 @@ public class ManejarMenu : MonoBehaviour
             nivelNoGanado = 0;
         }
 
-        Debug.Log("Nivel: " + nivelNoGanado + " | Juego: " + juegoNoGanado);
+        Debug.Log("[ManejarMenu] Ultimo nivel no ganado. Nivel: " + nivelNoGanado + " | Juego: " + juegoNoGanado);
 
         textoNivelNoGanado.text = "Nivel: " + nivelNoGanado + " | Juego: " + juegoNoGanado;
 
@@ -194,12 +197,10 @@ public class ManejarMenu : MonoBehaviour
 
         if (opcionesActivas) 
         { 
-            Debug.Log("Abriendo Opciones");
             tweenManager.abrirOpciones();
         }
         else
         { 
-            Debug.Log("Cerrando Opciones");
             tweenManager.cerrarOpciones();
         }
     }

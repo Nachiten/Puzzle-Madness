@@ -130,7 +130,6 @@ public class Juego2 : MonoBehaviour
             {
                 mouseButtonUp();
                 hayObjetoAgarrado = false;
-                Debug.Log("hayObjetoAgarrado: FALSE");
             }
         }
 
@@ -160,7 +159,6 @@ public class Juego2 : MonoBehaviour
             // Se agarra el bloque
             mouseButtonDown();
             hayObjetoAgarrado = true;
-            Debug.Log("hayObjetoAgarrado: TRUE");
 
         }
     }
@@ -169,7 +167,7 @@ public class Juego2 : MonoBehaviour
 
     public void inicializar() 
     {
-        Debug.Log("Entre a inicializar Juego2");
+        Debug.Log("[Juego2] Inicializando Juego2");
 
         // Determina la posicion del modelo y de la camara
         determinarPos();
@@ -216,7 +214,7 @@ public class Juego2 : MonoBehaviour
         // Si está dentro del rango
         if (distancia < limite)
         {
-            Debug.Log("Posicionado correctamente");
+            Debug.Log("[Juego2] Bloque posicionado correctamente");
 
             // Se coloca en el lugar correcto
             objetoAgarrado.transform.position = new Vector3(lugarCorrectoObjeto.position.x, lugarCorrectoObjeto.position.y + 0.2f, lugarCorrectoObjeto.position.z);
@@ -263,7 +261,7 @@ public class Juego2 : MonoBehaviour
                 contador++;
             }
         }
-        Debug.Log("GANO !!");
+        Debug.Log("[Juego2] Nivel ganado");
 
         ganarJuego();
     }
@@ -293,7 +291,7 @@ public class Juego2 : MonoBehaviour
         gano = true;
         start = false;
 
-        Debug.Log("Se gano nivel !! Llamando a game manager...");
+        Debug.Log("[Juego2] Nivel ganado. Llamando a game manager...");
         FindObjectOfType<GameManager>().ganoJuego();
     }
 
@@ -359,16 +357,8 @@ public class Juego2 : MonoBehaviour
 
             if (i == mayor)
             {
-                //posicionX -= valor;
-                //posicionZ += valor;
-
-                //Transform modelo = GameObject.Find("Modelo").GetComponent<Transform>();
-                //modelo.position = new Vector3(modelo.position.x + 11, modelo.position.y + valor + 16, modelo.position.z);
-
                 Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
                 camara.position = new Vector3(camara.position.x, camara.position.y + valor, camara.position.z);
-
-                //Debug.Log("VALORX: " + posicionX + " | VALORZ: " + posicionZ);
             }
             valor += 2.5f;
         }
@@ -440,8 +430,6 @@ public class Juego2 : MonoBehaviour
 
         posicionX += valorX;
         posicionZ += valorZ;
-
-        Debug.Log("PosiciionX: " + (-valorX).ToString() + " | PosicionZ: " + valorZ);
 
         float offset = (mayor - 3) * 1f;
 

@@ -51,7 +51,7 @@ public class LeanTweenManager : MonoBehaviour
         }
 
         animacionEnEjecucion = true;
-        Debug.Log("Inicio Animacion [ABRIR]");
+        Debug.Log("[LeanTweenManager] Inicio Animacion [AbrirMenu]");
 
         // Posicion inicial
         LeanTween.scale(panel, new Vector3(0, 0, 1), 0f).setOnComplete(abrirPanel);
@@ -93,8 +93,9 @@ public class LeanTweenManager : MonoBehaviour
     void terminarAnimacionAbrir()
     {
         animacionEnEjecucion = false;
-        Debug.Log("Termino Animacion [ABRIR]");
+        Debug.Log("[LeanTweenManager] Termino Animacion [AbrirMenu]");
     }
+    
 
     #endregion
 
@@ -107,7 +108,7 @@ public class LeanTweenManager : MonoBehaviour
     public void cerrarMenu()
     {
         animacionEnEjecucion = true;
-        Debug.Log("Inicio Animacion [CERRAR]");
+        Debug.Log("[LeanTweenManager] Inicio Animacion [CerrarMenu]");
 
         for (int i = 0; i < botones.Length; i++)
         {
@@ -143,7 +144,7 @@ public class LeanTweenManager : MonoBehaviour
 
     void terminarAnimacionCerrar()
     {
-        Debug.Log("Termino Animacion [CERRAR]");
+        Debug.Log("[LeanTweenManager] Termino Animacion [CerrarMenu]");
         animacionEnEjecucion = false;
         menu.SetActive(false);
     }
@@ -160,6 +161,8 @@ public class LeanTweenManager : MonoBehaviour
 
     public void abrirOpciones()
     {
+        Debug.Log("[LeanTweenManager] Inicio Animacion [AbrirOpciones]");
+
         ocultarContinuarDesdeNivelSiCorresponde();
 
         index = SceneManager.GetActiveScene().buildIndex;
@@ -198,6 +201,7 @@ public class LeanTweenManager : MonoBehaviour
     void ocultarBotonesInicio()
     {
         botonesInicio.SetActive(false);
+        Debug.Log("[LeanTweenManager] Termino Animacion [AbrirOpciones]");
     }
 
     #endregion
@@ -210,7 +214,7 @@ public class LeanTweenManager : MonoBehaviour
 
     public void cerrarOpciones() 
     {
-        
+        Debug.Log("[LeanTweenManager] Inicio Animacion [CerrarOpciones]");
 
         index = SceneManager.GetActiveScene().buildIndex;
 
@@ -247,6 +251,7 @@ public class LeanTweenManager : MonoBehaviour
 
     void ocultarOpciones() {
         opciones.SetActive(false);
+        Debug.Log("[LeanTweenManager] Termino Animacion [CerrarOpciones]");
     }
 
     #endregion

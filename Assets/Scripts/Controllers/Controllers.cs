@@ -1,23 +1,24 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
-
+using TMPro;
 
 public class Controllers : MonoBehaviour
 {
     /* --------------------------- Volumen --------------------------- */
     
     public AudioMixer mixerMusica, mixerSonidos;
-    GameObject numeroVolumen;
-    Text texto;
+    TMP_Text textoVolumenMusica, textoVolumenSonidos;
+
+    void Start()
+    {
+        textoVolumenMusica = GameObject.Find("NumeroVolumenMusica").GetComponent<TMP_Text>();
+        textoVolumenSonidos = GameObject.Find("NumeroVolumenSonidos").GetComponent<TMP_Text>();
+    }
 
     public void setMusicLevel(float valorSlider)
     {
-        numeroVolumen = GameObject.Find("NumeroVolumenMusica");
-
-        texto = numeroVolumen.GetComponent<Text>();
-
-        texto.text = (valorSlider * 100).ToString("F0");
+        textoVolumenMusica.text = (valorSlider * 100).ToString("F0");
 
         valorSlider = valorSlider * 0.9999f + 0.0001f;
 
@@ -28,16 +29,13 @@ public class Controllers : MonoBehaviour
 
     public void setSoundLevel(float valorSlider)
     {
-        numeroVolumen = GameObject.Find("NumeroVolumenSonidos");
-
-        texto = numeroVolumen.GetComponent<Text>();
-
-        texto.text = (valorSlider * 100).ToString("F0");
+        textoVolumenSonidos.text = (valorSlider * 100).ToString("F0");
 
         valorSlider = valorSlider * 0.9999f + 0.0001f;
 
         mixerSonidos.SetFloat("Volume", Mathf.Log10(valorSlider) * 20);
 
+        // Reproduzco sonido de muestra
         GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(0);
     }
 

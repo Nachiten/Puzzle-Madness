@@ -81,10 +81,9 @@ public class GameManager : MonoBehaviour
         GetComponent<Timer>().toggleClock(false);
 
         AnalyticsResult result = AnalyticsEvent.Custom("Ganado_" + index);
-        Debug.Log("Analytics Result: " + result + " | DATA: " + "Ganado_" + index);
+        Debug.Log("[GameManager] Analytics Result: " + result + " | DATA: " + "Ganado_" + index);
 
         PlayerPrefs.SetString(index.ToString(), "Ganado");
-        Debug.Log(PlayerPrefs.GetString(index.ToString()));
 
         FindObjectOfType<Timer>().setPlayerPref();
 
@@ -104,7 +103,7 @@ public class GameManager : MonoBehaviour
 
         if (!gano) // Si no gano, comenzar juego
         {
-            Debug.Log("Iniciando juego...");
+            Debug.Log("[GameManager] Iniciando juego...");
             // Ocultar boton
             boton.SetActive(false);
 
@@ -126,7 +125,7 @@ public class GameManager : MonoBehaviour
         // En otros, pasar al siguiente nivel
         else
         {
-            Debug.Log("Avanzando al siguiente nivel...");
+            Debug.Log("[GameManager] Avanzando al siguiente nivel...");
             FindObjectOfType<LevelLoader>().cargarNivel(index + 1);
         }
     }
@@ -139,11 +138,9 @@ public class GameManager : MonoBehaviour
     public void generarBloques()
     {
 
-        Debug.Log("Entre a generar bloques");
+        Debug.Log("[GameManager] Generando Bloques...");
 
         GameObject referencia = GameObject.Find("_Reference");
-
-        //Debug.Log(referencia);
 
         int contador = 1;
 
@@ -158,8 +155,6 @@ public class GameManager : MonoBehaviour
                 {
                     // Crear el clon
                     GameObject clon = Instantiate(Resources.Load("1", typeof(GameObject))) as GameObject;
-
-                    //Debug.Log(clon);
 
                     // Asignar nombre correcto
                     clon.name = contador.ToString();
@@ -197,12 +192,7 @@ public class GameManager : MonoBehaviour
 
         if (index < 11)
         {
-            //Debug.Log("Posicion Antes | " + modeloTransform.position.ToString());
-
             modeloTransform.position = new Vector3(modeloTransform.position.x - (index - 1) * 1.5111f, modeloTransform.position.y - (index - 1) * 2f, modeloTransform.position.z);
-
-            //Debug.Log("Posicion Despues | " + modeloTransform.position.ToString());
-            //Debug.Log("Index | " + index.ToString());
 
             // Ajustar tamaño de imagen modelo a nivel actual
             modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y, 1.5f * filas);
@@ -379,13 +369,10 @@ public class GameManager : MonoBehaviour
         }
         else 
         {
-            Debug.Log("Mayor: " + mayor);
             modelo.position = new Vector3(modelo.position.x - 22 * (mayor / 12), modelo.position.y + 12 * (mayor / 12), modelo.position.z);
         }
         
         Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
         camara.position = new Vector3(camara.position.x, camara.position.y + offset, camara.position.z);
-
-        //Debug.Log("VALORX: " + valorX + " | VALOR Z:" + valorZ);
     }
 }

@@ -101,7 +101,7 @@ public class LevelLoader : MonoBehaviour
         if (index != 7)
         {
             AnalyticsResult result = AnalyticsEvent.Custom("Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
-            Debug.Log("Analytics Result: " + result + " | DATA: " + "Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
+            Debug.Log("[LevelLoader] Analytics Result: " + result + " | DATA: " + "Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
         }
     }
 
@@ -116,7 +116,7 @@ public class LevelLoader : MonoBehaviour
         // Mostrar pantalla de carga
         levelLoader.SetActive(true);
 
-        Debug.Log("Cargando escena: " + index);
+        Debug.Log("[LevelLoader] Cargando escena: " + index);
 
         // Mientras la operacion no este terminada
         while (!operacion.isDone)
