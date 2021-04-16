@@ -8503,7 +8503,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 308767340}
         m_TargetAssemblyTypeName: PopUpsMenu, Assembly-CSharp
         m_MethodName: abrirPopUp
         m_Mode: 3

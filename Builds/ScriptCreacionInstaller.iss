@@ -9,8 +9,10 @@
 #define MyAppAssocName MyAppName
 #define MyAppAssocExt ".myp"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
-#define PathProyecto "D:\Programas Unity\Puzzle-Madness" ; PATH EN PC ESCRITORIO
-; #define PathProyecto "C:\Programas Unity\Puzzle-Madness" ; PATH EN NOTEBOOK
+; PATH EN PC ESCRITORIO
+#define PathProyecto "D:\Programas Unity\Puzzle-Madness" 
+; PATH EN NOTEBOOK
+; #define PathProyecto "C:\Programas Unity\Puzzle-Madness" 
 
 
 [Setup]
