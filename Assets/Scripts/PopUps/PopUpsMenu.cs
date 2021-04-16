@@ -18,7 +18,7 @@ public class PopUpsMenu : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("[PopsUpsMenu] Start()");
+        //Debug.Log("[PopsUpsMenu] Start()");
 
         if (!variablesSeteadas) {
             popUp = GameObject.Find("Pop Up");

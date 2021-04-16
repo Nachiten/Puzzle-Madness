@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour
         string nombreNivel = SceneManager.GetActiveScene().name;
 
         textoNivel = GameObject.Find("Nivel").GetComponent<TMP_Text>();
-
         textoNivel.text = nombreNivel;
 
         // Asignar variables

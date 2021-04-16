@@ -8,7 +8,7 @@ public class ManejarMenu : MonoBehaviour
     #region Variables
 
     // Flags varios
-    bool menuActivo = true, opcionesActivas = false, creditosActivos = false, mostrandoContinuarDesdeNivel = false;
+    public bool menuActivo = false, opcionesActivas = false, creditosActivos = false, mostrandoContinuarDesdeNivel = false;
 
     // Flag de ya asigne las variables
     static bool variablesAsignadas = false;
@@ -65,6 +65,7 @@ public class ManejarMenu : MonoBehaviour
 
             textoBoton.text = comenzar;
             menu.SetActive(true);
+            menuActivo = true;
 
             if (yaJugoAntes())
             {
@@ -167,7 +168,7 @@ public class ManejarMenu : MonoBehaviour
             nivelNoGanado = 0;
         }
 
-        Debug.Log("[ManejarMenu] Ultimo nivel no ganado. Nivel: " + nivelNoGanado + " | Juego: " + juegoNoGanado);
+        //Debug.Log("[ManejarMenu] Ultimo nivel no ganado. Nivel: " + nivelNoGanado + " | Juego: " + juegoNoGanado);
 
         textoNivelNoGanado.text = "Nivel: " + nivelNoGanado + " | Juego: " + juegoNoGanado;
 
@@ -182,15 +183,18 @@ public class ManejarMenu : MonoBehaviour
 
         if (menuActivo)
         {
+            //Debug.Log("[ManejarMenu] Abriendo menu.");
             menu.SetActive(true);
             tweenManager.abrirMenu();
         }
         else 
         {
+            //Debug.Log("[ManejarMenu] Cerrando menu.");
             tweenManager.cerrarMenu();
         }
 
-        if (opcionesActivas) {
+        if (opcionesActivas) 
+        {
             tweenManager.cerrarOpciones();
             opcionesActivas = false;
         }

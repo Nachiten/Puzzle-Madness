@@ -29,6 +29,10 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 - Agregados managers para musica y sonidos en todo el juego.
 - Boton comenzar del menu principal lleva al primer nivel no ganado.
 
+*Versión 4.0* [EN DESSAROLLO]: 
+- Fixeados textos en level selector.
+- Fixeado error en el que el menu no se abria correctamente al cargar escenas.
+
 # TODOs
 - Fixear posiciones diferentes de template resuelta.
 - Fixear textos en CustomLevel de Juego1 y Juego2.

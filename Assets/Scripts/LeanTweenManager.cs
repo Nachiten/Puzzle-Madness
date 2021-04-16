@@ -34,7 +34,6 @@ public class LeanTweenManager : MonoBehaviour
     // called first
     void OnEnable()
     {
-        Debug.Log("OnEnable called");
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -42,8 +41,6 @@ public class LeanTweenManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (indexActual == scene.buildIndex) return;
-
-        Debug.Log("[LeanTweenManager] ------------------------ Se cargo la escena numero: " + scene.buildIndex + "------------------------");
 
         setupInicial();
     }
@@ -55,14 +52,10 @@ public class LeanTweenManager : MonoBehaviour
 
     void setupInicial() 
     {
-        Debug.Log("[LeanTweenManager] ------------------------CORRIENDO SETUP INICIAL ------------------------");
-
         indexActual = SceneManager.GetActiveScene().buildIndex;
 
         if (!variablesSeteadas)
         {
-            Debug.Log("[LeanTweenManager] Seteando variables iniciales...");
-
             // Objetos
             menu = GameObject.Find("Menu");
             menuPanel = GameObject.Find("PanelMenu");
@@ -102,25 +95,6 @@ public class LeanTweenManager : MonoBehaviour
         {
             botones.Add(botonVolverInicio);
         }
-
-        // Botonces que se deben volver a poner
-        Debug.Log(botonCreditos);
-        Debug.Log(botonesInicio);
-        Debug.Log(botonBorrarProgreso);
-
-        // Objetos
-        Debug.Log(menu);
-        Debug.Log(menuPanel);
-        Debug.Log(menuOpciones);
-        Debug.Log(menuCreditos);
-
-        // Botones
-        Debug.Log(botonSalir);
-        Debug.Log(botonComenzar);
-        Debug.Log(botonOpciones);
-        Debug.Log(botonSeleccionarNivel);
-
-        Debug.Log(botonVolverInicio);
     }
 
     #region AnimacionAbrirMenu

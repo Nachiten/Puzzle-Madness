@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LevelLoader : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class LevelLoader : MonoBehaviour
 
     public Texture[] textura;
 
-    static bool flag = true;
+    static bool variablesAsignadas = false;
 
     GameObject juego1;
     GameObject juego2;
@@ -23,7 +24,7 @@ public class LevelLoader : MonoBehaviour
     void Start()
     {
 
-        if (flag)
+        if (!variablesAsignadas)
         {
             // Aisgnar variables
             levelLoader = GameObject.Find("Panel Carga");
@@ -32,7 +33,7 @@ public class LevelLoader : MonoBehaviour
 
             textoNivel = GameObject.Find("Texto Cargando").GetComponent<Text>();
 
-            flag = false;
+            variablesAsignadas = true;
         }
 
 
@@ -63,7 +64,7 @@ public class LevelLoader : MonoBehaviour
         {
             RawImage imagen = GameObject.Find("Image" + i.ToString()).GetComponent<RawImage>();
 
-            Text textoReloj = GameObject.Find("Timer" + i.ToString()).GetComponent<Text>();
+            TMP_Text textoReloj = GameObject.Find("Timer" + i.ToString()).GetComponent<TMP_Text>();
 
             string index;
 
@@ -101,7 +102,7 @@ public class LevelLoader : MonoBehaviour
         if (index != 7)
         {
             AnalyticsResult result = AnalyticsEvent.Custom("Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
-            Debug.Log("[LevelLoader] Analytics Result: " + result + " | DATA: " + "Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
+            //Debug.Log("[LevelLoader] Analytics Result: " + result + " | DATA: " + "Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
         }
     }
 

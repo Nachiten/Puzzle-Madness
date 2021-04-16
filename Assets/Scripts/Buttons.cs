@@ -11,7 +11,6 @@ public class Buttons : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().buildIndex == 0) 
             loadLevel(nivelACargar);
-
         else 
             FindObjectOfType<ManejarMenu>().manejarMenu();
     }
