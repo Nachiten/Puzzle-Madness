@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PopUpsMenu : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class PopUpsMenu : MonoBehaviour
 
     static RawImage simbolo;
     static GameObject botonNo, popUp;
-    static Text textoPrincipal, textoBanner, botonSiTexto;
+    static TMP_Text textoPrincipal, textoBanner, botonSiTexto;
 
     float tiempoAnimacion = 0.18f;
 
@@ -24,9 +25,9 @@ public class PopUpsMenu : MonoBehaviour
             popUp = GameObject.Find("Pop Up");
             botonNo = GameObject.Find("Boton No");
 
-            textoBanner = GameObject.Find("Texto Banner").GetComponent<Text>();
-            botonSiTexto = GameObject.Find("BotonSiTexto").GetComponent<Text>();
-            textoPrincipal = GameObject.Find("Texto Principal").GetComponent<Text>();
+            textoBanner = GameObject.Find("Texto Banner").GetComponent<TMP_Text>();
+            botonSiTexto = GameObject.Find("BotonSiTexto").GetComponent<TMP_Text>();
+            textoPrincipal = GameObject.Find("Texto Principal").GetComponent<TMP_Text>();
 
             simbolo = GameObject.Find("Icono").GetComponent<RawImage>();
 

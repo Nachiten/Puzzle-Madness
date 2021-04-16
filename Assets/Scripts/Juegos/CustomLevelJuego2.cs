@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System;
+using TMPro;
 
 public class CustomLevelJuego2 : MonoBehaviour
 {
@@ -55,8 +56,25 @@ public class CustomLevelJuego2 : MonoBehaviour
             return;
         }
 
-        filas = Int32.Parse(GameObject.Find("TextoFilas").GetComponent<Text>().text);
-        columnas = Int32.Parse(GameObject.Find("TextoColumnas").GetComponent<Text>().text);
+        string textoFilas = GameObject.Find("TextoFilas").GetComponent<TMP_Text>().text;
+        string textoColumnas = GameObject.Find("TextoColumnas").GetComponent<TMP_Text>().text;
+
+        textoFilas = textoFilas.Substring(0, textoFilas.Length - 1);
+        textoColumnas = textoColumnas.Substring(0, textoColumnas.Length - 1);
+
+        // Intengo de parsear filas y columnas
+        try
+        {
+            filas = int.Parse(textoFilas);
+            columnas = int.Parse(textoColumnas);
+        }
+        // Si hay un fallo al parsear
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            FindObjectOfType<PopUps>().abrirPopUp(8);
+            return;
+        }
 
         if (filas < 3 || columnas < 3)
         {

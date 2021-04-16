@@ -72,7 +72,7 @@ public class PopUps : MonoBehaviour
 
                 currentImage = 3;
                 TextoBanner.text = "Seleccionar imagen a usar [Se recomienda el sitio imgur.com]";
-                textoPrincipal.text = "Por favor ingresar el link de una imagen en uno de los siguientes formatos:         .PNG .JPG .JPEG.";
+                textoPrincipal.text = "Por favor ingresar el link de una imagen en uno de los siguientes formatos:          .PNG .JPG .JPEG.";
                 botonSiTexto.text = "Listo";
 
                 break;
@@ -85,13 +85,18 @@ public class PopUps : MonoBehaviour
 
             case 6:
                 TextoBanner.text = "Tamaño no valido";
-                textoPrincipal.text = "El tamaño de la matriz debe ser 3x3 o mas";
+                textoPrincipal.text = "El tamaño de la matriz debe ser 3x3 o mas.";
 
                 break;
 
             case 7:
                 TextoBanner.text = "Tamaño no valido";
-                textoPrincipal.text = "El tamaño de la matriz debe ser 12x12 o menos";
+                textoPrincipal.text = "El tamaño de la matriz debe ser 12x12 o menos.";
+
+                break;
+            case 8:
+                TextoBanner.text = "Ingreso no valido";
+                textoPrincipal.text = "Solo se pueden ingresar numeros en estos campos.";
 
                 break;
         }
@@ -117,7 +122,7 @@ public class PopUps : MonoBehaviour
 
     void realizarAccionAlCerrar(bool accionUsada)
     {
-        string path = "";
+        string url = "";
 
         // Cierro el popup
         popUp.SetActive(false);
@@ -129,11 +134,9 @@ public class PopUps : MonoBehaviour
 
                 break;
             case 4:
-                path = (inputFieldTexto.text).ToString();
+                url = (inputFieldTexto.text).ToString();
 
-                if (path != "" && (path.Substring(Math.Max(0, path.Length - 4)) == ".png"
-                                || path.Substring(Math.Max(0, path.Length - 4)) == ".jpg"
-                                || path.Substring(Math.Max(0, path.Length - 4)) == "jpeg"))
+                if (url != "" && extensionValidaDeUrl(url))
                 {
                     if (index == 11)
                         FindObjectOfType<CustomLevelJuego1>().asignTexture();
@@ -147,5 +150,11 @@ public class PopUps : MonoBehaviour
         }
 
         inputField.SetActive(false);
+    }
+
+    bool extensionValidaDeUrl(string url) {
+        return url.Substring(Math.Max(0, url.Length - 4)) == ".png" 
+            || url.Substring(Math.Max(0, url.Length - 4)) == ".jpg" 
+            || url.Substring(Math.Max(0, url.Length - 5)) == ".jpeg";
     }
 }

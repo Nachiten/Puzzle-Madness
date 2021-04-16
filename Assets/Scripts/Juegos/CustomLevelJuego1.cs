@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System;
+using TMPro;
 
 public class CustomLevelJuego1 : MonoBehaviour
 {
@@ -55,8 +56,25 @@ public class CustomLevelJuego1 : MonoBehaviour
             return;
         }
 
-        filas = Int32.Parse(GameObject.Find("TextoFilas").GetComponent<Text>().text);
-        columnas = Int32.Parse(GameObject.Find("TextoColumnas").GetComponent<Text>().text);
+        string textoFilas = GameObject.Find("TextoFilas").GetComponent<TMP_Text>().text;
+        string textoColumnas = GameObject.Find("TextoColumnas").GetComponent<TMP_Text>().text;
+
+        textoFilas = textoFilas.Substring(0, textoFilas.Length - 1);
+        textoColumnas = textoColumnas.Substring(0, textoColumnas.Length - 1);
+
+        // Intengo de parsear filas y columnas
+        try
+        {
+            filas = int.Parse(textoFilas);
+            columnas = int.Parse(textoColumnas);
+        }
+        // Si hay un fallo al parsear
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            FindObjectOfType<PopUps>().abrirPopUp(8);
+            return;
+        }
 
         if (filas < 3 || columnas < 3)
         {
@@ -86,38 +104,26 @@ public class CustomLevelJuego1 : MonoBehaviour
         imagenPreview.SetActive(true);
     }
 
-   /*  -------------------------------------------------------------------------------- */
-
-    //void asignarNombre(char nombre, char nombre2, int contador) 
-    //{
-    //    GameObject.Find( nombre.ToString() + nombre2.ToString() ).name = contador.ToString();
-    //    GameObject.Find(contador.ToString()).GetComponent<Renderer>().material.mainTexture = imagen.texture;
-    //}
-
-    ///* -------------------------------------------------------------------------------- */
-
-    //private void destruir(char nombre, char nombre2) { Destroy(GameObject.Find(nombre.ToString() + nombre2.ToString())); }
-
-
     /* ----------------------------------- Explorer ----------------------------------- */
 
-    public string url = "";
+    //public string url = "";
 
+    // TIENE UNA REFERENCIA DESDE EL EDITOR
     public void abrirExplorer() { FindObjectOfType<PopUps>().abrirPopUp(4); }
 
     /* -------------------------------------------------------------------------------- */
 
     public void asignTexture()
     {
-        url = (inputField.text).ToString();
+        string url = (inputField.text).ToString();
         Debug.Log(url);
-        StartCoroutine(GetTexture());
+        StartCoroutine(GetTexture(url));
         imagen.material.color = new Vector4(0.20f, 0.20f, 0.20f, 1);
     }
 
     /* -------------------------------------------------------------------------------- */
 
-    IEnumerator GetTexture()
+    IEnumerator GetTexture(string url)
     {
         Debug.Log("Cargando imagen...");
 
