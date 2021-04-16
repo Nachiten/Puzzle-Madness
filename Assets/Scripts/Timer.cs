@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    Text timerText;
+    TMP_Text timerText;
     
     float time;
     public float speed = 1;
@@ -12,7 +13,7 @@ public class Timer : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void Start() { timerText = GameObject.Find("Timer").GetComponent<Text>(); }
+    void Start() { timerText = GameObject.Find("Timer").GetComponent<TMP_Text>(); }
 
     /* -------------------------------------------------------------------------------- */
 
@@ -40,16 +41,15 @@ public class Timer : MonoBehaviour
 
     public void setPlayerPref() {
 
-        playerPref = PlayerPrefs.GetFloat("Time_" + SceneManager.GetActiveScene().buildIndex);
-
-        Debug.Log(playerPref);
+        playerPref = PlayerPrefs.GetFloat("Time_" + SceneManager.GetActiveScene().buildIndex);;
 
         if (time < playerPref || playerPref == 0)
         {
-            Debug.Log("Guardando PlayerPref .....");
+            Debug.Log("[Timer] Guardando PlayerPref .....");
             PlayerPrefs.SetFloat("Time_" + SceneManager.GetActiveScene().buildIndex, time);
         }
-        else Debug.Log("Tiempo mayor al previamente guardado, no guardando...");
+        else 
+            Debug.Log("[Timer] Tiempo mayor al previamente guardado, no guardando...");
         
 
     }

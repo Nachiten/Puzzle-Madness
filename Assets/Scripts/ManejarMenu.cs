@@ -5,56 +5,64 @@ using TMPro;
 
 public class ManejarMenu : MonoBehaviour
 {
-    // Flag de menu abierto
+    #region Variables
+
+    // Flags varios
     bool menuActivo = true, opcionesActivas = false, creditosActivos = false, mostrandoContinuarDesdeNivel = false;
 
     // Flag de ya asigne las variables
     static bool variablesAsignadas = false;
 
-    // Menu pausa
+    // GameObjects
     static GameObject menu, opciones, creditos, continuarDesdeNivel;
+
+    // Manager de las animaciones
     static LeanTweenManager tweenManager;
-    
+
+    // Textos varios
     static TMP_Text textoNivelNoGanado, textoBoton;
 
+    // Strings utilizados
     string continuar = "CONTINUAR", comenzar = "COMENZAR";
 
     // Index de escena actual
     int index;
 
+    #endregion
+
     /* -------------------------------------------------------------------------------- */
+
+    #region FuncionStart
 
     void Start()
     {
         index = SceneManager.GetActiveScene().buildIndex;
        
-        if (menuActivo)
+        if (!variablesAsignadas)
         {
-            if (!variablesAsignadas)
-            {
-                menu = GameObject.Find("Menu");
-                opciones = GameObject.Find("MenuOpciones");
-                creditos = GameObject.Find("MenuCreditos");
-                continuarDesdeNivel = GameObject.Find("ContinuarDesdeNivel");
-
-                textoBoton = GameObject.Find("TextoBotonComenzar").GetComponent<TMP_Text>();
-                textoNivelNoGanado = GameObject.Find("TextoContinuar").GetComponent<TMP_Text>();
-
-                tweenManager = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>();
+            menu = GameObject.Find("Menu");
+            opciones = GameObject.Find("MenuOpciones");
+            creditos = GameObject.Find("MenuCreditos");
+            
+            textoBoton = GameObject.Find("TextoBotonComenzar").GetComponent<TMP_Text>();
+            
+            tweenManager = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>();
                 
-                variablesAsignadas = true;
-            }
-
-            menuActivo = false;
+            variablesAsignadas = true;
         }
 
+        // No estoy en el menu principal
         if (index != 0)
         {
             textoBoton.text = continuar;
             tweenManager.cerrarMenu();
         }
-        else 
+        // Estoy en el menu principal
+        else
         {
+            continuarDesdeNivel = GameObject.Find("ContinuarDesdeNivel");
+            textoNivelNoGanado = GameObject.Find("TextoContinuar").GetComponent<TMP_Text>();
+
             textoBoton.text = comenzar;
             menu.SetActive(true);
 
@@ -75,6 +83,28 @@ public class ManejarMenu : MonoBehaviour
         
     }
 
+    #endregion
+
+    /* -------------------------------------------------------------------------------- */
+
+    #region FuncionUpdate
+
+    void Update()
+    {
+        index = SceneManager.GetActiveScene().buildIndex;
+
+        if (index == 0) return;
+
+        bool animacionEnEjecucion = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>().animacionEnEjecucion;
+
+        if (Input.GetKeyDown("escape") && !animacionEnEjecucion)
+            manejarMenu();
+    }
+
+    #endregion
+
+    /* -------------------------------------------------------------------------------- */
+
     bool yaJugoAntes() {
         if (PlayerPrefs.GetInt("YaJugoAntes") == 1)
         {
@@ -85,6 +115,8 @@ public class ManejarMenu : MonoBehaviour
             return false;
         }
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     public void ocultarContinuarDesdeNivelSiCorresponde() 
     {
@@ -97,18 +129,6 @@ public class ManejarMenu : MonoBehaviour
     }
 
     /* -------------------------------------------------------------------------------- */
-
-    void Update()
-    {
-        index = SceneManager.GetActiveScene().buildIndex;
-
-        if (index == 0) return;
-
-        bool animacionEnEjecucion = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>().animacionEnEjecucion;
-
-        if (Input.GetKeyDown("escape") && !animacionEnEjecucion) 
-            manejarMenu();
-    }
 
     void mostrarUltimoNivelNoGanado() 
     {
@@ -190,6 +210,8 @@ public class ManejarMenu : MonoBehaviour
 
     void activarTimer() { FindObjectOfType<Timer>().toggleClock(!menuActivo); }
 
+    /* -------------------------------------------------------------------------------- */
+
     public void manejarOpciones()
     {
         opcionesActivas = !opcionesActivas;
@@ -204,6 +226,7 @@ public class ManejarMenu : MonoBehaviour
         }
     }
 
+    /* -------------------------------------------------------------------------------- */
     public void manejarCreditos() {
 
         creditosActivos = !creditosActivos;

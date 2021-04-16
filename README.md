@@ -19,15 +19,16 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 - Agregadas animaciones en pop ups del menu.
 - Agregadas animaciones al mover bloques en Juego1.
 
-*Versión 3.0* [EN DESARROLLO]: 
+*Versión 3.0*: 
 - Fixeado problema de texturas aplastadas en costados de bloques.
-- Agregadas animaciones a pop ups de custom level.
-- Implementado menu opciones con animaciones.
-- Implementados managers para musica y sonidos en todo el juego.
-- Boton comenzar del menu principal lleva al primer nivel no ganado.
 - Fixeado soporte para distintas resoluciones.
 - Fixeados textos borrosos y no adaptados a resoluciones.
+- Agregado menu opciones con animaciones.
+- Agregado boton en el menu para volver al menu principal.
+- Agregadas animaciones a pop ups de custom level.
+- Agregados managers para musica y sonidos en todo el juego.
+- Boton comenzar del menu principal lleva al primer nivel no ganado.
 
 # TODOs
 - Fixear posiciones diferentes de template resuelta.
-- Agregar boton en el menu para volver al menu principal.
+- Fixear textos en CustomLevel de Juego1 y Juego2.
