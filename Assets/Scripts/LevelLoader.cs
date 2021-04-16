@@ -7,7 +7,7 @@ using TMPro;
 
 public class LevelLoader : MonoBehaviour
 {
-    static GameObject levelLoader;
+    static GameObject levelLoader, panelCargaColor, restoPanelCarga;
     static Slider slider;
     static Text textoProgreso;
     static Text textoNivel;
@@ -23,22 +23,26 @@ public class LevelLoader : MonoBehaviour
 
     void Start()
     {
-
         if (!variablesAsignadas)
         {
             // Aisgnar variables
             levelLoader = GameObject.Find("Panel Carga");
             textoProgreso = GameObject.Find("TextoProgreso").GetComponent<Text>();
             slider = GameObject.Find("Barra Carga").GetComponent<Slider>();
+            panelCargaColor = GameObject.Find("PanelColorCarga");
+            restoPanelCarga = GameObject.Find("RestoPanelCarga");
 
             textoNivel = GameObject.Find("Texto Cargando").GetComponent<Text>();
 
             variablesAsignadas = true;
+
+            // Ocultar pantalla de carga
+            levelLoader.SetActive(false);
         }
-
-
-        // Ocultar pantalla de carga
-        levelLoader.SetActive(false);
+        else 
+        {
+            quitarPanelCarga();
+        }
 
         if (SceneManager.GetActiveScene().buildIndex == 12)
         {
@@ -93,17 +97,15 @@ public class LevelLoader : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    int indexACargar;
+
     // Llamar a Corutina
     public void cargarNivel(int index)
     {
-        StartCoroutine(cargarAsincronizadamente(index));
-        textoNivel.text = "Cargando " + SceneManager.GetSceneByBuildIndex(index).name + " ...";
+        indexACargar = index;
+        textoNivel.text = "...";
 
-        if (index != 7)
-        {
-            AnalyticsResult result = AnalyticsEvent.Custom("Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
-            //Debug.Log("[LevelLoader] Analytics Result: " + result + " | DATA: " + "Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
-        }
+        ponerPanelCarga();
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -114,10 +116,12 @@ public class LevelLoader : MonoBehaviour
         // Iniciar carga de escena
         AsyncOperation operacion = SceneManager.LoadSceneAsync(index);
 
-        // Mostrar pantalla de carga
-        levelLoader.SetActive(true);
-
         Debug.Log("[LevelLoader] Cargando escena: " + index);
+
+        // Desde aca si encuentra la escena correcta (no se pq)
+        string nombreEscena = SceneManager.GetSceneByBuildIndex(index).name;
+        Debug.Log("Escena que se carga: " + nombreEscena);
+        textoNivel.text = "Cargando " + nombreEscena + " ...";
 
         // Mientras la operacion no este terminada
         while (!operacion.isDone)
@@ -149,4 +153,80 @@ public class LevelLoader : MonoBehaviour
         nivel2 = !nivel2;
     }
 
+    /* -------------------------------------------------------------------------------- */
+
+    float tiempoAnimacionColorPanel = 0.3f; // 0.3
+    float tiempoAnimacionRestoPanel = 0.2f; // 0.2
+
+    #region AnimacionPonerPanelCarga
+
+    /* --------------------------------------------------------------------------------------- */
+    // ----------------------------- ANIMACION PONER PANEL CARGA ----------------------------- // 
+    /* --------------------------------------------------------------------------------------- */
+
+    void ponerPanelCarga()
+    {
+        restoPanelCarga.SetActive(false);
+
+        LeanTween.value(levelLoader, 0, 0, 0f)
+            .setOnUpdate(mostrarColorPanelAlfa).setOnComplete(iniciarMostrarPanelCarga);  
+    }
+
+    void mostrarColorPanelAlfa(float value) 
+    {
+        panelCargaColor.GetComponent<Image>().color = new Color(0.149f, 0.149f, 0.149f, value);
+    }
+
+    void iniciarMostrarPanelCarga() {
+        levelLoader.SetActive(true);
+        LeanTween.value(levelLoader, 0, 1, tiempoAnimacionColorPanel)
+                .setOnUpdate(mostrarColorPanelAlfa).setOnComplete(mostrarPanelCarga);
+    }
+
+    void mostrarPanelCarga()
+    {
+        LeanTween.scaleY(restoPanelCarga, 0, 0f).setOnComplete(mostrarRestoPanelCarga);
+    }
+
+    void mostrarRestoPanelCarga() 
+    {
+        restoPanelCarga.SetActive(true);
+        LeanTween.scaleY(restoPanelCarga, 1, tiempoAnimacionRestoPanel).setOnComplete(completarCargaNivel);
+    }
+
+    void completarCargaNivel() 
+    {
+        StartCoroutine(cargarAsincronizadamente(indexACargar));
+
+        if (indexACargar != 7)
+        {
+            AnalyticsResult result = AnalyticsEvent.Custom("Ingreso_" + SceneManager.GetSceneByBuildIndex(indexACargar).name);
+            //Debug.Log("[LevelLoader] Analytics Result: " + result + " | DATA: " + "Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
+        }
+    }
+
+    #endregion
+
+    #region AnimacionQuitarPanelCarga
+
+    /* ---------------------------------------------------------------------------------------- */
+    // ----------------------------- ANIMACION QUITAR PANEL CARGA ----------------------------- // 
+    /* ---------------------------------------------------------------------------------------- */
+
+    void quitarPanelCarga() 
+    {
+        LeanTween.scaleY(restoPanelCarga, 0, tiempoAnimacionRestoPanel).setOnComplete(ocultarColorPanelAlfa);
+    }
+
+    void ocultarColorPanelAlfa() 
+    {
+        LeanTween.value(levelLoader, 1, 0, tiempoAnimacionColorPanel)
+            .setOnUpdate(mostrarColorPanelAlfa).setOnComplete(esconderPanelCarga);
+    }
+
+    void esconderPanelCarga() {
+        levelLoader.SetActive(false);
+    }
+
+    #endregion
 }

@@ -14,7 +14,7 @@ public class ManejarMenu : MonoBehaviour
     static bool variablesAsignadas = false;
 
     // GameObjects
-    static GameObject menu, opciones, creditos, continuarDesdeNivel;
+    static GameObject menu, opciones, creditos, continuarDesdeNivel, panelMenu;
 
     // Manager de las animaciones
     static LeanTweenManager tweenManager;
@@ -41,6 +41,7 @@ public class ManejarMenu : MonoBehaviour
         if (!variablesAsignadas)
         {
             menu = GameObject.Find("Menu");
+            panelMenu = GameObject.Find("PanelMenu");
             opciones = GameObject.Find("MenuOpciones");
             creditos = GameObject.Find("MenuCreditos");
             
@@ -55,7 +56,9 @@ public class ManejarMenu : MonoBehaviour
         if (index != 0)
         {
             textoBoton.text = continuar;
-            tweenManager.cerrarMenu();
+            //tweenManager.cerrarMenu();
+            menu.SetActive(false);
+            panelMenu.SetActive(false);
         }
         // Estoy en el menu principal
         else
