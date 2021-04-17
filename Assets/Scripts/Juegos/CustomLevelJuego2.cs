@@ -8,17 +8,14 @@ using TMPro;
 public class CustomLevelJuego2 : MonoBehaviour
 {
     // Tamaño de tabla
-    public int columnas = 3;
-    public int filas = 3;
+    public int columnas = 3, filas = 3;
 
-    public bool imageSet = false;
-    public bool sizeSet = false;
+    public bool imageSet = false, sizeSet = false;
 
     RawImage imagen;
     GameObject imagenPreview;
-    Text inputField;
 
-    int mayor; 
+    //int mayor; 
 
     /* -------------------------------------------------------------------------------- */
 
@@ -26,7 +23,6 @@ public class CustomLevelJuego2 : MonoBehaviour
     {
         imagen = GameObject.Find("Imagen Elegida").GetComponent<RawImage>();
         imagenPreview = GameObject.Find("Imagen Preview");
-        inputField = GameObject.Find("TextoURL").GetComponent<Text>();
 
         imagenPreview.SetActive(false);
     }
@@ -92,8 +88,8 @@ public class CustomLevelJuego2 : MonoBehaviour
         FindObjectOfType<Juego2>().filas = filas;
         FindObjectOfType<Juego2>().columnas = columnas;
 
-        if (filas > columnas) mayor = filas;
-        else mayor = columnas;
+        //if (filas > columnas) mayor = filas;
+        //else mayor = columnas;
 
         GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = imagen.texture;
 
@@ -102,48 +98,30 @@ public class CustomLevelJuego2 : MonoBehaviour
         imagenPreview.SetActive(true);
     }
 
-   /*  -------------------------------------------------------------------------------- */
-
-    /*
-    void asignarNombre(char nombre, char nombre2, int contador) 
-    {
-        GameObject.Find( nombre.ToString() + nombre2.ToString() ).name = contador.ToString();
-        GameObject.Find(contador.ToString()).GetComponent<Renderer>().material.mainTexture = imagen.texture;
-    }
-    */
-
-    /* -------------------------------------------------------------------------------- */
-
-    //private void destruir(char nombre, char nombre2) { Destroy(GameObject.Find(nombre.ToString() + nombre2.ToString())); }
-
-
     /* ----------------------------------- Explorer ----------------------------------- */
-
-    public string url = "";
 
     public void abrirExplorer() { FindObjectOfType<PopUps>().abrirPopUp(4); }
 
     /* -------------------------------------------------------------------------------- */
 
-    public void asignTexture()
+    public void asignTexture(string url)
     {
-        url = (inputField.text).ToString();
-        Debug.Log(url);
-        StartCoroutine(GetTexture());
+        Debug.Log("[CustomLevelJuego2] URL Ingresado: " + url);
+        StartCoroutine(GetTexture(url));
         imagen.material.color = new Vector4(0.20f, 0.20f, 0.20f, 1);
     }
 
     /* -------------------------------------------------------------------------------- */
 
-    IEnumerator GetTexture()
+    IEnumerator GetTexture(string url)
     {
-        Debug.Log("Cargando imagen...");
+        Debug.Log("[CustomLevelJuego2] Cargando imagen personalizada...");
 
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
 
         yield return www.SendWebRequest();
 
-        Debug.Log("Imagen cargada.");
+        Debug.Log("[CustomLevelJuego2] Cargando imagen correctamente...");
 
         imagen.material.color = Color.white;
         imagen.texture = ((DownloadHandlerTexture)www.downloadHandler).texture;

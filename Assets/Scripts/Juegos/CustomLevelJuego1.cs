@@ -121,10 +121,9 @@ public class CustomLevelJuego1 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    public void asignTexture()
+    public void asignTexture(string url)
     {
-        string url = (inputField.text).ToString();
-        Debug.Log(url);
+        Debug.Log("[CustomLevelJuego1] URL Ingresado: " + url);
         StartCoroutine(GetTexture(url));
         imagen.material.color = new Vector4(0.20f, 0.20f, 0.20f, 1);
     }
@@ -133,13 +132,13 @@ public class CustomLevelJuego1 : MonoBehaviour
 
     IEnumerator GetTexture(string url)
     {
-        Debug.Log("Cargando imagen...");
+        Debug.Log("[CustomLevelJuego1] Cargando imagen personalizada...");
 
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
 
         yield return www.SendWebRequest();
 
-        Debug.Log("Imagen cargada.");
+        Debug.Log("[CustomLevelJuego1] Cargando imagen correctamente...");
 
         imagen.material.color = Color.white;
         imagen.texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
