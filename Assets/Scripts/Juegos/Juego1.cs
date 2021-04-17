@@ -24,7 +24,7 @@ public class Juego1 : MonoBehaviour
     float tiempoAnimacion = 0.1f;
 
     // Flag juego ganado
-    bool gano = false;
+    bool gano = false, animacionActiva = false;
     
     // Texto movimientos
     TMP_Text textoMovimientos;
@@ -123,7 +123,7 @@ public class Juego1 : MonoBehaviour
             GanarHack = false;
         }
 
-        if (gano || !start || pause) return;
+        if (!start || gano || pause || animacionActiva) return;
 
         // Generar rayo para "clickear" bloque
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -245,9 +245,12 @@ public class Juego1 : MonoBehaviour
             // Se modifica el vector posicion con la posicion correspondiente
             Vector3 posicionVector = new Vector3(posicion.position.x + offsetX, posicion.position.y, posicion.position.z + offsetZ);
 
-            if (start)
+            if (start) 
+            {
+                animacionActiva = true;
                 // Se aplica la animacion
-                LeanTween.moveLocal(bloque, posicionVector, tiempoAnimacion);
+                LeanTween.moveLocal(bloque, posicionVector, tiempoAnimacion).setOnComplete(terminarAnimacion);
+            }  
             else
                 posicion.position = posicionVector;
 
@@ -259,6 +262,8 @@ public class Juego1 : MonoBehaviour
             movimientos++;
         }
     }
+
+    void terminarAnimacion() { animacionActiva = false; }
 
     /* -------------------------------------------------------------------------------- */
 
