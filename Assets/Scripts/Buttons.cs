@@ -21,9 +21,20 @@ public class Buttons : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    public void loadLevel(int index) { GameObject.Find("GameManager").GetComponent<LevelLoader>().cargarNivel(index); }
+    public void loadLevel(int index) 
+    {
+        GameObject.Find("GameManager").GetComponent<LevelLoader>().cargarNivel(index); 
+    }
 
-    public void manejarOpciones() { GameObject.Find("GameManager").GetComponent<ManejarMenu>().manejarOpciones(); }
+    public void manejarOpciones() 
+    {
+        GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
+        GameObject.Find("GameManager").GetComponent<ManejarMenu>().manejarOpciones(); 
+    }
 
-    public void manejarCreditos() { GameObject.Find("GameManager").GetComponent<ManejarMenu>().manejarCreditos(); }
+    public void manejarCreditos() 
+    {
+        GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
+        GameObject.Find("GameManager").GetComponent<ManejarMenu>().manejarCreditos(); 
+    }
 }

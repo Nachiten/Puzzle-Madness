@@ -116,6 +116,8 @@ public class PopUps : MonoBehaviour
 
     public void cerrarPopUp(bool accionUsada) // TRUE = si FALSE = no
     {
+        GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
+
         Debug.Log("Cerrando popup");
         LeanTween.moveLocalX(popUp, 1500, tiempoAnimacion).setOnComplete(_ => realizarAccionAlCerrar(accionUsada));
     }

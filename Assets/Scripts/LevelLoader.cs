@@ -102,6 +102,7 @@ public class LevelLoader : MonoBehaviour
     // Llamar a Corutina
     public void cargarNivel(int index)
     {
+        GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
         indexACargar = index;
         textoNivel.text = "...";
 
@@ -147,6 +148,8 @@ public class LevelLoader : MonoBehaviour
 
     public void cambiarNivel()
     {
+        GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
+
         juego1.SetActive(nivel2);
         juego2.SetActive(!nivel2);
 

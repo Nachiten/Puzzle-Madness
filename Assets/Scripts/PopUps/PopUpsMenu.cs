@@ -50,6 +50,7 @@ public class PopUpsMenu : MonoBehaviour
         switch (num)
         {
             case 0:
+                GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
                 textoBanner.text = "Confirmación de Borrado";
                 textoPrincipal.text = "Está seguro que desea borrar TODO el progreso actual del juego?";
                 botonSiTexto.text = "Si";

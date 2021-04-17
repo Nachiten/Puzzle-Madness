@@ -35,6 +35,8 @@ public class CustomLevelJuego1 : MonoBehaviour
 
     public void comenzarNivel()
     {
+        GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
+
         if ( !(imageSet && sizeSet) )
         {
             FindObjectOfType<PopUps>().abrirPopUp(1);
@@ -50,6 +52,8 @@ public class CustomLevelJuego1 : MonoBehaviour
 
     public void ajustarTamaño()
     {
+        GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
+
         if (!imageSet)
         {
             FindObjectOfType<PopUps>().abrirPopUp(2);
@@ -109,7 +113,11 @@ public class CustomLevelJuego1 : MonoBehaviour
     //public string url = "";
 
     // TIENE UNA REFERENCIA DESDE EL EDITOR
-    public void abrirExplorer() { FindObjectOfType<PopUps>().abrirPopUp(4); }
+    public void abrirExplorer() 
+    {
+        GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
+        FindObjectOfType<PopUps>().abrirPopUp(4); 
+    }
 
     /* -------------------------------------------------------------------------------- */
 
