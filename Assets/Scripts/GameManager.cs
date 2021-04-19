@@ -52,17 +52,10 @@ public class GameManager : MonoBehaviour
     public void comenzarJuego1()
     {
         // Asignar filas y columnas de Juego1
-        filas    = FindObjectOfType<Juego1>().filas;        
+        filas = FindObjectOfType<Juego1>().filas;
         columnas = FindObjectOfType<Juego1>().columnas;
-        
-        // Generar bloques del mapa
-        generarBloques();
 
-        // Ajustar Texturas
-        ajustarPosiciones();
-
-        // Ajustar ubicacion de bloques
-        ajustarUbicacion();
+        realizarComienzoDeNivel();
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -73,77 +66,28 @@ public class GameManager : MonoBehaviour
         filas = FindObjectOfType<Juego2>().filas;
         columnas = FindObjectOfType<Juego2>().columnas;
 
-        // Generar bloques del mapa
+        realizarComienzoDeNivel();
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    void realizarComienzoDeNivel()
+    {
+        // Instanciar todos los bloques necesarios para el nivel
         generarBloques();
-        // Ajustar Texturas
-        ajustarPosiciones();
+
+        // Ajusta la posicion del modelo
+        ajustarPosicionModelo();
+
+        // Ajusta las texturas de los bloques
+        ajustarTexturasBloques();
+
         // Ajustar ubicacion de bloques
-        ajustarUbicacion();
+        ajustarPosicionBloques();
     }
 
     /* -------------------------------------------------------------------------------- */
 
-    public void ganoJuego()
-    {
-        // Variable gano
-        gano = true;
-
-        // Desactivar reloj
-        GetComponent<Timer>().toggleClock(false);
-
-        AnalyticsResult result = AnalyticsEvent.Custom("Ganado_" + index);
-        Debug.Log("[GameManager] Analytics Result: " + result + " | DATA: " + "Ganado_" + index);
-
-        PlayerPrefs.SetString(index.ToString(), "Ganado");
-
-        FindObjectOfType<Timer>().setPlayerPref();
-
-        // Modificar texto
-        if (index == 10 || index == 11 || index == 22 || index == 23) textoBoton.text = regresarAInicio;
-                                                  else textoBoton.text = siguienteNivel;
-
-        // Mostrar boton
-        boton.SetActive(true);
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    public void comenzarNivel()
-    {
-        int index = SceneManager.GetActiveScene().buildIndex;
-
-        if (!gano) // Si no gano, comenzar juego
-        {
-            Debug.Log("[GameManager] Iniciando juego...");
-            // Ocultar boton
-            boton.SetActive(false);
-
-            // Si es juego1
-            if (index < 12)
-            FindObjectOfType<Juego1>().comenzarNivel();
-
-            // Si es juego2
-            else if (index > 12)
-            FindObjectOfType<Juego2>().comenzarNivel();
-
-            // Activar reloj
-            FindObjectOfType<Timer>().toggleClock(true);
-        }
-
-        // Si es custom level o nivel 10, regresar a inicio
-        else if (index == 10 || index == 11 || index == 22 || index == 23) FindObjectOfType<LevelLoader>().cargarNivel(0);
-
-        // En otros, pasar al siguiente nivel
-        else
-        {
-            Debug.Log("[GameManager] Avanzando al siguiente nivel...");
-            FindObjectOfType<LevelLoader>().cargarNivel(index + 1);
-        }
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    // Intanciar los bloques necesarios para el nivel
     public void generarBloques()
     {
         Debug.Log("[GameManager] Generando Bloques...");
@@ -155,8 +99,10 @@ public class GameManager : MonoBehaviour
         float offsetX = 0f;
         float offsetZ = 0f;
 
-        for (int i = 0; i < filas; i++){
-            for (int j = 0; j < columnas; j++) {
+        for (int i = 0; i < filas; i++)
+        {
+            for (int j = 0; j < columnas; j++)
+            {
 
                 // En el juego 1 no genero el ultimo bloque, en el juego2 si
                 if (contador < filas * columnas || SceneManager.GetActiveScene().buildIndex > 12)
@@ -182,28 +128,9 @@ public class GameManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    // Ajustar posiciones y offsets de imagenes
-    public void ajustarPosiciones()
+    void ajustarTexturasBloques()
     {
-        index = SceneManager.GetActiveScene().buildIndex;
-
-        // Textura de imagen modelo
-        Renderer modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
-
-        // Transform de iamgen modelo
-        Transform modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
-
-        if (index < 11)
-        {
-            modeloTransform.position = new Vector3(modeloTransform.position.x - (index - 1) * 1.5111f, modeloTransform.position.y - (index - 1) * 2f, modeloTransform.position.z);
-
-            // Ajustar tamaño de imagen modelo a nivel actual
-            modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y, 1.5f * filas);
-        } 
-
         Renderer objeto;
-
-        int contador;
 
         float scaleX = 1f / columnas;
         float scaleY = 1f / filas;
@@ -211,10 +138,12 @@ public class GameManager : MonoBehaviour
         float offsetX = 0f;
         float offsetY = scaleY * (filas * columnas - 1);
 
-        contador = 1;
+        int contador = 1;
 
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
+        for (int i = 0; i < filas; i++)
+        {
+            for (int j = 0; j < columnas; j++)
+            {
 
                 if (contador < filas * columnas || SceneManager.GetActiveScene().buildIndex > 12)
                 {
@@ -223,7 +152,6 @@ public class GameManager : MonoBehaviour
 
                     Mesh mesh = objeto.GetComponent<MeshFilter>().mesh;
                     Vector2[] UVs = new Vector2[mesh.vertices.Length];
-
 
                     // Cambiar la textura al modelo
                     objeto.material.mainTexture = modelo.material.mainTexture;
@@ -239,7 +167,7 @@ public class GameManager : MonoBehaviour
                         objeto.material.mainTextureOffset = new Vector2(offsetX, offsetY);
                     }
                     // Si es Juego1 o Juego2, usar los bordes negros
-                    else 
+                    else
                     {
                         float xMin = 0.334f + 0.33333f / columnas * j;
                         float yMin = (0.33333f / filas) * (filas - 1) - 0.33333f / filas * i;
@@ -295,10 +223,32 @@ public class GameManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    Renderer modelo;
+
+    public void ajustarPosicionModelo()
+    {
+        index = SceneManager.GetActiveScene().buildIndex;
+
+        // Textura de imagen modelo
+        modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
+
+        // Transform de iamgen modelo
+        Transform modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
+
+        if (index < 11)
+        {
+            modeloTransform.position = new Vector3(modeloTransform.position.x - (index - 1) * 1.5111f, modeloTransform.position.y - (index - 1) * 2f, modeloTransform.position.z);
+
+            // Ajustar tamaño de imagen modelo a nivel actual
+            modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y, 1.5f * filas);
+        }
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
     Transform referenciaAjuste;
 
-    // Determinar posicion correcta de juego
-    public void ajustarUbicacion()
+    public void ajustarPosicionBloques()
     {
         if (index < 12)
         {
@@ -347,15 +297,17 @@ public class GameManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    // Hijo de ajustarUbicacion
+    // Hijo de ajustarPosicionBloques
     void determinarPos(ref float posicionX, ref float posicionZ)
     {
         int mayor;
 
         index = SceneManager.GetActiveScene().buildIndex;
 
-        if (filas > columnas) mayor = filas;
-        else mayor = columnas;
+        if (filas > columnas) 
+            mayor = filas;
+        else 
+            mayor = columnas;
 
         float valorX = (columnas - 3) * 2.5f;
         float valorZ = (filas - 3) * 2.5f;
@@ -369,11 +321,71 @@ public class GameManager : MonoBehaviour
 
         if (index != 23)
             modelo.position = new Vector3(modelo.position.x, modelo.position.y + offset, modelo.position.z);
-        
-        else 
+
+        else
             modelo.position = new Vector3(modelo.position.x - 22 * (mayor / 12), modelo.position.y + 12 * (mayor / 12), modelo.position.z);
-        
+
         Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
         camara.position = new Vector3(camara.position.x, camara.position.y + offset, camara.position.z);
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    public void ganoJuego()
+    {
+        // Variable gano
+        gano = true;
+
+        // Desactivar reloj
+        GetComponent<Timer>().toggleClock(false);
+
+        AnalyticsResult result = AnalyticsEvent.Custom("Ganado_" + index);
+        Debug.Log("[GameManager] Analytics Result: " + result + " | DATA: " + "Ganado_" + index);
+
+        PlayerPrefs.SetString(index.ToString(), "Ganado");
+
+        FindObjectOfType<Timer>().setPlayerPref();
+
+        // Modificar texto
+        if (index == 10 || index == 11 || index == 22 || index == 23) textoBoton.text = regresarAInicio;
+        else textoBoton.text = siguienteNivel;
+
+        // Mostrar boton
+        boton.SetActive(true);
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    public void comenzarNivel()
+    {
+        int index = SceneManager.GetActiveScene().buildIndex;
+
+        if (!gano) // Si no gano, comenzar juego
+        {
+            Debug.Log("[GameManager] Iniciando juego...");
+            // Ocultar boton
+            boton.SetActive(false);
+
+            // Si es juego1
+            if (index < 12)
+                FindObjectOfType<Juego1>().comenzarNivel();
+
+            // Si es juego2
+            else if (index > 12)
+                FindObjectOfType<Juego2>().comenzarNivel();
+
+            // Activar reloj
+            FindObjectOfType<Timer>().toggleClock(true);
+        }
+
+        // Si es custom level o nivel 10, regresar a inicio
+        else if (index == 10 || index == 11 || index == 22 || index == 23) FindObjectOfType<LevelLoader>().cargarNivel(0);
+
+        // En otros, pasar al siguiente nivel
+        else
+        {
+            Debug.Log("[GameManager] Avanzando al siguiente nivel...");
+            FindObjectOfType<LevelLoader>().cargarNivel(index + 1);
+        }
     }
 }

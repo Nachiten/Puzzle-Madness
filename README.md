@@ -45,7 +45,7 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 - [New] Animacion fade in fade out de pantalla de carga al cambiar escenas.
 
 *Versión 5.0* [EN DESARROLLO]: 
-- [Fix] Animacion de bloques en Juego1.
+- [Fix] No se permite clickear mientras esté la animacion en curso de Juego1.
 - [New] Sonidos al clickear botones del menu.
 
 # TODOs
