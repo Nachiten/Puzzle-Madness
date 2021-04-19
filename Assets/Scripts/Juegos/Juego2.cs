@@ -366,24 +366,32 @@ public class Juego2 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    Transform plataforma;
-    Transform referenciaAjuste;
-
     // Determinar posicion correcta de juego
     public void ajustarUbicacion()
     {
+        int mayor = columnas;
+
+        if (filas > columnas) 
+            mayor = filas;
+
+        float offsetXPiso = (mayor - 3) * 1f;
+
+        Debug.Log("[Juego2] OffsetX aplicado a piso: " + offsetXPiso);
+
         // Modificar tamaño de plataforma
-        plataforma = GameObject.Find("Piso").GetComponent<Transform>();
+        Transform plataforma = GameObject.Find("Piso").GetComponent<Transform>();
         plataforma.localScale = new Vector3((5 * columnas) + 2, plataforma.localScale.y, (5 * filas) + 2);
 
-        int contador = 1;
-        Transform objeto;
+        // Modificar posicion de plataforma
+        plataforma.position = new Vector3(plataforma.position.x - offsetXPiso, plataforma.position.y, plataforma.position.z);
 
-        float offsetX = 5;
+        int contador = 1;
+
+        float offsetX = 0;
         float offsetZ = 0;
 
-        float posX = 0;
-        float posZ = 0;
+        float posXReferencia = 0;
+        float posZReferencia = 0;
 
         for (int i = 0; i < filas; i++)
         {
@@ -392,22 +400,22 @@ public class Juego2 : MonoBehaviour
                 if (i == 0 && j == 0)
                 {
                     // Primer bloque es la referencia
-                    referenciaAjuste = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
+                    Transform referenciaAjuste = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
 
-                    posX = referenciaAjuste.position.x;
-                    posZ = referenciaAjuste.position.z;
+                    posXReferencia = referenciaAjuste.position.x + (columnas - 3) * 0.8f;
+                    posZReferencia = referenciaAjuste.position.z + (filas - 3) * 2.5f;
 
-                    determinarPos(ref posX, ref posZ);
-                    referenciaAjuste.position = new Vector3(posX, referenciaAjuste.position.y, posZ);
+                    //determinarPos(ref posX, ref posZ);
+
+                    referenciaAjuste.position = new Vector3(posXReferencia, referenciaAjuste.position.y, posZReferencia);
                 }
                 else
                 {
-                    objeto = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
+                    Transform objeto = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
 
-                    objeto.position = new Vector3(referenciaAjuste.position.x + offsetX, objeto.position.y, referenciaAjuste.position.z + offsetZ);
-
-                    offsetX += 5;
+                    objeto.position = new Vector3(posXReferencia + offsetX, objeto.position.y, posZReferencia + offsetZ); 
                 }
+                offsetX += 5;
                 contador++;
             }
             offsetX = 0;
@@ -420,20 +428,8 @@ public class Juego2 : MonoBehaviour
     // Hijo de ajustarUbicacion
     void determinarPos(ref float posicionX, ref float posicionZ)
     {
-        int mayor;
+        
 
-        if (filas > columnas) mayor = filas;
-        else mayor = columnas;
-
-        float valorX = (columnas - 3) * 0.8f;
-        float valorZ = (filas - 3) * 2.5f;
-
-        posicionX += valorX;
-        posicionZ += valorZ;
-
-        float offset = (mayor - 3) * 1f;
-
-        // Modificar posicion de plataforma
-        plataforma.position = new Vector3(plataforma.position.x - offset, plataforma.position.y, plataforma.position.z);
+        
     }
 }

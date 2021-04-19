@@ -121,7 +121,7 @@ public class LevelLoader : MonoBehaviour
 
         // Desde aca si encuentra la escena correcta (no se pq)
         string nombreEscena = SceneManager.GetSceneByBuildIndex(index).name;
-        Debug.Log("Escena que se carga: " + nombreEscena);
+        //Debug.Log("Escena que se carga: " + nombreEscena);
         textoNivel.text = "Cargando " + nombreEscena + " ...";
 
         // Mientras la operacion no este terminada

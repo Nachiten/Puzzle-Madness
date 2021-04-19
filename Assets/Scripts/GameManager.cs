@@ -71,26 +71,29 @@ public class GameManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+   // Renderer modelo;
+
     void realizarComienzoDeNivel()
     {
         // Instanciar todos los bloques necesarios para el nivel
         generarBloques();
-
-        // Ajusta la posicion del modelo
-        ajustarPosicionModelo();
 
         // Ajusta las texturas de los bloques
         ajustarTexturasBloques();
 
         // Ajustar ubicacion de bloques
         ajustarPosicionBloques();
+
+        // Ajusta ubicacion del modelo y de la camara
+        ajustarPosicionCamaraYModelo();
+        
     }
 
     /* -------------------------------------------------------------------------------- */
 
     public void generarBloques()
     {
-        Debug.Log("[GameManager] Generando Bloques...");
+        //Debug.Log("[GameManager] Generando Bloques...");
 
         GameObject referencia = GameObject.Find("_Reference");
 
@@ -103,7 +106,6 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < columnas; j++)
             {
-
                 // En el juego 1 no genero el ultimo bloque, en el juego2 si
                 if (contador < filas * columnas || SceneManager.GetActiveScene().buildIndex > 12)
                 {
@@ -130,7 +132,8 @@ public class GameManager : MonoBehaviour
 
     void ajustarTexturasBloques()
     {
-        Renderer objeto;
+        // Textura de imagen modelo
+        Renderer modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
 
         float scaleX = 1f / columnas;
         float scaleY = 1f / filas;
@@ -144,11 +147,10 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < columnas; j++)
             {
-
                 if (contador < filas * columnas || SceneManager.GetActiveScene().buildIndex > 12)
                 {
                     // Asignar renderer
-                    objeto = GameObject.Find(contador.ToString()).GetComponent<Renderer>();
+                    Renderer objeto = GameObject.Find(contador.ToString()).GetComponent<Renderer>();
 
                     Mesh mesh = objeto.GetComponent<MeshFilter>().mesh;
                     Vector2[] UVs = new Vector2[mesh.vertices.Length];
@@ -223,31 +225,6 @@ public class GameManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    Renderer modelo;
-
-    public void ajustarPosicionModelo()
-    {
-        index = SceneManager.GetActiveScene().buildIndex;
-
-        // Textura de imagen modelo
-        modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
-
-        // Transform de iamgen modelo
-        Transform modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
-
-        if (index < 11)
-        {
-            modeloTransform.position = new Vector3(modeloTransform.position.x - (index - 1) * 1.5111f, modeloTransform.position.y - (index - 1) * 2f, modeloTransform.position.z);
-
-            // Ajustar tamaño de imagen modelo a nivel actual
-            modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y, 1.5f * filas);
-        }
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    Transform referenciaAjuste;
-
     public void ajustarPosicionBloques()
     {
         if (index < 12)
@@ -257,13 +234,12 @@ public class GameManager : MonoBehaviour
         }
 
         int contador = 1;
-        Transform objeto;
 
-        float offsetX = 5;
+        float offsetX = 0;
         float offsetZ = 0;
 
-        float posX = 0;
-        float posZ = 0;
+        float posXReferencia = 0;
+        float posZReferencia = 0;
 
         for (int i = 0; i < filas; i++)
         {
@@ -272,22 +248,21 @@ public class GameManager : MonoBehaviour
                 if (i == 0 && j == 0)
                 {
                     // Primer bloque es la referencia
-                    referenciaAjuste = GameObject.Find(contador.ToString()).GetComponent<Transform>();
+                    Transform referenciaAjuste = GameObject.Find(contador.ToString()).GetComponent<Transform>();
 
-                    posX = referenciaAjuste.position.x;
-                    posZ = referenciaAjuste.position.z;
+                    posXReferencia = referenciaAjuste.position.x - (columnas - 3) * 2.5f - 0.5f;
+                    posZReferencia = referenciaAjuste.position.z + (filas - 3) * 2.5f + 0.5f;
 
-                    determinarPos(ref posX, ref posZ);
-                    referenciaAjuste.position = new Vector3(posX, referenciaAjuste.position.y, posZ);
+                    referenciaAjuste.position = new Vector3(posXReferencia, referenciaAjuste.position.y, posZReferencia);
                 }
                 else if (!(i == filas - 1 && j == columnas - 1))
                 {
-                    objeto = GameObject.Find(contador.ToString()).GetComponent<Transform>();
+                    Transform objeto = GameObject.Find(contador.ToString()).GetComponent<Transform>();
 
-                    objeto.position = new Vector3(referenciaAjuste.position.x + offsetX, objeto.position.y, referenciaAjuste.position.z + offsetZ);
-
-                    offsetX += 5;
+                    objeto.position = new Vector3(posXReferencia + offsetX, objeto.position.y, posZReferencia + offsetZ);
                 }
+
+                offsetX += 5;
                 contador++;
             }
             offsetX = 0;
@@ -297,36 +272,42 @@ public class GameManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    float offsetMayorCamara = 40f;
+    float offsetMayorXModelo = 24.7f;
+
     // Hijo de ajustarPosicionBloques
-    void determinarPos(ref float posicionX, ref float posicionZ)
+    void ajustarPosicionCamaraYModelo()
     {
         int mayor;
-
-        index = SceneManager.GetActiveScene().buildIndex;
 
         if (filas > columnas) 
             mayor = filas;
         else 
             mayor = columnas;
 
-        float valorX = (columnas - 3) * 2.5f;
-        float valorZ = (filas - 3) * 2.5f;
-
-        posicionX -= valorX;
-        posicionZ += valorZ;
-
-        float offset = (mayor - 3) * 2.5f;
-
-        Transform modelo = GameObject.Find("Modelo").GetComponent<Transform>();
-
-        if (index != 23)
-            modelo.position = new Vector3(modelo.position.x, modelo.position.y + offset, modelo.position.z);
-
-        else
-            modelo.position = new Vector3(modelo.position.x - 22 * (mayor / 12), modelo.position.y + 12 * (mayor / 12), modelo.position.z);
-
+        float offsetYCamara = (mayor - 3) * offsetMayorCamara / 9;
+ 
+        //Debug.Log("[GameManager] OffsetY aplicado a camara: " + offsetYCamara);
+       
         Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
-        camara.position = new Vector3(camara.position.x, camara.position.y + offset, camara.position.z);
+        camara.position = new Vector3(camara.position.x, camara.position.y + offsetYCamara, camara.position.z);
+
+        //index = SceneManager.GetActiveScene().buildIndex;
+
+        //if (index < 11)
+        //{
+            // Transform de iamgen modelo
+            Transform modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
+
+            float offsetXModelo = (mayor - 3) * offsetMayorXModelo / 9;
+
+            //Debug.Log("[GameManager] OffsetX aplicado a modelo: " + offsetXModelo);
+
+            modeloTransform.position = new Vector3(modeloTransform.position.x - offsetXModelo, modeloTransform.position.y, modeloTransform.position.z);
+
+            // Ajustar tamaño de imagen modelo a nivel actual
+            modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y, 1.5f * filas);
+        //}
     }
 
     /* -------------------------------------------------------------------------------- */

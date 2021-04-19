@@ -48,6 +48,11 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 - [Fix] No se permite clickear mientras esté la animacion en curso de Juego1.
 - [New] Sonidos al clickear botones del menu.
 
+Pendientes:
+- Corregir niveles 2-10 de Juego1.
+- Determinar offsets correctos de Juego2.
+- Corregir niveles 2-10 de Juego2 una vez determinados offsets.
+
 # TODOs
 - Fixear posiciones diferentes de template resuelta.
 - Fixear textos borrosos en Pop Ups de CustomLevel.
