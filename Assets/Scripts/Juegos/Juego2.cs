@@ -32,12 +32,16 @@ public class Juego2 : MonoBehaviour
 
     Texture[] texturas;
 
+    public int puntosTotales, puntosActuales = 0;
+
     #endregion
 
     /* -------------------------------------------------------------------------------- */
 
     void Start()
     {
+
+        puntosTotales = filas * columnas;
         int index = SceneManager.GetActiveScene().buildIndex;
          
         cambiarTexturas();
@@ -56,42 +60,60 @@ public class Juego2 : MonoBehaviour
             float yMin = 0.0f;
             float yMax = 0.333f;
 
-            // Top
+            // Parte de arriba de la textura
             UVs[4] = new Vector2(xMin, yMax);
             UVs[5] = new Vector2(xMax, yMax);
             UVs[8] = new Vector2(xMin, yMin);
             UVs[9] = new Vector2(xMax, yMin);
 
-            // Front
-            UVs[0] = new Vector2(0.0f, 0.0f);
-            UVs[1] = new Vector2(0.333f, 0.0f);
-            UVs[2] = new Vector2(0.0f, 0.333f);
-            UVs[3] = new Vector2(0.333f, 0.333f);
+            float cero = 0f;
+            float unTercio = 0.333f;
 
-            // Back
-            UVs[6] = new Vector2(1.0f, 0.0f);
-            UVs[7] = new Vector2(0.667f, 0.0f);
-            UVs[10] = new Vector2(1.0f, 0.333f);
-            UVs[11] = new Vector2(0.667f, 0.333f);
+            // El resto (todo toma color negro
+            for (int i = 0; i<= 20; i += 4) 
+            {
+                if (i != 4 && i != 8)
+                    UVs[i] = new Vector2(cero, cero);
+                if (i+1 != 5 && i+1 != 9)
+                    UVs[i+1] = new Vector2(unTercio, cero);
 
-            // Bottom
-            UVs[12] = new Vector2(0.0f, 0.334f);
-            UVs[13] = new Vector2(0.0f, 0.666f);
-            UVs[14] = new Vector2(0.333f, 0.666f);
-            UVs[15] = new Vector2(0.333f, 0.334f);
+                UVs[i+2] = new Vector2(cero, unTercio);
+                UVs[i+3] = new Vector2(unTercio, unTercio);
+            }
 
-            // Left
-            UVs[16] = new Vector2(0.334f, 0.334f);
-            UVs[17] = new Vector2(0.334f, 0.666f);
-            UVs[18] = new Vector2(0.666f, 0.666f);
-            UVs[19] = new Vector2(0.666f, 0.334f);
-
-            // Right        
-            UVs[20] = new Vector2(0.667f, 0.334f);
-            UVs[21] = new Vector2(0.667f, 0.666f);
-            UVs[22] = new Vector2(1.0f, 0.666f);
-            UVs[23] = new Vector2(1.0f, 0.334f);
             mesh.uv = UVs;
+
+            // DEPRACATED
+
+            // Front
+            //UVs[0] = new Vector2(0.0f, 0.0f);
+            //UVs[1] = new Vector2(0.333f, 0.0f);
+            //UVs[2] = new Vector2(0.0f, 0.333f);
+            //UVs[3] = new Vector2(0.333f, 0.333f);
+
+            //// Back
+            //UVs[6] = new Vector2(1.0f, 0.0f);
+            //UVs[7] = new Vector2(0.667f, 0.0f);
+            //UVs[10] = new Vector2(1.0f, 0.333f);
+            //UVs[11] = new Vector2(0.667f, 0.333f);
+
+            //// Bottom
+            //UVs[12] = new Vector2(0.0f, 0.334f);
+            //UVs[13] = new Vector2(0.0f, 0.666f);
+            //UVs[14] = new Vector2(0.333f, 0.666f);
+            //UVs[15] = new Vector2(0.333f, 0.334f);
+
+            //// Left
+            //UVs[16] = new Vector2(0.334f, 0.334f);
+            //UVs[17] = new Vector2(0.334f, 0.666f);
+            //UVs[18] = new Vector2(0.666f, 0.666f);
+            //UVs[19] = new Vector2(0.666f, 0.334f);
+
+            //// Right        
+            //UVs[20] = new Vector2(0.667f, 0.334f);
+            //UVs[21] = new Vector2(0.667f, 0.666f);
+            //UVs[22] = new Vector2(1.0f, 0.666f);
+            //UVs[23] = new Vector2(1.0f, 0.334f);
 
             // Comenzar juego desde GameManager
             FindObjectOfType<GameManager>().comenzarJuego2();
@@ -169,17 +191,157 @@ public class Juego2 : MonoBehaviour
     {
         Debug.Log("[Juego2] Inicializando Juego2");
 
-        // Determina la posicion del modelo y de la camara
-        determinarPos();
-
         // Generar los slots donde se colocarán las piezas al resolver
         generarLugares();
 
-        // Ajustar los slots donde corresponde
-        ajustarUbicacion();
+        // Ajustar el piso donde corresponde
+        ajustarUbicacionPiso();
+
+        // Ajustar los Lugar_X donde corresponda
+        ajustarUbicacionLugares();
 
         // Randomizar lugares de piezas
         mezclarLugares();
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    void generarLugares()
+    {
+        GameObject referencia = GameObject.Find("Lugar_Reference");
+
+        int contador = 1;
+
+        float offsetX = 0f;
+        float offsetZ = 0f;
+
+        for (int i = 0; i < filas; i++)
+        {
+            for (int j = 0; j < columnas; j++)
+            {
+                // Crear el clon
+                GameObject clon = Instantiate(Resources.Load("Lugar", typeof(GameObject))) as GameObject;
+                // Asignar nombre correcto
+                clon.name = "Lugar_" + contador.ToString();
+                // Asignar posicion de clon
+                clon.transform.position = new Vector3(referencia.transform.position.x + offsetX, referencia.transform.position.y, referencia.transform.position.z + offsetZ);
+                // Asignar rotacion de clon
+                clon.transform.rotation = referencia.transform.rotation;
+
+                contador++;
+                offsetX += 5f;
+            }
+            offsetX = 0f;
+            offsetZ -= 5f;
+        }
+        Destroy(referencia);
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    public void ajustarUbicacionPiso()
+    {
+        int mayor = columnas;
+
+        if (filas > columnas)
+            mayor = filas;
+
+        float offsetXPiso = (mayor - 3) * 1f;
+
+        Debug.Log("[Juego2] OffsetX aplicado a piso: " + offsetXPiso);
+
+        tamañoXPlataforma = (5 * columnas) + 2;
+        tamañoZPlataforma = (5 * filas) + 2;
+
+        // Modificar tamaño de plataforma
+        Transform plataforma = GameObject.Find("Piso").GetComponent<Transform>();
+        plataforma.localScale = new Vector3(tamañoXPlataforma, plataforma.localScale.y, tamañoZPlataforma);
+
+        posXPlataforma = plataforma.position.x - offsetXPiso;
+        posZPlataforma = plataforma.position.z;
+
+        // Modificar posicion de plataforma
+        plataforma.position = new Vector3(posXPlataforma, plataforma.position.y, posZPlataforma);
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    void ajustarUbicacionLugares()
+    {
+        int contador = 1;
+
+        float offsetX = 0;
+        float offsetZ = 0;
+
+        float posXReferencia = 0;
+        float posZReferencia = 0;
+
+        for (int i = 0; i < filas; i++)
+        {
+            for (int j = 0; j < columnas; j++)
+            {
+                if (i == 0 && j == 0)
+                {
+                    // Primer bloque es la referencia
+                    Transform referenciaAjuste = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
+
+                    float offsetXReferencia = (columnas - 3) * 1.5555f;
+                    float offsetYReferencia = (filas - 3) * 2.5f;
+
+                    Debug.Log("[Juego2] offsetX aplicado a referencia: " + offsetXReferencia);
+                    Debug.Log("[Juego2] offsetY aplicado a referencia: " + offsetXReferencia);
+
+                    posXReferencia = referenciaAjuste.position.x + offsetXReferencia;
+                    posZReferencia = referenciaAjuste.position.z + offsetYReferencia;
+
+                    // Ajusto la posicion de la referencia
+                    referenciaAjuste.position = new Vector3(posXReferencia, referenciaAjuste.position.y, posZReferencia);
+                }
+                else
+                {
+                    Transform objeto = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
+
+                    objeto.position = new Vector3(posXReferencia + offsetX, objeto.position.y, posZReferencia + offsetZ);
+                }
+                offsetX += 5;
+                contador++;
+            }
+            offsetX = 0;
+            offsetZ -= 5;
+        }
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    float tamañoXPlataforma;
+    float tamañoZPlataforma;
+
+    float posXPlataforma;
+    float posZPlataforma;
+
+    void mezclarLugares()
+    {
+        // TODO | Corregir los rangos donde se ponen los bloques
+
+        int contador = 1;
+
+        float rangoMinX = posXPlataforma - tamañoXPlataforma / 2;
+        float rangoMaxX = posXPlataforma + tamañoXPlataforma / 2;
+
+        float rangoMinZ = posZPlataforma - tamañoZPlataforma / 2;
+        float rangoMaxZ = posZPlataforma + tamañoXPlataforma / 2;
+
+        for (int i = 0; i < filas; i++)
+        {
+            for (int j = 0; j < columnas; j++)
+            {
+                Transform transform = GameObject.Find(contador.ToString()).GetComponent<Transform>();
+
+                transform.position = new Vector3(Random.Range(rangoMinX, rangoMaxX), transform.position.y, Random.Range(rangoMinZ, rangoMaxZ));
+
+                contador++;
+            }
+        }
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -219,6 +381,8 @@ public class Juego2 : MonoBehaviour
             // Se coloca en el lugar correcto
             objetoAgarrado.transform.position = new Vector3(lugarCorrectoObjeto.position.x, lugarCorrectoObjeto.position.y + 0.2f, lugarCorrectoObjeto.position.z);
 
+            puntosActuales++;
+
             GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(0);
         }
         // Dejarlo en la posicion donde se soltó
@@ -245,42 +409,25 @@ public class Juego2 : MonoBehaviour
 
     void analizarGano()
     {
-        int contador;
+        //int contador = 1;
 
-        contador = 1;
+        //for (int i = 0; i < filas; i++) 
+        //{
+        //    for (int j = 0; j < columnas; j++) 
+        //    {
+        //        Transform bloque = GameObject.Find(contador.ToString()).transform.GetComponent<Transform>();
+        //        Transform lugarCorrecto = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
 
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
+        //        if (bloque.position != new Vector3(lugarCorrecto.position.x, lugarCorrecto.position.y + 0.2f, lugarCorrecto.position.z))
+        //            return;
 
-                Transform bloque = GameObject.Find(contador.ToString()).transform.GetComponent<Transform>();
-                Transform lugarCorrecto = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
+        //        contador++;
+        //    }
+        //}
+        //Debug.Log("[Juego2] Nivel ganado");
 
-                if (bloque.position != new Vector3(lugarCorrecto.position.x, lugarCorrecto.position.y + 0.2f, lugarCorrecto.position.z))
-                    return;
-
-                contador++;
-            }
-        }
-        Debug.Log("[Juego2] Nivel ganado");
-
-        ganarJuego();
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    void mezclarLugares()
-    {
-        int contador = 1;
-
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-
-                Transform transform = GameObject.Find(contador.ToString()).GetComponent<Transform>();
-
-                transform.position = new Vector3(Random.Range(-11, 11), transform.position.y, Random.Range(-11, 11));
-
-                contador++;
-            }
+        if (puntosActuales == puntosTotales) {
+            ganarJuego();
         }
     }
 
@@ -303,133 +450,5 @@ public class Juego2 : MonoBehaviour
 
         for (int i = 0; i < 10; i++)
             texturas[i] = Resources.Load("Juego2/Image" + (i + 1).ToString()) as Texture;
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    void generarLugares() {
-
-        GameObject referencia = GameObject.Find("Lugar_Reference");
-
-        int contador = 1;
-
-        float offsetX = 0f;
-        float offsetZ = 0f;
-
-        for (int i = 0; i < filas; i++)
-        {
-            for (int j = 0; j < columnas; j++)
-            {
-                    // Crear el clon
-                    GameObject clon = Instantiate(Resources.Load("Lugar", typeof(GameObject))) as GameObject;
-                    // Asignar nombre correcto
-                    clon.name = "Lugar_" + contador.ToString();
-                    // Asignar posicion de clon
-                    clon.transform.position = new Vector3(referencia.transform.position.x + offsetX, referencia.transform.position.y, referencia.transform.position.z + offsetZ);
-                    // Asignar rotacion de clon
-                    clon.transform.rotation = referencia.transform.rotation;
-                
-                contador++;
-                offsetX += 5f;
-            }
-            offsetX = 0f;
-            offsetZ -= 5f;
-        }
-        Destroy(referencia);
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    void determinarPos()
-    {
-        int mayor;
-
-        if (columnas > filas) mayor = columnas;
-            else mayor = filas;
-
-        float valor;
-
-        valor = 0;
-
-        // ---- REVISAR CODIGO ----
-        for (int i = 3; i <= mayor; i++)
-        {
-
-            if (i == mayor)
-            {
-                Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
-                camara.position = new Vector3(camara.position.x, camara.position.y + valor, camara.position.z);
-            }
-            valor += 2.5f;
-        }
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    // Determinar posicion correcta de juego
-    public void ajustarUbicacion()
-    {
-        int mayor = columnas;
-
-        if (filas > columnas) 
-            mayor = filas;
-
-        float offsetXPiso = (mayor - 3) * 1f;
-
-        Debug.Log("[Juego2] OffsetX aplicado a piso: " + offsetXPiso);
-
-        // Modificar tamaño de plataforma
-        Transform plataforma = GameObject.Find("Piso").GetComponent<Transform>();
-        plataforma.localScale = new Vector3((5 * columnas) + 2, plataforma.localScale.y, (5 * filas) + 2);
-
-        // Modificar posicion de plataforma
-        plataforma.position = new Vector3(plataforma.position.x - offsetXPiso, plataforma.position.y, plataforma.position.z);
-
-        int contador = 1;
-
-        float offsetX = 0;
-        float offsetZ = 0;
-
-        float posXReferencia = 0;
-        float posZReferencia = 0;
-
-        for (int i = 0; i < filas; i++)
-        {
-            for (int j = 0; j < columnas; j++)
-            {
-                if (i == 0 && j == 0)
-                {
-                    // Primer bloque es la referencia
-                    Transform referenciaAjuste = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
-
-                    posXReferencia = referenciaAjuste.position.x + (columnas - 3) * 0.8f;
-                    posZReferencia = referenciaAjuste.position.z + (filas - 3) * 2.5f;
-
-                    //determinarPos(ref posX, ref posZ);
-
-                    referenciaAjuste.position = new Vector3(posXReferencia, referenciaAjuste.position.y, posZReferencia);
-                }
-                else
-                {
-                    Transform objeto = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
-
-                    objeto.position = new Vector3(posXReferencia + offsetX, objeto.position.y, posZReferencia + offsetZ); 
-                }
-                offsetX += 5;
-                contador++;
-            }
-            offsetX = 0;
-            offsetZ -= 5;
-        }
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    // Hijo de ajustarUbicacion
-    void determinarPos(ref float posicionX, ref float posicionZ)
-    {
-        
-
-        
     }
 }

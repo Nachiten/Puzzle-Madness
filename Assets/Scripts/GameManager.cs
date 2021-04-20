@@ -183,35 +183,22 @@ public class GameManager : MonoBehaviour
                         UVs[8] = new Vector2(xMin, yMin);
                         UVs[9] = new Vector2(xMax, yMin);
 
-                        // Front
-                        UVs[0] = new Vector2(0.0f, 0.0f);
-                        UVs[1] = new Vector2(0.333f, 0.0f);
-                        UVs[2] = new Vector2(0.0f, 0.333f);
-                        UVs[3] = new Vector2(0.333f, 0.333f);
+                        float cero = 0f;
+                        float unTercio = 0.333f;
 
-                        // Back
-                        UVs[6] = new Vector2(1.0f, 0.0f);
-                        UVs[7] = new Vector2(0.667f, 0.0f);
-                        UVs[10] = new Vector2(1.0f, 0.333f);
-                        UVs[11] = new Vector2(0.667f, 0.333f);
+                        // El resto (todo toma color negro
+                        for (int meshCounter = 0; meshCounter <= 20; meshCounter += 4)
+                        {
+                            if (meshCounter != 4 && meshCounter != 8)
+                                UVs[meshCounter] = new Vector2(cero, cero);
+                            if (meshCounter + 1 != 5 && meshCounter + 1 != 9)
+                                UVs[meshCounter + 1] = new Vector2(unTercio, cero);
 
-                        // Bottom
-                        UVs[12] = new Vector2(0.0f, 0.334f);
-                        UVs[13] = new Vector2(0.0f, 0.666f);
-                        UVs[14] = new Vector2(0.333f, 0.666f);
-                        UVs[15] = new Vector2(0.333f, 0.334f);
+                            UVs[meshCounter + 2] = new Vector2(cero, unTercio);
+                            UVs[meshCounter + 3] = new Vector2(unTercio, unTercio);
+                        }
 
-                        // Left
-                        UVs[16] = new Vector2(0.334f, 0.334f);
-                        UVs[17] = new Vector2(0.334f, 0.666f);
-                        UVs[18] = new Vector2(0.666f, 0.666f);
-                        UVs[19] = new Vector2(0.666f, 0.334f);
 
-                        // Right        
-                        UVs[20] = new Vector2(0.667f, 0.334f);
-                        UVs[21] = new Vector2(0.667f, 0.666f);
-                        UVs[22] = new Vector2(1.0f, 0.666f);
-                        UVs[23] = new Vector2(1.0f, 0.334f);
                         mesh.uv = UVs;
                     }
                     contador++;
@@ -272,42 +259,47 @@ public class GameManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    float offsetMayorCamara = 40f;
+    float offsetMayorYCamara = 40f;
     float offsetMayorXModelo = 24.7f;
+    float offsetMayorYModelo = 0f;
 
     // Hijo de ajustarPosicionBloques
     void ajustarPosicionCamaraYModelo()
     {
-        int mayor;
+        int mayor = columnas;
 
         if (filas > columnas) 
             mayor = filas;
-        else 
-            mayor = columnas;
 
-        float offsetYCamara = (mayor - 3) * offsetMayorCamara / 9;
+        index = SceneManager.GetActiveScene().buildIndex;
+
+        // Si estoy en juego 2
+        if (index > 12) 
+        {
+            offsetMayorYCamara = 81;
+            offsetMayorYModelo = 41;
+        }
+            
+        float offsetYCamara = (mayor - 3) * offsetMayorYCamara / 9;
  
-        //Debug.Log("[GameManager] OffsetY aplicado a camara: " + offsetYCamara);
+        Debug.Log("[GameManager] OffsetY aplicado a camara: " + offsetYCamara);
        
         Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
         camara.position = new Vector3(camara.position.x, camara.position.y + offsetYCamara, camara.position.z);
 
-        //index = SceneManager.GetActiveScene().buildIndex;
+        //Modifico el modelo
+        Transform modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
 
-        //if (index < 11)
-        //{
-            // Transform de iamgen modelo
-            Transform modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
+        float offsetXModelo = (mayor - 3) * offsetMayorXModelo / 9;
+        float offsetYModelo = (mayor - 3) * offsetMayorYModelo / 9;
 
-            float offsetXModelo = (mayor - 3) * offsetMayorXModelo / 9;
+        Debug.Log("[GameManager] OffsetX aplicado a modelo: " + offsetXModelo);
+        Debug.Log("[GameManager] OffsetY aplicado a modelo: " + offsetYModelo);
 
-            //Debug.Log("[GameManager] OffsetX aplicado a modelo: " + offsetXModelo);
+        modeloTransform.position = new Vector3(modeloTransform.position.x - offsetXModelo, modeloTransform.position.y + offsetYModelo, modeloTransform.position.z);
 
-            modeloTransform.position = new Vector3(modeloTransform.position.x - offsetXModelo, modeloTransform.position.y, modeloTransform.position.z);
-
-            // Ajustar tamaño de imagen modelo a nivel actual
-            modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y, 1.5f * filas);
-        //}
+        // Ajustar tamaño de imagen modelo a nivel actual
+        modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y, 1.5f * filas);
     }
 
     /* -------------------------------------------------------------------------------- */

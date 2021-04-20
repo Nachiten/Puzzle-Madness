@@ -8,7 +8,7 @@ public class ManejarMenu : MonoBehaviour
     #region Variables
 
     // Flags varios
-    public bool menuActivo = false, opcionesActivas = false, creditosActivos = false, mostrandoContinuarDesdeNivel = false;
+    bool menuActivo = false, opcionesActivas = false, creditosActivos = false, mostrandoContinuarDesdeNivel = false;
 
     // Flag de ya asigne las variables
     static bool variablesAsignadas = false;
@@ -48,7 +48,7 @@ public class ManejarMenu : MonoBehaviour
             textoBoton = GameObject.Find("TextoBotonComenzar").GetComponent<TMP_Text>();
             
             tweenManager = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>();
-                
+
             variablesAsignadas = true;
         }
 
@@ -56,7 +56,8 @@ public class ManejarMenu : MonoBehaviour
         if (index != 0)
         {
             textoBoton.text = continuar;
-            //tweenManager.cerrarMenu();
+
+            // Oculto todo de una patada pq se esta mostrando la pantalla de carga
             menu.SetActive(false);
             panelMenu.SetActive(false);
         }

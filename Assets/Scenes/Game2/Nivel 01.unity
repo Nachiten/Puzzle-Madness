@@ -133,11 +133,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 37986233}
+  - component: {fileID: 37986238}
   - component: {fileID: 37986236}
   - component: {fileID: 37986235}
   - component: {fileID: 37986234}
   - component: {fileID: 37986237}
-  - component: {fileID: 37986238}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -171,10 +171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe589e5cee4b07940abf65ebdc063148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuActivo: 0
-  opcionesActivas: 0
-  creditosActivos: 0
-  mostrandoContinuarDesdeNivel: 0
 --- !u!114 &37986235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,8 +196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5d4c364a35d6c448b9ac04b0f69ecd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filas: 7
-  columnas: 4
+  filas: 12
+  columnas: 12
 --- !u!114 &37986237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +228,8 @@ MonoBehaviour:
   pause: 0
   start: 0
   ganarHack: 0
+  puntosTotales: 0
+  puntosActuales: 0
 --- !u!1 &219693869
 GameObject:
   m_ObjectHideFlags: 0
