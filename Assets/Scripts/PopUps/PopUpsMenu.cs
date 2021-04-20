@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
 
 public class PopUpsMenu : MonoBehaviour
@@ -21,7 +20,8 @@ public class PopUpsMenu : MonoBehaviour
     {
         //Debug.Log("[PopsUpsMenu] Start()");
 
-        if (!variablesSeteadas) {
+        if (!variablesSeteadas) 
+        {
             popUp = GameObject.Find("Pop Up");
             botonNo = GameObject.Find("Boton No");
 
@@ -100,33 +100,38 @@ public class PopUpsMenu : MonoBehaviour
     {
         Debug.LogError("[PopUpsMenu] BORRANDO TODAS LAS KEYS !!!!");
         PlayerPrefs.DeleteAll();
-
-        int indexLevelSelector = 12;
-
-        if (SceneManager.GetActiveScene().buildIndex == indexLevelSelector) GameObject.Find("GameManager").GetComponent<LevelLoader>().cargarNivel(indexLevelSelector);
     }
-
-    
 
     void realizarAccionAlCerrar(bool accionUsada) 
     {
         // Cierro el popup
         popUp.SetActive(false);
 
-        if (popUpOpen == 0)
+        switch (popUpOpen) 
         {
-            if (accionUsada)
-            {
-                borrarTodasLasKeys();
-                abrirPopUp(1);
-            }
-            else
-            {
-                abrirPopUp(2);
-            }
+            case 0:
+                if (accionUsada)
+                {
+                    borrarTodasLasKeys();
+                    abrirPopUp(1);
+                }
+                else
+                {
+                    abrirPopUp(2);
+                }
+
+                break;
+            case 1:
+                GameObject.Find("GameManager").GetComponent<LevelLoader>().cargarNivel(0);
+
+                break;
+            case 3:
+                if (accionUsada)
+                    GameObject.Find("GameManager").GetComponent<LevelLoader>().salir();
+
+                break;
+
         }
-        else if (popUpOpen == 3 && accionUsada)
-            GameObject.Find("GameManager").GetComponent<LevelLoader>().salir();
     }
 }
 

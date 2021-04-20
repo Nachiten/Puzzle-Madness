@@ -40,10 +40,8 @@ public class LevelLoader : MonoBehaviour
             levelLoader.SetActive(false);
         }
         else 
-        {
             quitarPanelCarga();
-        }
-
+        
         if (SceneManager.GetActiveScene().buildIndex == 12)
         {
 

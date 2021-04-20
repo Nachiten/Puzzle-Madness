@@ -110,12 +110,14 @@ public class ManejarMenu : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    bool yaJugoAntes() {
+    bool yaJugoAntes() 
+    {
         if (PlayerPrefs.GetInt("YaJugoAntes") == 1)
         {
             return true;
         }
-        else {
+        else 
+        {
             PlayerPrefs.SetInt("YaJugoAntes", 1);
             return false;
         }
@@ -128,7 +130,6 @@ public class ManejarMenu : MonoBehaviour
         if (mostrandoContinuarDesdeNivel) 
         {
             bool continuarDesdeNivelActivo = continuarDesdeNivel.activeSelf;
-
             continuarDesdeNivel.SetActive(!continuarDesdeNivelActivo);
         }
     }
@@ -175,7 +176,6 @@ public class ManejarMenu : MonoBehaviour
         //Debug.Log("[ManejarMenu] Ultimo nivel no ganado. Nivel: " + nivelNoGanado + " | Juego: " + juegoNoGanado);
 
         textoNivelNoGanado.text = "Nivel: " + nivelNoGanado + " | Juego: " + juegoNoGanado;
-
         continuarDesdeNivel.SetActive(true);
     }
 

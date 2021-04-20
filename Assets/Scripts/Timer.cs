@@ -8,7 +8,8 @@ public class Timer : MonoBehaviour
     TMP_Text timerText;
     
     float time;
-    public float speed = 1;
+    float speed = 1;
+
     bool start;
 
     /* -------------------------------------------------------------------------------- */
@@ -19,14 +20,15 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        if (start) { 
-        time += Time.deltaTime * speed;
+        if (start) 
+        { 
+            time += Time.deltaTime * speed;
 
-        string minutes = Mathf.Floor((time % 3600) / 60).ToString("00");
-        string seconds = Mathf.Floor(time % 60).ToString("00");
-        string miliseconds = Mathf.Floor( time % 6 * 10 % 10 ).ToString("0");
+            string minutes = Mathf.Floor((time % 3600) / 60).ToString("00");
+            string seconds = Mathf.Floor(time % 60).ToString("00");
+            string miliseconds = Mathf.Floor( time % 6 * 10 % 10 ).ToString("0");
 
-        timerText.text = minutes + ":" + seconds + ":" + miliseconds;
+            timerText.text = minutes + ":" + seconds + ":" + miliseconds;
         }
 
     }

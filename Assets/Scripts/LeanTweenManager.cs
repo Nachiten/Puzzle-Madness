@@ -19,18 +19,6 @@ public class LeanTweenManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    private Scene scene;
-
-    // Start is called before the first frame update
-    void Start() 
-    {
-        // Store the creating scene as the scene to trigger start
-        scene = SceneManager.GetActiveScene();
-        //setupInicial();
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
     // called first
     void OnEnable()
     {
