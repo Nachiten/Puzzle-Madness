@@ -46,13 +46,9 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 
 *Versión 5.0* [EN DESARROLLO]: 
 - [New] Sonidos al clickear botones del menu.
-- [Fix] No se permite clickear mientras esté la animacion en curso de Juego1.
-- [Fix] Se corrigen posiciones diferentes de bloques en Juego1 y Juego2.
 - [Fix] Todos los textos borrosos.
+- [Fix] Se corrigen posiciones diferentes de bloques en Juego1 y Juego2.
+- [Fix] No se permite clickear mientras esté la animacion en curso de Juego1.
 
-Pendientes:
-- Corregir niveles 2-10 de Juego1.
-- Corregir niveles 2-10 de Juego2 una vez determinados offsets.
-- Eliminar contador de movimientos en Juego2.
 
-# TODOs
+El juego estaría terminado por el momento a menos que se encuentren mas bugs.

@@ -279,7 +279,9 @@ public class GameManager : MonoBehaviour
             offsetMayorYCamara = 81;
             offsetMayorYModelo = 41;
         }
-            
+
+        Debug.Log("[GameManager] mayor: " + mayor);
+
         float offsetYCamara = (mayor - 3) * offsetMayorYCamara / 9;
  
         Debug.Log("[GameManager] OffsetY aplicado a camara: " + offsetYCamara);

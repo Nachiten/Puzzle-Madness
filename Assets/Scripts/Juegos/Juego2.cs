@@ -32,7 +32,7 @@ public class Juego2 : MonoBehaviour
 
     Texture[] texturas;
 
-    public int puntosTotales, puntosActuales = 0;
+    int puntosTotales, puntosActuales = 0;
 
     #endregion
 
@@ -40,13 +40,14 @@ public class Juego2 : MonoBehaviour
 
     void Start()
     {
-
         puntosTotales = filas * columnas;
+
         int index = SceneManager.GetActiveScene().buildIndex;
          
         cambiarTexturas();
 
-        if (index < 23) {
+        if (index < 23) 
+        {
             Renderer rendererModelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
 
             rendererModelo.material.mainTexture = texturas[index - 13];
@@ -83,38 +84,6 @@ public class Juego2 : MonoBehaviour
 
             mesh.uv = UVs;
 
-            // DEPRACATED
-
-            // Front
-            //UVs[0] = new Vector2(0.0f, 0.0f);
-            //UVs[1] = new Vector2(0.333f, 0.0f);
-            //UVs[2] = new Vector2(0.0f, 0.333f);
-            //UVs[3] = new Vector2(0.333f, 0.333f);
-
-            //// Back
-            //UVs[6] = new Vector2(1.0f, 0.0f);
-            //UVs[7] = new Vector2(0.667f, 0.0f);
-            //UVs[10] = new Vector2(1.0f, 0.333f);
-            //UVs[11] = new Vector2(0.667f, 0.333f);
-
-            //// Bottom
-            //UVs[12] = new Vector2(0.0f, 0.334f);
-            //UVs[13] = new Vector2(0.0f, 0.666f);
-            //UVs[14] = new Vector2(0.333f, 0.666f);
-            //UVs[15] = new Vector2(0.333f, 0.334f);
-
-            //// Left
-            //UVs[16] = new Vector2(0.334f, 0.334f);
-            //UVs[17] = new Vector2(0.334f, 0.666f);
-            //UVs[18] = new Vector2(0.666f, 0.666f);
-            //UVs[19] = new Vector2(0.666f, 0.334f);
-
-            //// Right        
-            //UVs[20] = new Vector2(0.667f, 0.334f);
-            //UVs[21] = new Vector2(0.667f, 0.666f);
-            //UVs[22] = new Vector2(1.0f, 0.666f);
-            //UVs[23] = new Vector2(1.0f, 0.334f);
-
             // Comenzar juego desde GameManager
             FindObjectOfType<GameManager>().comenzarJuego2();
 
@@ -139,9 +108,8 @@ public class Juego2 : MonoBehaviour
 
         // Si no hay un objeto agarrado, se trata de agarrar
         if (!hayObjetoAgarrado) 
-        {
             tirarRayoParaTocarObjeto();
-        }
+        
         // Si hay un objeto agarrado, se mueve el bloque
         else  
         {
@@ -155,7 +123,9 @@ public class Juego2 : MonoBehaviour
             }
         }
 
-        analizarGano();
+        if (puntosActuales == puntosTotales)
+            ganarJuego();
+        
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -253,12 +223,18 @@ public class Juego2 : MonoBehaviour
         tamañoXPlataforma = (5 * columnas) + 2;
         tamañoZPlataforma = (5 * filas) + 2;
 
+        Debug.Log("[Juego2] tamañoXPlataforma: " + tamañoXPlataforma);
+        Debug.Log("[Juego2] tamañoZPlataforma: " + tamañoZPlataforma);
+
         // Modificar tamaño de plataforma
         Transform plataforma = GameObject.Find("Piso").GetComponent<Transform>();
         plataforma.localScale = new Vector3(tamañoXPlataforma, plataforma.localScale.y, tamañoZPlataforma);
 
         posXPlataforma = plataforma.position.x - offsetXPiso;
         posZPlataforma = plataforma.position.z;
+
+        Debug.Log("[Juego2] posXPlataforma: " + posXPlataforma);
+        Debug.Log("[Juego2] posZPlataforma: " + posZPlataforma);
 
         // Modificar posicion de plataforma
         plataforma.position = new Vector3(posXPlataforma, plataforma.position.y, posZPlataforma);
@@ -321,15 +297,18 @@ public class Juego2 : MonoBehaviour
 
     void mezclarLugares()
     {
-        // TODO | Corregir los rangos donde se ponen los bloques
-
         int contador = 1;
 
         float rangoMinX = posXPlataforma - tamañoXPlataforma / 2;
         float rangoMaxX = posXPlataforma + tamañoXPlataforma / 2;
 
         float rangoMinZ = posZPlataforma - tamañoZPlataforma / 2;
-        float rangoMaxZ = posZPlataforma + tamañoXPlataforma / 2;
+        float rangoMaxZ = posZPlataforma + tamañoZPlataforma / 2;
+
+        Debug.Log("[Juego2] rangoMinX: " + rangoMinX);
+        Debug.Log("[Juego2] rangoMaxX: " + rangoMaxX);
+        Debug.Log("[Juego2] rangoMinZ: " + rangoMinZ);
+        Debug.Log("[Juego2] rangoMaxZ: " + rangoMaxZ);
 
         for (int i = 0; i < filas; i++)
         {
@@ -403,32 +382,6 @@ public class Juego2 : MonoBehaviour
         mousePoint.z = coordZ;
         // Convertir posicion de mouse en coordenadas 3D
         return Camera.main.ScreenToWorldPoint(mousePoint);
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    void analizarGano()
-    {
-        //int contador = 1;
-
-        //for (int i = 0; i < filas; i++) 
-        //{
-        //    for (int j = 0; j < columnas; j++) 
-        //    {
-        //        Transform bloque = GameObject.Find(contador.ToString()).transform.GetComponent<Transform>();
-        //        Transform lugarCorrecto = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
-
-        //        if (bloque.position != new Vector3(lugarCorrecto.position.x, lugarCorrecto.position.y + 0.2f, lugarCorrecto.position.z))
-        //            return;
-
-        //        contador++;
-        //    }
-        //}
-        //Debug.Log("[Juego2] Nivel ganado");
-
-        if (puntosActuales == puntosTotales) {
-            ganarJuego();
-        }
     }
 
     /* -------------------------------------------------------------------------------- */

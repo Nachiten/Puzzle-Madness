@@ -98,7 +98,7 @@ public class PopUps : MonoBehaviour
                 break;
             case 8:
                 TextoBanner.text = "Ingreso no valido";
-                textoPrincipal.text = "Solo se pueden ingresar numeros en estos campos.";
+                textoPrincipal.text = "Se debe ingresar un numero valido en ambos campos.";
 
                 break;
         }

@@ -143,6 +143,6 @@ public class CustomLevelJuego1 : MonoBehaviour
         imagen.material.color = Color.white;
         imagen.texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
 
-        FindObjectOfType<CustomLevelJuego1>().imageSet = true;
+        imageSet = true;
     }
 }

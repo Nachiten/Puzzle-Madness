@@ -88,9 +88,6 @@ public class CustomLevelJuego2 : MonoBehaviour
         FindObjectOfType<Juego2>().filas = filas;
         FindObjectOfType<Juego2>().columnas = columnas;
 
-        //if (filas > columnas) mayor = filas;
-        //else mayor = columnas;
-
         GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = imagen.texture;
 
         FindObjectOfType<GameManager>().comenzarJuego2();
@@ -126,6 +123,6 @@ public class CustomLevelJuego2 : MonoBehaviour
         imagen.material.color = Color.white;
         imagen.texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
 
-        FindObjectOfType<CustomLevelJuego2>().imageSet = true;
+        imageSet = true;
     }
 }
