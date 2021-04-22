@@ -44,11 +44,13 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 - [Fix] Error en el que el menu no se abria correctamente al cargar escenas.
 - [New] Animacion fade in fade out de pantalla de carga al cambiar escenas.
 
-*Versión 5.0* [EN DESARROLLO]: 
+*Versión 5.0*: 
 - [New] Sonidos al clickear botones del menu.
 - [Fix] Todos los textos borrosos.
 - [Fix] Se corrigen posiciones diferentes de bloques en Juego1 y Juego2.
 - [Fix] No se permite clickear mientras esté la animacion en curso de Juego1.
 
+*Versión 5.1*:
+- [Fix] Soporte correcto de distintas resoluciones en moviles. 
 
 El juego estaría terminado por el momento a menos que se encuentren mas bugs.

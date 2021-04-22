@@ -289,6 +289,8 @@ public class GameManager : MonoBehaviour
         Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
         camara.position = new Vector3(camara.position.x, camara.position.y + offsetYCamara, camara.position.z);
 
+        GameObject.Find("Main Camera").GetComponent<CameraAspectRatioScaler>().fijePosicionCorrecta = true;
+
         //Modifico el modelo
         Transform modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
 
