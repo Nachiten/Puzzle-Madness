@@ -53,4 +53,13 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 *Versión 5.1*:
 - [Fix] Soporte correcto de distintas resoluciones en moviles. 
 
-El juego estaría terminado por el momento a menos que se encuentren mas bugs.
+*Versión 6.0* [EN DESARROLLO]:
+- [Fix] Al recargar un mismo nivel se solucionan los errores anteriores.
+
+# TODOs
+
+- Al comenzar un juego (sea Juego1 o Juego2) debe comenzar automaticamente 
+al clickear algo, no necesitar clickear un boton para comenzar.
+
+
+~~El juego estaría terminado por el momento a menos que se encuentren mas bugs.~~

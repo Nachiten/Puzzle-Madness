@@ -115,6 +115,8 @@ public class LevelLoader : MonoBehaviour
         // Iniciar carga de escena
         AsyncOperation operacion = SceneManager.LoadSceneAsync(index);
 
+        operacion.allowSceneActivation = true;
+
         Debug.Log("[LevelLoader] Cargando escena: " + index);
 
         // Desde aca si encuentra la escena correcta (no se pq)

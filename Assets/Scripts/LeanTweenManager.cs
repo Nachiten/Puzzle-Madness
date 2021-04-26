@@ -8,12 +8,14 @@ public class LeanTweenManager : MonoBehaviour
 
     float tiempoAnimacionBotonesMenu = 0.2f, tiempoAnimacionPanelMenu = 0.15f, tiempoAnimacionOpciones = 0.5f; // 0.3, 0.2
 
-    public List<GameObject> botones;
+    List<GameObject> botones;
 
     public bool animacionEnEjecucion = false;
 
     static bool variablesSeteadas = false;
     static int indexActual = -1;
+
+    bool yaCargada = false;
 
     #endregion
 
@@ -28,18 +30,41 @@ public class LeanTweenManager : MonoBehaviour
     // Se llama cuando una nueva escena se carga
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (indexActual == scene.buildIndex) return;
+        //Debug.Log("[LeanTweenManager] Modo de carga de escena: " + mode);
+        //Debug.Log("[LeanTweenManager] IsLoaded: " + scene.isLoaded);
+        //Debug.Log("[LeanTweenManager] Name: " + scene.name);
 
-        setupInicial();
+        // Si es la misma escena que antes
+        if (indexActual == scene.buildIndex)
+        {
+            // Si es la misma escena recargada (la primera vez)
+            if (!yaCargada)
+                setupInicial();
+            // Si es la segunda o mas veces seguidas que quiere cargar
+            else
+                return;
+        }
+        // Si es una escena nueva, inicializo
+        else
+            setupInicial();
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     /* -------------------------------------------------------------------------------- */
 
-    GameObject menu, menuPanel, menuOpciones, menuCreditos, botonesInicio;
-    GameObject botonComenzar, botonSeleccionarNivel, botonOpciones, botonSalir, botonVolverInicio, botonBorrarProgreso, botonCreditos;
+    static GameObject menu, menuPanel, menuOpciones, menuCreditos, botonesInicio;
+    static GameObject botonComenzar, botonSeleccionarNivel, botonOpciones, botonSalir, botonVolverInicio, botonBorrarProgreso, botonCreditos;
 
     void setupInicial() 
     {
+        yaCargada = true;
+
+        Debug.Log("[LeanTweenManager] setupInicial");
+
         indexActual = SceneManager.GetActiveScene().buildIndex;
 
         if (!variablesSeteadas)
@@ -216,7 +241,10 @@ public class LeanTweenManager : MonoBehaviour
 
         indexActual = SceneManager.GetActiveScene().buildIndex;
 
-        if (indexActual == 0) {
+        if (indexActual == 0) 
+        {
+            Debug.Log("[LeanTweenManager] BotonesInicio: " + botonesInicio);
+
             LeanTween.moveLocalX(botonesInicio, 0f, 0f).setOnComplete(_ => quitarBotonesInicio(posicionAfuera));
         }
 
