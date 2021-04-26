@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
     // Numero de escena actual
     int index;
 
-    string comenzarNivelTexto = "COMENZAR NIVEL", regresarAInicio = "REGRESAR A INICIO", siguienteNivel = "SIGUIENTE NIVEL";
+    // Strings usados como texto del boton
+    string regresarAInicio = "REGRESAR A INICIO", siguienteNivel = "SIGUIENTE NIVEL";
 
     #endregion
 
@@ -31,18 +32,17 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        // Escena actual
         index = SceneManager.GetActiveScene().buildIndex;
         string nombreNivel = SceneManager.GetActiveScene().name;
 
+        // Mostrar texto del nivel actual
         textoNivel = GameObject.Find("Nivel").GetComponent<TMP_Text>();
         textoNivel.text = nombreNivel;
 
         // Asignar variables
         boton = GameObject.Find("Boton");
         textoBoton = GameObject.Find("TextoBoton").GetComponent<TMP_Text>();
-
-        // Modificar texto
-        textoBoton.text = comenzarNivelTexto;
 
         boton.SetActive(false);
     }
@@ -72,8 +72,6 @@ public class GameManager : MonoBehaviour
     }
 
     /* -------------------------------------------------------------------------------- */
-
-   // Renderer modelo;
 
     void realizarComienzoDeNivel()
     {
@@ -179,7 +177,7 @@ public class GameManager : MonoBehaviour
                         float xMax = xMin + 0.33333f / columnas;
                         float yMax = yMin + 0.33333f / filas;
 
-                        // Top
+                        // Imagen de arriba
                         UVs[4] = new Vector2(xMin, yMax);
                         UVs[5] = new Vector2(xMax, yMax);
                         UVs[8] = new Vector2(xMin, yMin);
@@ -188,7 +186,7 @@ public class GameManager : MonoBehaviour
                         float cero = 0f;
                         float unTercio = 0.333f;
 
-                        // El resto (todo toma color negro
+                        // El resto (todo toma color negro)
                         for (int meshCounter = 0; meshCounter <= 20; meshCounter += 4)
                         {
                             if (meshCounter != 4 && meshCounter != 8)
@@ -199,7 +197,6 @@ public class GameManager : MonoBehaviour
                             UVs[meshCounter + 2] = new Vector2(cero, unTercio);
                             UVs[meshCounter + 3] = new Vector2(unTercio, unTercio);
                         }
-
 
                         mesh.uv = UVs;
                     }
@@ -282,16 +279,16 @@ public class GameManager : MonoBehaviour
             offsetMayorYModelo = 41;
         }
 
-        Debug.Log("[GameManager] mayor: " + mayor);
+        //Debug.Log("[GameManager] mayor: " + mayor);
 
         float offsetYCamara = (mayor - 3) * offsetMayorYCamara / 9;
  
-        Debug.Log("[GameManager] OffsetY aplicado a camara: " + offsetYCamara);
+        //Debug.Log("[GameManager] OffsetY aplicado a camara: " + offsetYCamara);
        
         Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
         camara.position = new Vector3(camara.position.x, camara.position.y + offsetYCamara, camara.position.z);
 
-        GameObject.Find("Main Camera").GetComponent<CameraAspectRatioScaler>().fijePosicionCorrecta = true;
+        GameObject.Find("Main Camera").GetComponent<CameraAspectRatioScaler>().inicializacionFinalizada();
 
         //Modifico el modelo
         Transform modeloTransform = GameObject.Find("Bloque Modelo").GetComponent<Transform>();
@@ -299,8 +296,8 @@ public class GameManager : MonoBehaviour
         float offsetXModelo = (mayor - 3) * offsetMayorXModelo / 9;
         float offsetYModelo = (mayor - 3) * offsetMayorYModelo / 9;
 
-        Debug.Log("[GameManager] OffsetX aplicado a modelo: " + offsetXModelo);
-        Debug.Log("[GameManager] OffsetY aplicado a modelo: " + offsetYModelo);
+        //Debug.Log("[GameManager] OffsetX aplicado a modelo: " + offsetXModelo);
+        //Debug.Log("[GameManager] OffsetY aplicado a modelo: " + offsetYModelo);
 
         modeloTransform.position = new Vector3(modeloTransform.position.x - offsetXModelo, modeloTransform.position.y + offsetYModelo, modeloTransform.position.z);
 

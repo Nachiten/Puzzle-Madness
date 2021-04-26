@@ -85,8 +85,7 @@ public class CustomLevelJuego2 : MonoBehaviour
 
         sizeSet = true;
 
-        FindObjectOfType<Juego2>().filas = filas;
-        FindObjectOfType<Juego2>().columnas = columnas;
+        FindObjectOfType<Juego2>().fijarFilasYColumnas(filas, columnas);
 
         GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = imagen.texture;
 

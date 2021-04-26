@@ -130,6 +130,14 @@ public class Juego2 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    public void fijarFilasYColumnas(int filas, int columnas) 
+    {
+        puntosTotales = filas * columnas;
+
+        this.filas = filas;
+        this.columnas = columnas;
+    }
+
     void tirarRayoParaTocarObjeto() {
         // Generar rayo para "clickear" bloque
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -229,13 +237,13 @@ public class Juego2 : MonoBehaviour
 
         float offsetXPiso = (mayor - 3) * 1f;
 
-        Debug.Log("[Juego2] OffsetX aplicado a piso: " + offsetXPiso);
+        //Debug.Log("[Juego2] OffsetX aplicado a piso: " + offsetXPiso);
 
         tamañoXPlataforma = (5 * columnas) + 2;
         tamañoZPlataforma = (5 * filas) + 2;
 
-        Debug.Log("[Juego2] tamañoXPlataforma: " + tamañoXPlataforma);
-        Debug.Log("[Juego2] tamañoZPlataforma: " + tamañoZPlataforma);
+        //Debug.Log("[Juego2] tamañoXPlataforma: " + tamañoXPlataforma);
+        //Debug.Log("[Juego2] tamañoZPlataforma: " + tamañoZPlataforma);
 
         // Modificar tamaño de plataforma
         Transform plataforma = GameObject.Find("Piso").GetComponent<Transform>();
@@ -244,8 +252,8 @@ public class Juego2 : MonoBehaviour
         posXPlataforma = plataforma.position.x - offsetXPiso;
         posZPlataforma = plataforma.position.z;
 
-        Debug.Log("[Juego2] posXPlataforma: " + posXPlataforma);
-        Debug.Log("[Juego2] posZPlataforma: " + posZPlataforma);
+        //Debug.Log("[Juego2] posXPlataforma: " + posXPlataforma);
+        //Debug.Log("[Juego2] posZPlataforma: " + posZPlataforma);
 
         // Modificar posicion de plataforma
         plataforma.position = new Vector3(posXPlataforma, plataforma.position.y, posZPlataforma);
@@ -275,8 +283,8 @@ public class Juego2 : MonoBehaviour
                     float offsetXReferencia = (columnas - 3) * 1.5555f;
                     float offsetYReferencia = (filas - 3) * 2.5f;
 
-                    Debug.Log("[Juego2] offsetX aplicado a referencia: " + offsetXReferencia);
-                    Debug.Log("[Juego2] offsetY aplicado a referencia: " + offsetXReferencia);
+                    //Debug.Log("[Juego2] offsetX aplicado a referencia: " + offsetXReferencia);
+                    //Debug.Log("[Juego2] offsetY aplicado a referencia: " + offsetXReferencia);
 
                     posXReferencia = referenciaAjuste.position.x + offsetXReferencia;
                     posZReferencia = referenciaAjuste.position.z + offsetYReferencia;
@@ -316,10 +324,10 @@ public class Juego2 : MonoBehaviour
         float rangoMinZ = posZPlataforma - tamañoZPlataforma / 2;
         float rangoMaxZ = posZPlataforma + tamañoZPlataforma / 2;
 
-        Debug.Log("[Juego2] rangoMinX: " + rangoMinX);
-        Debug.Log("[Juego2] rangoMaxX: " + rangoMaxX);
-        Debug.Log("[Juego2] rangoMinZ: " + rangoMinZ);
-        Debug.Log("[Juego2] rangoMaxZ: " + rangoMaxZ);
+        //Debug.Log("[Juego2] rangoMinX: " + rangoMinX);
+        //Debug.Log("[Juego2] rangoMaxX: " + rangoMaxX);
+        //Debug.Log("[Juego2] rangoMinZ: " + rangoMinZ);
+        //Debug.Log("[Juego2] rangoMaxZ: " + rangoMaxZ);
 
         for (int i = 0; i < filas; i++)
         {

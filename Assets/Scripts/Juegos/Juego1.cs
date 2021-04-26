@@ -172,7 +172,8 @@ public class Juego1 : MonoBehaviour
         if (activarRandom)
         {
             // Se repite hasta llegar a la cantidad de random moves o si se queda en posicion ganada
-            do scanEmptySlot(Random.Range(1, (filas * columnas)));
+            do 
+                scanEmptySlot(Random.Range(1, filas * columnas));
             while (movimientos < RandomMoves || gano);
 
             // Reiniciar movimientos
@@ -181,7 +182,7 @@ public class Juego1 : MonoBehaviour
 
             //Debug.Log("[Juego1] Movimientos aleatorios terminados. Comenzando juego...");
         }
-        else Debug.LogError("RANDOM DESACTIVADO");
+        else Debug.LogError("[Juego1] RANDOM DESACTIVADO");
         
     }
 
@@ -312,7 +313,7 @@ public class Juego1 : MonoBehaviour
         gano = true;
         start = false;
 
-        Debug.Log("Se gano nivel !! Llamando a game manager...");
+        Debug.Log("[Juego1] Se gano nivel!! Llamando a game manager...");
         FindObjectOfType<GameManager>().ganoJuego();
     }
 
