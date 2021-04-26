@@ -55,11 +55,9 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 
 *Versión 6.0* [EN DESARROLLO]:
 - [Fix] Al recargar un mismo nivel se solucionan los errores anteriores.
+- [Fix] Al comenzar un juego, comienza automaticamente y no requiere click del boton.
 
 # TODOs
-
-- Al comenzar un juego (sea Juego1 o Juego2) debe comenzar automaticamente 
-al clickear algo, no necesitar clickear un boton para comenzar.
-
+- Se calcula incorrectamente el tamaño de la matriz en CustomLevel.
 
 ~~El juego estaría terminado por el momento a menos que se encuentren mas bugs.~~

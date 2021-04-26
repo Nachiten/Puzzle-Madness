@@ -123,7 +123,7 @@ public class Juego1 : MonoBehaviour
             GanarHack = false;
         }
 
-        if (!start || gano || pause || animacionActiva) return;
+        if (gano || pause || animacionActiva) return;
 
         // Generar rayo para "clickear" bloque
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -133,6 +133,17 @@ public class Juego1 : MonoBehaviour
         // Si el rayo hace contacto con un bloque y se tiene el click IZQUIERDO persionado
         if (rayoTiradoYObjetoTocado && Input.GetMouseButtonDown(0))
         {
+            if (!start) 
+            {
+                Debug.Log("[Juego1] Comienzo Juego...");
+
+                // Marco juego comenzado
+                start = true;
+
+                // Activar reloj
+                GameObject.Find("GameManager").GetComponent<Timer>().toggleClock(true);
+            }
+
             // Asignar slot correcto y escanear si movimiento es posible
             int slot = int.Parse(hit.transform.gameObject.name);
             scanEmptySlot(slot);
@@ -292,7 +303,7 @@ public class Juego1 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    public void comenzarNivel() { start = true; }
+    //public void comenzarNivel() { start = true; }
 
     /* -------------------------------------------------------------------------------- */
 

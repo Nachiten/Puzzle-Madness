@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     #region Variables
 
     // Juego ganado
-    bool gano = false;
+    //bool gano = false;
 
     // Boton "Comenzar"
     GameObject boton;
@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
 
         // Modificar texto
         textoBoton.text = comenzarNivelTexto;
+
+        boton.SetActive(false);
     }
 
     #endregion
@@ -311,7 +313,7 @@ public class GameManager : MonoBehaviour
     public void ganoJuego()
     {
         // Variable gano
-        gano = true;
+        //gano = true;
 
         // Desactivar reloj
         GetComponent<Timer>().toggleClock(false);
@@ -337,32 +339,57 @@ public class GameManager : MonoBehaviour
     {
         int index = SceneManager.GetActiveScene().buildIndex;
 
-        if (!gano) // Si no gano, comenzar juego
+        //if (!gano) // Si no gano, comenzar juego
+        //{
+        //    Debug.Log("[GameManager] Iniciando juego...");
+        //    // Ocultar boton
+        //    boton.SetActive(false);
+
+        //    // Si es juego1
+        //    //if (index < 12)
+        //    //    FindObjectOfType<Juego1>().comenzarNivel();
+
+        //    // Si es juego2
+        //    //else if (index > 12)
+        //    //    FindObjectOfType<Juego2>().comenzarNivel();
+
+        //    // Activar reloj
+        //    FindObjectOfType<Timer>().toggleClock(true);
+        //}
+
+        switch (index) 
         {
-            Debug.Log("[GameManager] Iniciando juego...");
-            // Ocultar boton
-            boton.SetActive(false);
+            case 10:
+                Debug.Log("[GameManager] Pasando a Juego2 Nivel 01...");
+                FindObjectOfType<LevelLoader>().cargarNivel(13);
+                break;
 
-            // Si es juego1
-            if (index < 12)
-                FindObjectOfType<Juego1>().comenzarNivel();
+            case 11:
+            case 22:
+            case 23:
+                Debug.Log("[GameManager] Volviendo a menu principal...");
+                FindObjectOfType<LevelLoader>().cargarNivel(0);
+                break;
 
-            // Si es juego2
-            else if (index > 12)
-                FindObjectOfType<Juego2>().comenzarNivel();
-
-            // Activar reloj
-            FindObjectOfType<Timer>().toggleClock(true);
+            default:
+                Debug.Log("[GameManager] Avanzando al siguiente nivel...");
+                FindObjectOfType<LevelLoader>().cargarNivel(index + 1);
+                break;
         }
 
-        // Si es custom level o nivel 10, regresar a inicio
-        else if (index == 10 || index == 11 || index == 22 || index == 23) FindObjectOfType<LevelLoader>().cargarNivel(0);
+        //// Si es algun custom level, o nivel 10 de Juego2, vuelvo al menu
+        //if (index == 11 || index == 22 || index == 23) 
+        //    FindObjectOfType<LevelLoader>().cargarNivel(0);
 
-        // En otros, pasar al siguiente nivel
-        else
-        {
-            Debug.Log("[GameManager] Avanzando al siguiente nivel...");
-            FindObjectOfType<LevelLoader>().cargarNivel(index + 1);
-        }
+        //// Si es nivel 10 de Juego1, paso a nivel1 de Juego2
+        //else if (index == 10)
+        //    FindObjectOfType<LevelLoader>().cargarNivel(13);
+
+        //// En otros, pasar al siguiente nivel
+        //else
+        //{
+        //    Debug.Log("[GameManager] Avanzando al siguiente nivel...");
+        //    FindObjectOfType<LevelLoader>().cargarNivel(index + 1);
+        //}
     }
 }

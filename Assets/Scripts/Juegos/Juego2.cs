@@ -104,7 +104,7 @@ public class Juego2 : MonoBehaviour
         }
 
         // No se hace nada en caso de estar en pausa, no haber comenzado o haber ganado
-        if (pause || !start || gano) return;
+        if (pause || gano) return;
 
         // Si no hay un objeto agarrado, se trata de agarrar
         if (!hayObjetoAgarrado) 
@@ -139,6 +139,17 @@ public class Juego2 : MonoBehaviour
         // Si tiro un rayo, toca un objeto, y clickié el mouse
         if (rayoTiradoYObjetoTocado && Input.GetMouseButtonDown(0))
         {
+            if (!start) 
+            {
+                Debug.Log("[Juego2] Comienzo Juego...");
+
+                // Marco juego comenzado
+                start = true;
+
+                // Activar reloj
+                GameObject.Find("GameManager").GetComponent<Timer>().toggleClock(true);
+            }
+
             // Asignar bloque seleccionado
             objetoAgarrado = hit.transform.gameObject;
 
@@ -325,7 +336,7 @@ public class Juego2 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    public void comenzarNivel() { start = true; }
+    //public void comenzarNivel() { start = true; }
 
     /* -------------------------------------------------------------------------------- */
 
