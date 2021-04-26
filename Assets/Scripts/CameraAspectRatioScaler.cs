@@ -19,7 +19,7 @@ public class CameraAspectRatioScaler : MonoBehaviour
     void Start()
     {
         OriginPosition = transform.position;
-        Debug.Log("[CameraAspectRatioScaler] Posicion origen: " + OriginPosition);
+        //Debug.Log("[CameraAspectRatioScaler] Posicion origen: " + OriginPosition);
     }
 
     public void inicializacionFinalizada() 

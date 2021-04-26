@@ -336,24 +336,6 @@ public class GameManager : MonoBehaviour
     {
         int index = SceneManager.GetActiveScene().buildIndex;
 
-        //if (!gano) // Si no gano, comenzar juego
-        //{
-        //    Debug.Log("[GameManager] Iniciando juego...");
-        //    // Ocultar boton
-        //    boton.SetActive(false);
-
-        //    // Si es juego1
-        //    //if (index < 12)
-        //    //    FindObjectOfType<Juego1>().comenzarNivel();
-
-        //    // Si es juego2
-        //    //else if (index > 12)
-        //    //    FindObjectOfType<Juego2>().comenzarNivel();
-
-        //    // Activar reloj
-        //    FindObjectOfType<Timer>().toggleClock(true);
-        //}
-
         switch (index) 
         {
             case 10:
@@ -373,20 +355,5 @@ public class GameManager : MonoBehaviour
                 FindObjectOfType<LevelLoader>().cargarNivel(index + 1);
                 break;
         }
-
-        //// Si es algun custom level, o nivel 10 de Juego2, vuelvo al menu
-        //if (index == 11 || index == 22 || index == 23) 
-        //    FindObjectOfType<LevelLoader>().cargarNivel(0);
-
-        //// Si es nivel 10 de Juego1, paso a nivel1 de Juego2
-        //else if (index == 10)
-        //    FindObjectOfType<LevelLoader>().cargarNivel(13);
-
-        //// En otros, pasar al siguiente nivel
-        //else
-        //{
-        //    Debug.Log("[GameManager] Avanzando al siguiente nivel...");
-        //    FindObjectOfType<LevelLoader>().cargarNivel(index + 1);
-        //}
     }
 }

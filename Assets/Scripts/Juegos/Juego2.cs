@@ -120,12 +120,11 @@ public class Juego2 : MonoBehaviour
             {
                 mouseButtonUp();
                 hayObjetoAgarrado = false;
+
+                if (puntosActuales == puntosTotales)
+                    ganarJuego();
             }
         }
-
-        if (puntosActuales == puntosTotales)
-            ganarJuego();
-        
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -137,6 +136,8 @@ public class Juego2 : MonoBehaviour
         this.filas = filas;
         this.columnas = columnas;
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     void tirarRayoParaTocarObjeto() {
         // Generar rayo para "clickear" bloque
@@ -324,11 +325,6 @@ public class Juego2 : MonoBehaviour
         float rangoMinZ = posZPlataforma - tamañoZPlataforma / 2;
         float rangoMaxZ = posZPlataforma + tamañoZPlataforma / 2;
 
-        //Debug.Log("[Juego2] rangoMinX: " + rangoMinX);
-        //Debug.Log("[Juego2] rangoMaxX: " + rangoMaxX);
-        //Debug.Log("[Juego2] rangoMinZ: " + rangoMinZ);
-        //Debug.Log("[Juego2] rangoMaxZ: " + rangoMaxZ);
-
         for (int i = 0; i < filas; i++)
         {
             for (int j = 0; j < columnas; j++)
@@ -341,10 +337,6 @@ public class Juego2 : MonoBehaviour
             }
         }
     }
-
-    /* -------------------------------------------------------------------------------- */
-
-    //public void comenzarNivel() { start = true; }
 
     /* -------------------------------------------------------------------------------- */
 

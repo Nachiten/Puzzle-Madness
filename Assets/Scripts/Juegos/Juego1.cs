@@ -147,10 +147,10 @@ public class Juego1 : MonoBehaviour
             // Asignar slot correcto y escanear si movimiento es posible
             int slot = int.Parse(hit.transform.gameObject.name);
             scanEmptySlot(slot);
-        }
 
-        // Analizar si se gano con ese movimiento
-        analizarGano();
+            // Analizar si se gano con ese movimiento
+            analizarGano();
+        }
     }
 
     #endregion
@@ -171,10 +171,21 @@ public class Juego1 : MonoBehaviour
 
         if (activarRandom)
         {
+            int intentos = 0;
+
             // Se repite hasta llegar a la cantidad de random moves o si se queda en posicion ganada
             do 
+            {
+                if (intentos > 30000)
+                {
+                    Debug.LogError("DEMASIADOS INTENTOS!!");
+                    break;
+                }
+                    
                 scanEmptySlot(Random.Range(1, filas * columnas));
-            while (movimientos < RandomMoves || gano);
+
+                intentos++;
+            } while (movimientos < RandomMoves || gano);
 
             // Reiniciar movimientos
             movimientos = 0;
@@ -193,12 +204,11 @@ public class Juego1 : MonoBehaviour
         gano = true;
 
         // Analizar si matrizes juego y gano son identicas
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-
-                if (matriz[i, j] != matrizGano[i, j]) gano = false;   
-            }
-        }
+        for (int i = 0; i < filas; i++) 
+            for (int j = 0; j < columnas; j++) 
+                if (matriz[i, j] != matrizGano[i, j]) 
+                    gano = false;   
+            
         // Si gano el nivel
         if (gano) ganarJuego();
     }

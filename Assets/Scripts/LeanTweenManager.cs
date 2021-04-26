@@ -63,7 +63,7 @@ public class LeanTweenManager : MonoBehaviour
     {
         yaCargada = true;
 
-        Debug.Log("[LeanTweenManager] setupInicial");
+        //Debug.Log("[LeanTweenManager] setupInicial");
 
         indexActual = SceneManager.GetActiveScene().buildIndex;
 
