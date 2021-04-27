@@ -1,24 +1,23 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
-using System;
 using TMPro;
+using System;
+using System.Collections;
 
-public class CustomLevelJuego1 : MonoBehaviour
+public class CustomLevel : MonoBehaviour
 {
     // Tamaño de tabla
-    public int columnas = 3;
-    public int filas = 3;
+    public int filas = 3, columnas = 3;
 
-    public bool imageSet = false;
-    public bool sizeSet = false;
+    bool imageSet = false, sizeSet = false;
 
     RawImage imagen;
-    GameObject imagenPreview;
-    Text inputField;
 
-    int mayor; 
+    GameObject imagenPreview;
+
+    int juegoActual;
 
     /* -------------------------------------------------------------------------------- */
 
@@ -26,9 +25,15 @@ public class CustomLevelJuego1 : MonoBehaviour
     {
         imagen = GameObject.Find("Imagen Elegida").GetComponent<RawImage>();
         imagenPreview = GameObject.Find("Imagen Preview");
-        inputField = GameObject.Find("TextoURL").GetComponent<Text>();
 
         imagenPreview.SetActive(false);
+
+        int index = SceneManager.GetActiveScene().buildIndex;
+
+        juegoActual = 1;
+
+        if (index == 23)
+            juegoActual = 2;
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -45,7 +50,10 @@ public class CustomLevelJuego1 : MonoBehaviour
 
         GameObject.Find("Panel Seleccion").SetActive(false);
 
-        FindObjectOfType<Juego1>().inicializar();
+        if (juegoActual == 1)
+            FindObjectOfType<Juego1>().inicializar();
+        else
+            FindObjectOfType<Juego2>().inicializar();
     }
 
     /* --------------------------------------------------------------------------------  */
@@ -93,13 +101,10 @@ public class CustomLevelJuego1 : MonoBehaviour
 
         sizeSet = true;
 
-        FindObjectOfType<Juego1>().filas = filas;
-        FindObjectOfType<Juego1>().columnas = columnas;
-
-        if (filas > columnas) mayor = filas;
-        else mayor = columnas;
-
-        FindObjectOfType<Juego1>().RandomMoves = (mayor) * (mayor) * (mayor);
+        if (juegoActual == 1)
+            FindObjectOfType<Juego1>().fijarFilasYColumnas(filas, columnas);
+        else
+            FindObjectOfType<Juego2>().fijarFilasYColumnas(filas, columnas);
 
         GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = imagen.texture;
 
@@ -110,13 +115,10 @@ public class CustomLevelJuego1 : MonoBehaviour
 
     /* ----------------------------------- Explorer ----------------------------------- */
 
-    //public string url = "";
-
-    // TIENE UNA REFERENCIA DESDE EL EDITOR
-    public void abrirExplorer() 
+    public void abrirExplorer()
     {
         GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
-        FindObjectOfType<PopUps>().abrirPopUp(4); 
+        FindObjectOfType<PopUps>().abrirPopUp(4);
     }
 
     /* -------------------------------------------------------------------------------- */

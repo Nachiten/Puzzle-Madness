@@ -1996,6 +1996,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77bb1d70de7f0b64fa558c5097dbe419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  changeZoom: 1
+  changePosition: 1
   ReferenceResolution: {x: 1920, y: 1080}
   ZoomFactor: {x: 1, y: 1, z: 1}
   OriginPosition: {x: 0, y: 0, z: 0}
@@ -4978,12 +4980,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1424632895}
   - component: {fileID: 1424632898}
-  - component: {fileID: 1424632899}
   - component: {fileID: 1424632894}
   - component: {fileID: 1424632896}
   - component: {fileID: 1424632897}
   - component: {fileID: 1424632900}
   - component: {fileID: 1424632902}
+  - component: {fileID: 1424632899}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5075,10 +5077,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e85c0e862976ebe40bf94004d8c9335e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  columnas: 3
   filas: 3
+  columnas: 3
   imageSet: 0
   sizeSet: 0
+  imagen: {fileID: 0}
 --- !u!114 &1424632900
 MonoBehaviour:
   m_ObjectHideFlags: 0

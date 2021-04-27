@@ -143,10 +143,7 @@ public class PopUps : MonoBehaviour
 
                 if (url != "" && extensionValidaDeUrl(url))
                 {
-                    if (index == 11)
-                        FindObjectOfType<CustomLevelJuego1>().asignTexture(url);
-                    else
-                        FindObjectOfType<CustomLevelJuego2>().asignTexture(url);
+                    FindObjectOfType<CustomLevel>().asignTexture(url);
                 }
                 else
                     abrirPopUp(5);

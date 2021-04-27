@@ -10,7 +10,7 @@ public class Juego1 : MonoBehaviour
 
     public bool pause = false, activarRandom = true, start = false, GanarHack = false;
 
-    public int columnas = 3, filas = 3, RandomMoves = 30;
+    public int columnas = 3, filas = 3, RandomMoves = 30; 
 
     // << -------- Varbiables privadas -------- >>
 
@@ -157,6 +157,18 @@ public class Juego1 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    public void fijarFilasYColumnas(int filas, int columnas)
+    {
+        this.filas = filas;
+        this.columnas = columnas;
+
+        int mayor = columnas;
+
+        if (filas > columnas) mayor = filas;
+
+        RandomMoves = (mayor) * (mayor) * (mayor);
+    }
+
     public void inicializar(){
 
         // Inicializar Matrices
@@ -178,7 +190,7 @@ public class Juego1 : MonoBehaviour
             {
                 if (intentos > 30000)
                 {
-                    Debug.LogError("DEMASIADOS INTENTOS!!");
+                    Debug.LogError("[Juego1] DEMASIADOS INTENTOS!!");
                     break;
                 }
                     
@@ -193,7 +205,7 @@ public class Juego1 : MonoBehaviour
 
             //Debug.Log("[Juego1] Movimientos aleatorios terminados. Comenzando juego...");
         }
-        else Debug.LogError("[Juego1] RANDOM DESACTIVADO");
+        else Debug.LogError("[Juego1] RANDOM DESACTIVADO!!");
         
     }
 

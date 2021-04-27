@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Analytics;
 using TMPro;
@@ -16,6 +15,7 @@ public class GameManager : MonoBehaviour
     TMP_Text textoBoton, textoNivel;
 
     // Cantidad de bloques
+    [HideInInspector]
     public int filas = 3, columnas = 3;
 
     // Numero de escena actual
@@ -355,5 +355,5 @@ public class GameManager : MonoBehaviour
                 FindObjectOfType<LevelLoader>().cargarNivel(index + 1);
                 break;
         }
-    }
+    }    
 }

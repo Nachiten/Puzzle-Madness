@@ -243,8 +243,6 @@ public class LeanTweenManager : MonoBehaviour
 
         if (indexActual == 0) 
         {
-            Debug.Log("[LeanTweenManager] BotonesInicio: " + botonesInicio);
-
             LeanTween.moveLocalX(botonesInicio, 0f, 0f).setOnComplete(_ => quitarBotonesInicio(posicionAfuera));
         }
 
