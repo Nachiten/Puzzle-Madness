@@ -2,17 +2,19 @@
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class Juego1 : MonoBehaviour
+public class Juego1 : MonoBehaviour, IJuegos
 {
-    #region Variables
-
-    // << -------- Varbiables publicas -------- >>
+    #region Variables Publicas
 
     public bool pause = false, activarRandom = true, start = false, GanarHack = false;
 
-    public int columnas = 3, filas = 3, RandomMoves = 30; 
+    public int columnas = 3, filas = 3, RandomMoves = 30;
 
-    // << -------- Varbiables privadas -------- >>
+    #endregion
+
+    /* -------------------------------------------------------------------------------- */
+
+    #region Variables Privadas
 
     // Matrices para almacenar posiciones
     int[,] matriz, matrizGano;
@@ -157,60 +159,6 @@ public class Juego1 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    public void fijarFilasYColumnas(int filas, int columnas)
-    {
-        this.filas = filas;
-        this.columnas = columnas;
-
-        int mayor = columnas;
-
-        if (filas > columnas) mayor = filas;
-
-        RandomMoves = (mayor) * (mayor) * (mayor);
-    }
-
-    public void inicializar(){
-
-        // Inicializar Matrices
-        matriz = new int[filas, columnas];
-        matrizGano = new int[filas, columnas];
-
-        // Asignar Texto Movimientos
-        textoMovimientos = GameObject.Find("Numero Movimientos").GetComponent<TMP_Text>();
-
-        // Llenar matrices de datos
-        llenarMatrizes();
-
-        if (activarRandom)
-        {
-            int intentos = 0;
-
-            // Se repite hasta llegar a la cantidad de random moves o si se queda en posicion ganada
-            do 
-            {
-                if (intentos > 30000)
-                {
-                    Debug.LogError("[Juego1] DEMASIADOS INTENTOS!!");
-                    break;
-                }
-                    
-                scanEmptySlot(Random.Range(1, filas * columnas));
-
-                intentos++;
-            } while (movimientos < RandomMoves || gano);
-
-            // Reiniciar movimientos
-            movimientos = 0;
-            textoMovimientos.text = "0";
-
-            //Debug.Log("[Juego1] Movimientos aleatorios terminados. Comenzando juego...");
-        }
-        else Debug.LogError("[Juego1] RANDOM DESACTIVADO!!");
-        
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
     void analizarGano()
     {
         gano = true;
@@ -297,6 +245,8 @@ public class Juego1 : MonoBehaviour
         }
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     void terminarAnimacion() { animacionActiva = false; }
 
     /* -------------------------------------------------------------------------------- */
@@ -326,10 +276,6 @@ public class Juego1 : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    //public void comenzarNivel() { start = true; }
-
-    /* -------------------------------------------------------------------------------- */
-
    void ganarJuego()
     {
         gano = true;
@@ -347,5 +293,69 @@ public class Juego1 : MonoBehaviour
 
         for (int i = 0; i < 10 ; i++)
             texturas[i] = Resources.Load("Juego1/Image" + (i+1).ToString()) as Texture;
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    void ejecutarMovimientosRandom()
+    {
+        if (activarRandom)
+        {
+            int intentos = 0;
+
+            // Se repite hasta llegar a la cantidad de random moves o si se queda en posicion ganada
+            do
+            {
+                if (intentos > 30000)
+                {
+                    Debug.LogError("[Juego1] DEMASIADOS INTENTOS!!");
+                    break;
+                }
+
+                scanEmptySlot(Random.Range(1, filas * columnas));
+
+                intentos++;
+            } while (movimientos < RandomMoves || gano);
+
+            // Reiniciar movimientos
+            movimientos = 0;
+            textoMovimientos.text = "0";
+
+            //Debug.Log("[Juego1] Movimientos aleatorios terminados. Comenzando juego...");
+        }
+        else Debug.LogError("[Juego1] RANDOM DESACTIVADO!!");
+    }
+
+    /* ----------------------------------- Interfaz ----------------------------------- */
+
+    public void fijarFilasYColumnas(int filas, int columnas)
+    {
+        this.filas = filas;
+        this.columnas = columnas;
+
+        int mayor = columnas;
+
+        if (filas > columnas) 
+            mayor = filas;
+
+        RandomMoves = mayor ^ 3;
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    public void inicializar()
+    {
+        // Inicializar matrices
+        matriz = new int[filas, columnas];
+        matrizGano = new int[filas, columnas];
+
+        // Asignar texto movimientos
+        textoMovimientos = GameObject.Find("Numero Movimientos").GetComponent<TMP_Text>();
+
+        // Llenar matrices de datos
+        llenarMatrizes();
+
+        // Generar movimientos random
+        ejecutarMovimientosRandom();
     }
 }

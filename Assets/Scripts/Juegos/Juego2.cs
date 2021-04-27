@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Juego2 : MonoBehaviour
+public class Juego2 : MonoBehaviour, IJuegos
 {
     #region Variables Publicas
 
@@ -37,6 +37,8 @@ public class Juego2 : MonoBehaviour
     #endregion
 
     /* -------------------------------------------------------------------------------- */
+
+    #region FuncionStart
 
     void Start()
     {
@@ -93,7 +95,11 @@ public class Juego2 : MonoBehaviour
         
     }
 
+    #endregion
+
     /* -------------------------------------------------------------------------------- */
+
+    #region FuncionUpdate
 
     void Update()
     {
@@ -127,15 +133,7 @@ public class Juego2 : MonoBehaviour
         }
     }
 
-    /* -------------------------------------------------------------------------------- */
-
-    public void fijarFilasYColumnas(int filas, int columnas) 
-    {
-        puntosTotales = filas * columnas;
-
-        this.filas = filas;
-        this.columnas = columnas;
-    }
+    #endregion
 
     /* -------------------------------------------------------------------------------- */
 
@@ -171,27 +169,7 @@ public class Juego2 : MonoBehaviour
             // Se agarra el bloque
             mouseButtonDown();
             hayObjetoAgarrado = true;
-
         }
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    public void inicializar() 
-    {
-        Debug.Log("[Juego2] Inicializando Juego2");
-
-        // Generar los slots donde se colocarán las piezas al resolver
-        generarLugares();
-
-        // Ajustar el piso donde corresponde
-        ajustarUbicacionPiso();
-
-        // Ajustar los Lugar_X donde corresponda
-        ajustarUbicacionLugares();
-
-        // Randomizar lugares de piezas
-        mezclarLugares();
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -360,8 +338,11 @@ public class Juego2 : MonoBehaviour
     {
         //Debug.Log("mouseButtonUp");
 
+        Vector3 posicionObjetoAgarrado = objetoAgarrado.transform.position;
+        Vector3 posicionLugarCorrectoObjeto = lugarCorrectoObjeto.position;
+
         // Distancia desde objeto hasta lugar correcto
-        float distancia = Vector3.Distance(objetoAgarrado.transform.position, lugarCorrectoObjeto.position);
+        float distancia = Vector3.Distance(posicionObjetoAgarrado, posicionLugarCorrectoObjeto);
 
         // Si está dentro del rango
         if (distancia < limite)
@@ -369,7 +350,7 @@ public class Juego2 : MonoBehaviour
             Debug.Log("[Juego2] Bloque posicionado correctamente");
 
             // Se coloca en el lugar correcto
-            objetoAgarrado.transform.position = new Vector3(lugarCorrectoObjeto.position.x, lugarCorrectoObjeto.position.y + 0.2f, lugarCorrectoObjeto.position.z);
+            objetoAgarrado.transform.position = new Vector3(posicionLugarCorrectoObjeto.x, posicionLugarCorrectoObjeto.y + 0.2f, posicionLugarCorrectoObjeto.z);
 
             puntosActuales++;
 
@@ -378,7 +359,7 @@ public class Juego2 : MonoBehaviour
         // Dejarlo en la posicion donde se soltó
         else
         {
-            objetoAgarrado.transform.position = new Vector3(objetoAgarrado.transform.position.x, objetoAgarrado.transform.position.y - elevamiento, objetoAgarrado.transform.position.z);
+            objetoAgarrado.transform.position = new Vector3(posicionObjetoAgarrado.x, posicionObjetoAgarrado.y - elevamiento, posicionObjetoAgarrado.z);
             //Debug.Log("No está en una posicion correcta");
         }
     }
@@ -414,5 +395,34 @@ public class Juego2 : MonoBehaviour
 
         for (int i = 0; i < 10; i++)
             texturas[i] = Resources.Load("Juego2/Image" + (i + 1).ToString()) as Texture;
+    }
+
+    /* ----------------------------------- Interfaz ----------------------------------- */
+
+    public void fijarFilasYColumnas(int filas, int columnas)
+    {
+        puntosTotales = filas * columnas;
+
+        this.filas = filas;
+        this.columnas = columnas;
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    public void inicializar()
+    {
+        Debug.Log("[Juego2] Inicializando Juego2");
+
+        // Generar los slots donde se colocarán las piezas al resolver
+        generarLugares();
+
+        // Ajustar el piso donde corresponde
+        ajustarUbicacionPiso();
+
+        // Ajustar los Lugar_X donde corresponda
+        ajustarUbicacionLugares();
+
+        // Randomizar lugares de piezas
+        mezclarLugares();
     }
 }

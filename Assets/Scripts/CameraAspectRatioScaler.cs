@@ -16,17 +16,15 @@ public class CameraAspectRatioScaler : MonoBehaviour
     [HideInInspector]
     public Vector3 OriginPosition = Vector3.zero;
 
+    /* -------------------------------------------------------------------------------- */
+
     void Start()
     {
         OriginPosition = transform.position;
         //Debug.Log("[CameraAspectRatioScaler] Posicion origen: " + OriginPosition);
     }
 
-    public void inicializacionFinalizada() 
-    {
-        OriginPosition = transform.position;
-        inicializado = true;
-    }
+    /* -------------------------------------------------------------------------------- */
 
     void Update()
     {
@@ -36,7 +34,7 @@ public class CameraAspectRatioScaler : MonoBehaviour
         var refRatio = ReferenceResolution.x / ReferenceResolution.y;
         var ratio = (float)Screen.width / (float)Screen.height;
 
-        if (changeZoom) 
+        if (changeZoom)
         {
             if (ratio > 1.85f)
             {
@@ -65,4 +63,12 @@ public class CameraAspectRatioScaler : MonoBehaviour
 
         //Debug.Log("Ratio: " + ratio.ToString("F2"));
     }
+
+    /* -------------------------------------------------------------------------------- */
+
+    public void inicializacionFinalizada() 
+    {
+        OriginPosition = transform.position;
+        inicializado = true;
+    }   
 }

@@ -204,7 +204,8 @@ public class ManejarMenu : MonoBehaviour
         }
 
         // Si es Juego1
-        if (index < 11 && FindObjectOfType<Juego1>().start) activarTimer();
+        if (index < 11 && FindObjectOfType<Juego1>().start) 
+            activarTimer();
 
         // Si es Juego2
         if (index > 12 && FindObjectOfType<Juego2>().start)
@@ -235,17 +236,15 @@ public class ManejarMenu : MonoBehaviour
     }
 
     /* -------------------------------------------------------------------------------- */
-    public void manejarCreditos() {
-
+    public void manejarCreditos() 
+    {
         creditosActivos = !creditosActivos;
 
         if (creditosActivos)
-        {
             tweenManager.abrirCreditos();
-        }
+        
         else
-        {
             tweenManager.cerrarCreditos();
-        }
+        
     }
 }

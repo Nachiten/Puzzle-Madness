@@ -17,7 +17,7 @@ public class CustomLevel : MonoBehaviour
 
     GameObject imagenPreview;
 
-    int juegoActual;
+    IJuegos interfazActual;
 
     /* -------------------------------------------------------------------------------- */
 
@@ -30,10 +30,10 @@ public class CustomLevel : MonoBehaviour
 
         int index = SceneManager.GetActiveScene().buildIndex;
 
-        juegoActual = 1;
-
-        if (index == 23)
-            juegoActual = 2;
+        if (index == 11)
+            interfazActual = GameObject.Find("GameManager").GetComponent<Juego1>().GetComponent<IJuegos>();
+        else
+            interfazActual = GameObject.Find("GameManager").GetComponent<Juego2>().GetComponent<IJuegos>();
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -50,10 +50,7 @@ public class CustomLevel : MonoBehaviour
 
         GameObject.Find("Panel Seleccion").SetActive(false);
 
-        if (juegoActual == 1)
-            FindObjectOfType<Juego1>().inicializar();
-        else
-            FindObjectOfType<Juego2>().inicializar();
+        interfazActual.inicializar();
     }
 
     /* --------------------------------------------------------------------------------  */
@@ -101,10 +98,7 @@ public class CustomLevel : MonoBehaviour
 
         sizeSet = true;
 
-        if (juegoActual == 1)
-            FindObjectOfType<Juego1>().fijarFilasYColumnas(filas, columnas);
-        else
-            FindObjectOfType<Juego2>().fijarFilasYColumnas(filas, columnas);
+        interfazActual.fijarFilasYColumnas(filas, columnas);
 
         GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = imagen.texture;
 

@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class DropdownControl : MonoBehaviour
 {
-
-    /* -------------------------------------------------------------------------------- */
-
     public void cambiarCancionA(int cancion) 
     {
         MusicManager musicManager = GameObject.Find("MusicManager").GetComponent<MusicManager>();
@@ -16,8 +13,5 @@ public class DropdownControl : MonoBehaviour
         else
             musicManager.pararMusica();
     }
-
-    /* -------------------------------------------------------------------------------- */
-
 }
 

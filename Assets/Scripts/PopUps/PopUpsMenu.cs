@@ -16,6 +16,8 @@ public class PopUpsMenu : MonoBehaviour
 
     float tiempoAnimacion = 0.18f;
 
+    /* -------------------------------------------------------------------------------- */
+
     void Start()
     {
         //Debug.Log("[PopsUpsMenu] Start()");
@@ -35,6 +37,8 @@ public class PopUpsMenu : MonoBehaviour
         }
         popUp.SetActive(false);
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     public void abrirPopUp(int num) {
 
@@ -80,6 +84,8 @@ public class PopUpsMenu : MonoBehaviour
         simbolo.texture = Textura[currentImage];
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     void animarApertura()
     {
         // Posicion inicial
@@ -90,17 +96,23 @@ public class PopUpsMenu : MonoBehaviour
         LeanTween.moveLocalX(popUp, 0, tiempoAnimacion);
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     public void cerrarPopUp( bool accionUsada) // TRUE = si FALSE = no
     {
         Debug.Log("[PopUpsMenu] Animando cerrado de PopUp");
         LeanTween.moveLocalX(popUp, 1500, tiempoAnimacion).setOnComplete(_ => realizarAccionAlCerrar(accionUsada));
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     public void borrarTodasLasKeys()
     {
         Debug.LogError("[PopUpsMenu] BORRANDO TODAS LAS KEYS !!!!");
         PlayerPrefs.DeleteAll();
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     void realizarAccionAlCerrar(bool accionUsada) 
     {
@@ -116,9 +128,8 @@ public class PopUpsMenu : MonoBehaviour
                     abrirPopUp(1);
                 }
                 else
-                {
                     abrirPopUp(2);
-                }
+                
 
                 break;
             case 1:

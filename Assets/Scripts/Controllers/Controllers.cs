@@ -5,16 +5,18 @@ using TMPro;
 
 public class Controllers : MonoBehaviour
 {
-    /* --------------------------- Volumen --------------------------- */
-    
     public AudioMixer mixerMusica, mixerSonidos;
     TMP_Text textoVolumenMusica, textoVolumenSonidos;
+
+    /* -------------------------------------------------------------------------------- */
 
     void Start()
     {
         textoVolumenMusica = GameObject.Find("NumeroVolumenMusica").GetComponent<TMP_Text>();
         textoVolumenSonidos = GameObject.Find("NumeroVolumenSonidos").GetComponent<TMP_Text>();
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     public void setMusicLevel(float valorSlider)
     {
@@ -38,7 +40,4 @@ public class Controllers : MonoBehaviour
         // Reproduzco sonido de muestra
         GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(0);
     }
-
-    /* --------------------------------------------------------------- */
-
 }

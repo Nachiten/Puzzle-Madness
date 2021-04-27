@@ -10,6 +10,9 @@ public class LeanTweenManager : MonoBehaviour
 
     List<GameObject> botones;
 
+    static GameObject menu, menuPanel, menuOpciones, menuCreditos, botonesInicio;
+    static GameObject botonComenzar, botonSeleccionarNivel, botonOpciones, botonSalir, botonVolverInicio, botonBorrarProgreso, botonCreditos;
+
     public bool animacionEnEjecucion = false;
 
     static bool variablesSeteadas = false;
@@ -30,10 +33,6 @@ public class LeanTweenManager : MonoBehaviour
     // Se llama cuando una nueva escena se carga
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //Debug.Log("[LeanTweenManager] Modo de carga de escena: " + mode);
-        //Debug.Log("[LeanTweenManager] IsLoaded: " + scene.isLoaded);
-        //Debug.Log("[LeanTweenManager] Name: " + scene.name);
-
         // Si es la misma escena que antes
         if (indexActual == scene.buildIndex)
         {
@@ -55,9 +54,6 @@ public class LeanTweenManager : MonoBehaviour
     }
 
     /* -------------------------------------------------------------------------------- */
-
-    static GameObject menu, menuPanel, menuOpciones, menuCreditos, botonesInicio;
-    static GameObject botonComenzar, botonSeleccionarNivel, botonOpciones, botonSalir, botonVolverInicio, botonBorrarProgreso, botonCreditos;
 
     void setupInicial() 
     {

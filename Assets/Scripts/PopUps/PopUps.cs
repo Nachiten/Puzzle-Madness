@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System;
 using TMPro;
 
@@ -8,7 +7,7 @@ public class PopUps : MonoBehaviour
 {
     public Texture[] Textura;
 
-    int popUpOpen = 0, currentImage = 0, index;
+    int popUpOpen = 0, currentImage = 0;
 
     RawImage simbolo;
 
@@ -17,6 +16,8 @@ public class PopUps : MonoBehaviour
     TMP_Text textoPrincipal, TextoBanner, inputFieldTexto, botonSiTexto;
 
     float tiempoAnimacion = 0.18f;
+
+    /* -------------------------------------------------------------------------------- */
 
     void Start()
     {
@@ -33,9 +34,9 @@ public class PopUps : MonoBehaviour
 
         inputField.SetActive(false);
         popUp.SetActive(false);
-
-        index = SceneManager.GetActiveScene().buildIndex;
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     public void abrirPopUp(int num)
     {
@@ -106,6 +107,8 @@ public class PopUps : MonoBehaviour
         simbolo.texture = Textura[currentImage];
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     void animarApertura()
     {
         // Posicion inicial
@@ -116,6 +119,8 @@ public class PopUps : MonoBehaviour
         LeanTween.moveLocalX(popUp, 0, tiempoAnimacion);
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     public void cerrarPopUp(bool accionUsada) // TRUE = si FALSE = no
     {
         GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
@@ -123,6 +128,8 @@ public class PopUps : MonoBehaviour
         Debug.Log("[PopUps] Cerrando popup");
         LeanTween.moveLocalX(popUp, 1500, tiempoAnimacion).setOnComplete(_ => realizarAccionAlCerrar(accionUsada));
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     void realizarAccionAlCerrar(bool accionUsada)
     {
@@ -134,7 +141,8 @@ public class PopUps : MonoBehaviour
         switch (popUpOpen)
         {
             case 3:
-                if (accionUsada) FindObjectOfType<LevelLoader>().cargarNivel(6);
+                if (accionUsada) 
+                    FindObjectOfType<LevelLoader>().cargarNivel(6);
 
                 break;
             case 4:
@@ -142,9 +150,8 @@ public class PopUps : MonoBehaviour
                 url = url.Substring(0, url.Length - 1);
 
                 if (url != "" && extensionValidaDeUrl(url))
-                {
                     FindObjectOfType<CustomLevel>().asignTexture(url);
-                }
+                
                 else
                     abrirPopUp(5);
 
@@ -153,6 +160,8 @@ public class PopUps : MonoBehaviour
 
         inputField.SetActive(false);
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     bool extensionValidaDeUrl(string url) {
         return url.Substring(Math.Max(0, url.Length - 4)) == ".png" 

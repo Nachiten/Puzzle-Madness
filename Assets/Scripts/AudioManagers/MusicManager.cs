@@ -8,10 +8,14 @@ public class MusicManager : MonoBehaviour
 
     AudioSource sourceMusica;
 
+    /* -------------------------------------------------------------------------------- */
+
     void Start()
     {
         sourceMusica = GetComponent<AudioSource>();
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     public void reproducirMusica(int musica)
     {
@@ -20,6 +24,8 @@ public class MusicManager : MonoBehaviour
         sourceMusica.clip = clipsMusica[musica];
         sourceMusica.Play();
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     public void pararMusica() 
     {
