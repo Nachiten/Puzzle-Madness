@@ -477,7 +477,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1132712596}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -594,7 +594,7 @@ GameObject:
   - component: {fileID: 134691817}
   - component: {fileID: 134691816}
   m_Layer: 5
-  m_Name: 'Contacto: (1)'
+  m_Name: Contacto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2628,7 +2628,7 @@ GameObject:
   - component: {fileID: 435983668}
   - component: {fileID: 435983667}
   m_Layer: 5
-  m_Name: Texto Version
+  m_Name: Version
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2646,7 +2646,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1132712596}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3794,7 +3794,7 @@ GameObject:
   - component: {fileID: 674571138}
   - component: {fileID: 674571137}
   m_Layer: 5
-  m_Name: Musica Por (1)
+  m_Name: Texto Musica Por
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3812,7 +3812,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1132712596}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4736,7 +4736,7 @@ GameObject:
   - component: {fileID: 992658477}
   - component: {fileID: 992658476}
   m_Layer: 5
-  m_Name: Texto Hecho Por (1)
+  m_Name: Hecho Por
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5842,7 +5842,7 @@ GameObject:
   - component: {fileID: 1119491393}
   - component: {fileID: 1119491392}
   m_Layer: 5
-  m_Name: Texto Version (1)
+  m_Name: TextoVersion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5860,13 +5860,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1132712596}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 63.4, y: -20}
-  m_SizeDelta: {x: 650, y: 40}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 38, y: -20}
+  m_SizeDelta: {x: 150, y: 40}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1119491392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5887,7 +5887,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 6.0
+  m_text: ERROR
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cd1a0174293b1af43ae3ceb0dbeba335, type: 2}
   m_sharedMaterial: {fileID: -7311540427074771104, guid: cd1a0174293b1af43ae3ceb0dbeba335,
@@ -5922,8 +5922,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -6074,10 +6074,10 @@ RectTransform:
   - {fileID: 1388044084}
   - {fileID: 606144464}
   - {fileID: 992658475}
-  - {fileID: 81702056}
   - {fileID: 674571136}
-  - {fileID: 435983666}
+  - {fileID: 81702056}
   - {fileID: 1119491391}
+  - {fileID: 435983666}
   - {fileID: 134691815}
   - {fileID: 1984932220}
   - {fileID: 219111983}
@@ -9744,7 +9744,7 @@ GameObject:
   - component: {fileID: 1984932222}
   - component: {fileID: 1984932221}
   m_Layer: 5
-  m_Name: 'Contacto:'
+  m_Name: Texto Contacto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10133,6 +10133,7 @@ GameObject:
   - component: {fileID: 2054931806}
   - component: {fileID: 2054931803}
   - component: {fileID: 2054931801}
+  - component: {fileID: 2054931802}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -10153,6 +10154,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textura: []
+--- !u!114 &2054931802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054931800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52be8a7002325164f8ca136375b437a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2054931803
 MonoBehaviour:
   m_ObjectHideFlags: 0

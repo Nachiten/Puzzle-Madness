@@ -59,4 +59,9 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 - [Fix] Al recargar un mismo nivel se solucionan errores.
 - [Fix] Tamaño de matriz calculado correctamente en CustomLevel de Juego2.
 
+*Versión 6.1*:
+- [New] Ahora la version se lee de las preferencias en vez de ser insertada manualmente.
+- [Fix] Juego1 Nivel6 tenia un codigo faltante.
+- [Fix] Boton de LevelSelector demasiado pegado al borde.
+
 El juego estaría terminado por el momento a menos que se encuentren mas bugs.

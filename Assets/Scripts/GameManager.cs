@@ -282,9 +282,9 @@ public class GameManager : MonoBehaviour
         //Debug.Log("[GameManager] mayor: " + mayor);
 
         float offsetYCamara = (mayor - 3) * offsetMayorYCamara / 9;
- 
+
         //Debug.Log("[GameManager] OffsetY aplicado a camara: " + offsetYCamara);
-       
+
         Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
         camara.position = new Vector3(camara.position.x, camara.position.y + offsetYCamara, camara.position.z);
 
