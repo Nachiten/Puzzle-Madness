@@ -156,18 +156,21 @@ public class ManejarMenu : MonoBehaviour
         int juegoNoGanado;
         int nivelNoGanado;
 
+        // Si es juego1
         if (indexNoGanado < 11)
         {
             juegoNoGanado = 1;
             nivelNoGanado = indexNoGanado;
             FindObjectOfType<Buttons>().nivelACargar = indexNoGanado;
         }
+        // Si es juego2
         else if (indexNoGanado < 23)
         {
             juegoNoGanado = 2;
             nivelNoGanado = indexNoGanado - 12;
             FindObjectOfType<Buttons>().nivelACargar = indexNoGanado;
         }
+        // En cualquier otro caso, no gano nada
         else {
             juegoNoGanado = 0;
             nivelNoGanado = 0;

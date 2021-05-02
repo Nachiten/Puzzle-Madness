@@ -7,9 +7,6 @@ public class GameManager : MonoBehaviour
 {
     #region Variables
 
-    // Juego ganado
-    //bool gano = false;
-
     // Boton "Comenzar"
     GameObject boton;
     TMP_Text textoBoton, textoNivel;
@@ -309,9 +306,6 @@ public class GameManager : MonoBehaviour
 
     public void ganoJuego()
     {
-        // Variable gano
-        //gano = true;
-
         // Desactivar reloj
         GetComponent<Timer>().toggleClock(false);
 
