@@ -6,9 +6,11 @@ public class Juego1 : MonoBehaviour, IJuegos
 {
     #region Variables Publicas
 
-    public bool pause = false, activarRandom = true, start = false, GanarHack = false;
+    public bool activarRandom = true, GanarHack = false, start = false;
 
     public int columnas = 3, filas = 3, RandomMoves = 30;
+
+    bool pause = false, terminoSetupInicial = false;
 
     #endregion
 
@@ -52,6 +54,8 @@ public class Juego1 : MonoBehaviour, IJuegos
         // Si estamos en Juego1
         if (index < 11)
         {
+            terminoSetupInicial = true;
+
             Renderer rendererModelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
 
             rendererModelo.material.mainTexture = texturas[index - 1];
@@ -125,7 +129,7 @@ public class Juego1 : MonoBehaviour, IJuegos
             GanarHack = false;
         }
 
-        if (gano || pause || animacionActiva) return;
+        if (gano || pause || animacionActiva || !terminoSetupInicial) return;
 
         // Generar rayo para "clickear" bloque
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -345,6 +349,8 @@ public class Juego1 : MonoBehaviour, IJuegos
 
     public void inicializar()
     {
+        terminoSetupInicial = true;
+
         // Inicializar matrices
         matriz = new int[filas, columnas];
         matrizGano = new int[filas, columnas];

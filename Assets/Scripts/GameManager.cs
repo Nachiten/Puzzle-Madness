@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Analytics;
@@ -21,11 +22,26 @@ public class GameManager : MonoBehaviour
     // Strings usados como texto del boton
     string regresarAInicio = "REGRESAR A INICIO", siguienteNivel = "SIGUIENTE NIVEL";
 
+    Vector3 posicionOriginalReferencia;
+    Vector3 posicionOriginalModelo;
+    float posYOriginalCamara;
+
     #endregion
 
     /* -------------------------------------------------------------------------------- */
 
     #region FuncionStart
+
+    void Awake()
+    {
+        GameObject referencia = GameObject.Find("_Reference");
+
+        posicionOriginalReferencia = referencia.transform.position;
+        posicionOriginalModelo = GameObject.Find("Bloque Modelo").transform.position;
+        posYOriginalCamara = GameObject.Find("Main Camera").transform.position.y;
+
+        Destroy(referencia);
+    }
 
     void Start()
     {
@@ -80,28 +96,44 @@ public class GameManager : MonoBehaviour
 
     void realizarComienzoDeNivel()
     {
+
+        // Si habia bloques anteriores, los borro
+        borrarBloquesAnterioresSiExisten();
+
         // Instanciar todos los bloques necesarios para el nivel
         generarBloques();
-
-        // Ajusta las texturas de los bloques
-        ajustarTexturasBloques();
 
         // Ajustar ubicacion de bloques
         ajustarPosicionBloques();
 
         // Ajusta ubicacion del modelo y de la camara
         ajustarPosicionCamaraYModelo();
-        
+
+        // Ajusta las texturas de los bloques
+        ajustarTexturasBloques();
+
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    void borrarBloquesAnterioresSiExisten()
+    {
+        GameObject objetoActual;
+        int contador = 1;
+
+        while ((objetoActual = GameObject.Find(contador.ToString())) != null)
+        {
+            Debug.Log("[GameManager] Destruyo objeto: " + contador);
+
+            Destroy(objetoActual);
+            contador++;
+        }
     }
 
     /* -------------------------------------------------------------------------------- */
 
     public void generarBloques()
     {
-        //Debug.Log("[GameManager] Generando Bloques...");
-
-        GameObject referencia = GameObject.Find("_Reference");
-
         int contador = 1;
 
         float offsetX = 0f;
@@ -120,9 +152,9 @@ public class GameManager : MonoBehaviour
                     // Asignar nombre correcto
                     clon.name = contador.ToString();
                     // Asignar posicion de clon
-                    clon.transform.position = new Vector3(referencia.transform.position.x + offsetX, referencia.transform.position.y, referencia.transform.position.z + offsetZ);
+                    clon.transform.position = new Vector3(posicionOriginalReferencia.x + offsetX, posicionOriginalReferencia.y, posicionOriginalReferencia.z + offsetZ);
                     // Asignar rotacion de clon
-                    clon.transform.rotation = referencia.transform.rotation;
+                    clon.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
                 }
                 contador++;
                 offsetX += 5f;
@@ -130,7 +162,6 @@ public class GameManager : MonoBehaviour
             offsetX = 0f;
             offsetZ -= 5f;
         }
-        Destroy(referencia);
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -157,9 +188,6 @@ public class GameManager : MonoBehaviour
                     // Asignar renderer
                     Renderer objeto = GameObject.Find(contador.ToString()).GetComponent<Renderer>();
 
-                    Mesh mesh = objeto.GetComponent<MeshFilter>().mesh;
-                    Vector2[] UVs = new Vector2[mesh.vertices.Length];
-
                     // Cambiar la textura al modelo
                     objeto.material.mainTexture = modelo.material.mainTexture;
 
@@ -176,6 +204,9 @@ public class GameManager : MonoBehaviour
                     // Si es Juego1 o Juego2, usar los bordes negros
                     else
                     {
+                        Mesh mesh = objeto.GetComponent<MeshFilter>().mesh;
+                        Vector2[] UVs = new Vector2[mesh.vertices.Length];
+
                         float xMin = 0.334f + 0.33333f / columnas * j;
                         float yMin = (0.33333f / filas) * (filas - 1) - 0.33333f / filas * i;
 
@@ -216,7 +247,7 @@ public class GameManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    public void ajustarPosicionBloques()
+    void ajustarPosicionBloques()
     {
         if (index < 12)
         {
@@ -236,22 +267,19 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < columnas; j++)
             {
+                if (i == filas - 1 && j == columnas - 1)
+                    continue;
+
+                // Primer bloque es la referencia
+                Transform transformBloque = GameObject.Find(contador.ToString()).GetComponent<Transform>();
+
                 if (i == 0 && j == 0)
                 {
-                    // Primer bloque es la referencia
-                    Transform referenciaAjuste = GameObject.Find(contador.ToString()).GetComponent<Transform>();
-
-                    posXReferencia = referenciaAjuste.position.x - (columnas - 3) * 2.5f - 0.5f;
-                    posZReferencia = referenciaAjuste.position.z + (filas - 3) * 2.5f + 0.5f;
-
-                    referenciaAjuste.position = new Vector3(posXReferencia, referenciaAjuste.position.y, posZReferencia);
+                    posXReferencia = transformBloque.position.x - (columnas - 3) * 2.5f - 0.5f;
+                    posZReferencia = transformBloque.position.z + (filas - 3) * 2.5f + 0.5f;
                 }
-                else if (!(i == filas - 1 && j == columnas - 1))
-                {
-                    Transform objeto = GameObject.Find(contador.ToString()).GetComponent<Transform>();
 
-                    objeto.position = new Vector3(posXReferencia + offsetX, objeto.position.y, posZReferencia + offsetZ);
-                }
+                transformBloque.position = new Vector3(posXReferencia + offsetX, transformBloque.position.y, posZReferencia + offsetZ);
 
                 offsetX += 5;
                 contador++;
@@ -272,13 +300,13 @@ public class GameManager : MonoBehaviour
     {
         int mayor = columnas;
 
-        if (filas > columnas) 
+        if (filas > columnas)
             mayor = filas;
 
         index = SceneManager.GetActiveScene().buildIndex;
 
         // Si estoy en juego 2
-        if (index > 12) 
+        if (index > 12)
         {
             offsetMayorYCamara = 81;
             offsetMayorYModelo = 41;
@@ -291,7 +319,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("[GameManager] OffsetY aplicado a camara: " + offsetYCamara);
 
         Transform camara = GameObject.Find("Main Camera").GetComponent<Transform>();
-        camara.position = new Vector3(camara.position.x, camara.position.y + offsetYCamara, camara.position.z);
+        camara.position = new Vector3(camara.position.x, posYOriginalCamara + offsetYCamara, camara.position.z);
 
         GameObject.Find("Main Camera").GetComponent<CameraAspectRatioScaler>().inicializacionFinalizada();
 
@@ -304,7 +332,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("[GameManager] OffsetX aplicado a modelo: " + offsetXModelo);
         //Debug.Log("[GameManager] OffsetY aplicado a modelo: " + offsetYModelo);
 
-        modeloTransform.position = new Vector3(modeloTransform.position.x - offsetXModelo, modeloTransform.position.y + offsetYModelo, modeloTransform.position.z);
+        modeloTransform.position = new Vector3(posicionOriginalModelo.x - offsetXModelo, posicionOriginalModelo.y + offsetYModelo, posicionOriginalModelo.z);
 
         // Ajustar tamaño de imagen modelo a nivel actual
         modeloTransform.localScale = new Vector3(1.5f * columnas, modeloTransform.localScale.y, 1.5f * filas);

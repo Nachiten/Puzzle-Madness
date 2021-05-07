@@ -5,8 +5,6 @@ using UnityEngine;
 /// </summary>
 public class CameraAspectRatioScaler : MonoBehaviour
 {
-    public bool changeZoom = true, changePosition = true;
-
     bool inicializado = false;
 
     public Vector2 ReferenceResolution = new Vector3(1920, 1080);
@@ -34,33 +32,27 @@ public class CameraAspectRatioScaler : MonoBehaviour
         var refRatio = ReferenceResolution.x / ReferenceResolution.y;
         var ratio = (float)Screen.width / (float)Screen.height;
 
-        if (changeZoom)
+        if (ratio > 1.85f)
         {
-            if (ratio > 1.85f)
-            {
-                ZoomFactor.x = ratio * 34.13f / 2.1f;
-                ZoomFactor.z = ratio * -22.4f / 2.1f;
-            }
-            else if (ratio < 1.65f)
-            {
-                ZoomFactor.x = ratio * 5.6f / 1.2f;
-                ZoomFactor.z = ratio * 4.5f / 1.2f;
-            }
-            else
-            {
-                ZoomFactor.x = 1f;
-                ZoomFactor.y = 1f;
-                ZoomFactor.z = 1f;
-            }
+            ZoomFactor.x = ratio * 34.13f / 2.1f;
+            ZoomFactor.z = ratio * -22.4f / 2.1f;
         }
-
-        if (changePosition)
-            transform.position = OriginPosition + transform.forward * (1f - refRatio / ratio) * ZoomFactor.z
-                                                + transform.right * (1f - refRatio / ratio) * ZoomFactor.x
-                                                + transform.up * (1f - refRatio / ratio) * ZoomFactor.y;
+        else if (ratio < 1.65f)
+        {
+            ZoomFactor.x = ratio * 5.6f / 1.2f;
+            ZoomFactor.z = ratio * 4.5f / 1.2f;
+        }
         else
-            transform.position = OriginPosition;
-
+        {
+            ZoomFactor.x = 1f;
+            ZoomFactor.y = 1f;
+            ZoomFactor.z = 1f;
+        }
+        
+        transform.position = OriginPosition + transform.forward * (1f - refRatio / ratio) * ZoomFactor.z
+                                            + transform.right * (1f - refRatio / ratio) * ZoomFactor.x
+                                            + transform.up * (1f - refRatio / ratio) * ZoomFactor.y;
+  
         //Debug.Log("Ratio: " + ratio.ToString("F2"));
     }
 
