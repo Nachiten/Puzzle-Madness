@@ -80,7 +80,7 @@ public class CustomLevel : MonoBehaviour
         // Si hay un fallo al parsear
         catch (Exception e)
         {
-            Debug.Log(e.Message);
+            Debug.Log("[CustomLevel] Excepcion: " + e.Message);
             FindObjectOfType<PopUps>().abrirPopUp(8);
             return;
         }
@@ -102,7 +102,7 @@ public class CustomLevel : MonoBehaviour
 
         GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = imagen.texture;
 
-        FindObjectOfType<GameManager>().comenzarJuego1();
+        FindObjectOfType<GameManager>().comenzarCustomLevel();
 
         imagenPreview.SetActive(true);
     }
@@ -119,7 +119,7 @@ public class CustomLevel : MonoBehaviour
 
     public void asignTexture(string url)
     {
-        Debug.Log("[CustomLevelJuego1] URL Ingresado: " + url);
+        Debug.Log("[CustomLevel URL Ingresado: " + url);
         StartCoroutine(GetTexture(url));
         imagen.material.color = new Vector4(0.20f, 0.20f, 0.20f, 1);
     }
@@ -128,16 +128,16 @@ public class CustomLevel : MonoBehaviour
 
     IEnumerator GetTexture(string url)
     {
-        Debug.Log("[CustomLevelJuego1] Cargando imagen personalizada...");
+        Debug.Log("[CustomLevel] Cargando imagen personalizada...");
 
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
 
         yield return www.SendWebRequest();
 
-        Debug.Log("[CustomLevelJuego1] Cargando imagen correctamente...");
-
         imagen.material.color = Color.white;
         imagen.texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+
+        Debug.Log("[CustomLevel] Imagen cargada correctamente.");
 
         imageSet = true;
     }

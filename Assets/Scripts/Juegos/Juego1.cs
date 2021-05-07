@@ -338,7 +338,7 @@ public class Juego1 : MonoBehaviour, IJuegos
         if (filas > columnas) 
             mayor = filas;
 
-        RandomMoves = mayor ^ 3;
+        RandomMoves = mayor * mayor * mayor;
     }
 
     /* -------------------------------------------------------------------------------- */

@@ -48,6 +48,14 @@ public class GameManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    public void comenzarCustomLevel() 
+    {
+        if (index == 11)
+            comenzarJuego1();
+        else
+            comenzarJuego2();
+    }
+
     public void comenzarJuego1()
     {
         // Asignar filas y columnas de Juego1
