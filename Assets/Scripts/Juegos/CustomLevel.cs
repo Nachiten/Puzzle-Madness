@@ -16,6 +16,8 @@ public class CustomLevel : MonoBehaviour
     RawImage imagen;
 
     GameObject imagenPreview;
+    Button botonTamaño;
+    TMP_Text textoPreview;
 
     IJuegos interfazActual;
 
@@ -23,6 +25,8 @@ public class CustomLevel : MonoBehaviour
 
     void Start() 
     {
+        textoPreview = GameObject.Find("TextoPreview").GetComponent<TMP_Text>();
+        botonTamaño = GameObject.Find("BotonTamaño").GetComponent<Button>();
         imagen = GameObject.Find("Imagen Elegida").GetComponent<RawImage>();
         imagenPreview = GameObject.Find("Imagen Preview");
 
@@ -57,11 +61,16 @@ public class CustomLevel : MonoBehaviour
 
     public void ajustarTamaño()
     {
+        sizeSet = false;
+        imagenPreview.SetActive(false);
+        botonTamaño.interactable = false;
+
         GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
 
         if (!imageSet)
         {
             FindObjectOfType<PopUps>().abrirPopUp(2);
+            botonTamaño.interactable = true;
             return;
         }
 
@@ -82,29 +91,41 @@ public class CustomLevel : MonoBehaviour
         {
             Debug.Log("[CustomLevel] Excepcion: " + e.Message);
             FindObjectOfType<PopUps>().abrirPopUp(8);
+            botonTamaño.interactable = true;
             return;
         }
+
+        //Debug.Log("[CustomLevel] Filas: " + filas);
+        //Debug.Log("[CustomLevel] Columnas: " + columnas);
 
         if (filas < 3 || columnas < 3)
         {
             FindObjectOfType<PopUps>().abrirPopUp(6);
+            botonTamaño.interactable = true;
             return;
         }
         else if (filas > 12 || columnas > 12)
         {
             FindObjectOfType<PopUps>().abrirPopUp(7);
+            botonTamaño.interactable = true;
             return;
         }
 
-        sizeSet = true;
+        textoPreview.text = "Generando\n nivel...";
 
         interfazActual.fijarFilasYColumnas(filas, columnas);
 
         GameObject.Find("Bloque Modelo").GetComponent<Renderer>().material.mainTexture = imagen.texture;
 
         FindObjectOfType<GameManager>().comenzarCustomLevel();
+    }
 
+    public void terminarAjustarTamaño() 
+    {
+        sizeSet = true;
         imagenPreview.SetActive(true);
+        botonTamaño.interactable = true;
+        textoPreview.text = "Luego de elegir el\n tamaño verás\n la vista previa\n aqui";
     }
 
     /* ----------------------------------- Explorer ----------------------------------- */
@@ -136,11 +157,7 @@ public class CustomLevel : MonoBehaviour
 
         imagen.material.color = Color.white;
 
-        Texture texturaObtenida = ((DownloadHandlerTexture)www.downloadHandler).texture;
-
-        imagen.texture = texturaObtenida;
-
-        GameObject.Find("GameManager").GetComponent<GameManager>().fijarTexturaActual(texturaObtenida);
+        imagen.texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
 
         Debug.Log("[CustomLevel] Imagen cargada correctamente.");
 

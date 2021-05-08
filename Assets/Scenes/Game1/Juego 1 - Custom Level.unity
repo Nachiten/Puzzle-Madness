@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4012,7 +4012,7 @@ GameObject:
   - component: {fileID: 1212418440}
   - component: {fileID: 1212418439}
   m_Layer: 5
-  m_Name: Texto preview
+  m_Name: TextoPreview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5003,10 +5003,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63c633e1a5855b4887e7c2deb39991c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pause: 0
   activarRandom: 1
-  start: 0
   GanarHack: 0
+  start: 0
   columnas: 3
   filas: 3
   RandomMoves: 27
@@ -5668,7 +5667,7 @@ GameObject:
   - component: {fileID: 1723102490}
   - component: {fileID: 1723102489}
   m_Layer: 5
-  m_Name: "Boton tama\xF1o"
+  m_Name: "BotonTama\xF1o"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5719,7 +5718,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.3207547, g: 0.3192417, b: 0.3192417, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:

@@ -22,7 +22,7 @@ public class Juego2 : MonoBehaviour, IJuegos
     Transform lugarCorrectoObjeto;
 
     // Objeto agarrado, juego ganado
-    bool hayObjetoAgarrado = false, gano = false;
+    bool hayObjetoAgarrado = false, gano = false, terminoSetupInicial = false;
 
     // Offset de posicion
     Vector3 offset;
@@ -48,8 +48,11 @@ public class Juego2 : MonoBehaviour, IJuegos
          
         cambiarTexturas();
 
+        // Si estoy en juego2
         if (index < 23) 
         {
+            terminoSetupInicial = true;
+
             Renderer rendererModelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
 
             rendererModelo.material.mainTexture = texturas[index - 13];
@@ -110,7 +113,7 @@ public class Juego2 : MonoBehaviour, IJuegos
         }
 
         // No se hace nada en caso de estar en pausa, no haber comenzado o haber ganado
-        if (pause || gano) return;
+        if (pause || gano || !terminoSetupInicial) return;
 
         // Si no hay un objeto agarrado, se trata de agarrar
         if (!hayObjetoAgarrado) 
@@ -412,6 +415,8 @@ public class Juego2 : MonoBehaviour, IJuegos
     public void inicializar()
     {
         Debug.Log("[Juego2] Inicializando Juego2");
+
+        terminoSetupInicial = true;
 
         // Generar los slots donde se colocarán las piezas al resolver
         generarLugares();

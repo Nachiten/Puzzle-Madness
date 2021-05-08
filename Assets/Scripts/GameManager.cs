@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        bloquePrefab = Resources.Load("Bloque", typeof(GameObject)) as GameObject;
+        
 
         GameObject referencia = GameObject.Find("_Reference");
 
@@ -99,26 +99,31 @@ public class GameManager : MonoBehaviour
 
     void realizarComienzoDeNivel()
     {
-        // Si habia bloques anteriores, los borro
-        borrarBloquesAnterioresSiExisten();
+        if (index == 11 || index == 23)
+        {
+            Invoke("borrarBloquesAnterioresSiExisten", 1);
+            Invoke("generarBloques", 2);
+            Invoke("ajustarPosicionBloques", 3);
+            Invoke("ajustarPosicionCamaraYModelo", 4);
+            Invoke("ajustarTexturasBloques", 5);
+        }
+        else 
+        {
+            // Si habia bloques anteriores, los borro
+            borrarBloquesAnterioresSiExisten();
 
-        // Instanciar todos los bloques necesarios para el nivel
-        generarBloques();
+            // Instanciar todos los bloques necesarios para el nivel
+            generarBloques();
 
-        // Ajustar ubicacion de bloques
-        ajustarPosicionBloques();
+            // Ajustar ubicacion de bloques
+            ajustarPosicionBloques();
 
-        // Ajusta ubicacion del modelo y de la camara
-        ajustarPosicionCamaraYModelo();
+            // Ajusta ubicacion del modelo y de la camara
+            ajustarPosicionCamaraYModelo();
 
-        // Ajusta las texturas de los bloques
-        ajustarTexturasBloques();
-
-        //Invoke("borrarBloquesAnterioresSiExisten", 5);
-        //Invoke("generarBloques", 10);
-        //Invoke("ajustarPosicionBloques", 15);
-        //Invoke("ajustarPosicionCamaraYModelo", 20);
-        //Invoke("ajustarTexturasBloques", 25);
+            // Ajusta las texturas de los bloques
+            ajustarTexturasBloques();
+        }
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -143,6 +148,8 @@ public class GameManager : MonoBehaviour
 
     public void generarBloques()
     {
+        bloquePrefab = Resources.Load("Bloque", typeof(GameObject)) as GameObject;
+
         Debug.Log("[GameManager] GENERAR_BLOQUES");
 
         int contador = 1;
@@ -178,13 +185,6 @@ public class GameManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    public void fijarTexturaActual(Texture textura) 
-    {
-        texturaActual = textura;
-    }
-
-    Texture texturaActual;
-
     void ajustarTexturasBloques()
     {
         Debug.Log("[GameManager] AJUSTAR_TEXTURAS");
@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour
         // Textura de imagen modelo
         Renderer modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
 
-        Debug.Log("[GameManager] Modelo: " + modelo);
+        //Debug.Log("[GameManager] Modelo: " + modelo);
 
         float scaleX = 1f / columnas;
         float scaleY = 1f / filas;
@@ -212,9 +212,9 @@ public class GameManager : MonoBehaviour
                     Renderer objeto = GameObject.Find(contador.ToString()).GetComponent<Renderer>();
 
                     // Cambiar la textura al modelo
-                    objeto.material.mainTexture = texturaActual;
+                    objeto.material.mainTexture = modelo.material.mainTexture;
                     
-                    Debug.Log("Contador: " + contador);
+                    //Debug.Log("Contador: " + contador);
 
                     index = SceneManager.GetActiveScene().buildIndex;
 
@@ -268,6 +268,9 @@ public class GameManager : MonoBehaviour
             offsetX = 0;
             offsetY -= scaleY;
         }
+
+        if (index == 11 || index == 23)
+            GetComponent<CustomLevel>().terminarAjustarTamaño();
     }
 
     /* -------------------------------------------------------------------------------- */
