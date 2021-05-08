@@ -364,4 +364,9 @@ public class Juego1 : MonoBehaviour, IJuegos
         // Generar movimientos random
         ejecutarMovimientosRandom();
     }
+
+    public int obtenerMovimientos() 
+    {
+        return movimientos;
+    }
 }

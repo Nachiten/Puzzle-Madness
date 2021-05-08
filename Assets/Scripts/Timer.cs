@@ -47,12 +47,20 @@ public class Timer : MonoBehaviour
 
         if (time < playerPref || playerPref == 0)
         {
+            int index = SceneManager.GetActiveScene().buildIndex;
+
+            // Si estoy en juego1
+            if (index < 12) 
+            {
+                int movimientos = GameObject.Find("GameManager").GetComponent<Juego1>().obtenerMovimientos();
+
+                PlayerPrefs.SetInt("Movements_" + SceneManager.GetActiveScene().buildIndex, movimientos);
+            }
+
             Debug.Log("[Timer] Guardando PlayerPref .....");
             PlayerPrefs.SetFloat("Time_" + SceneManager.GetActiveScene().buildIndex, time);
         }
         else 
             Debug.Log("[Timer] Tiempo mayor al previamente guardado, no guardando...");
-        
-
     }
 }

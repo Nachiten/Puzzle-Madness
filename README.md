@@ -64,4 +64,13 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 - [Fix] Juego1 Nivel6 tenia un codigo faltante.
 - [Fix] Boton de LevelSelector demasiado pegado al borde.
 
-El juego estaría terminado por el momento a menos que se encuentren mas bugs.
+*Versión 7.0*:
+- [New] Se muestran los movimientos de un nivel ganado en LevelSelector para Juego1.
+- [Fix] Optimizaciones varias en codigo.
+- [Fix] Textos borrosos en pantalla de carga.
+- [Fix] Se solucionan errores en ambos CustomLevel.
+- [Fix] Se permite fijar el tamaño en los CustomLevel mas de una vez.
+- [Rmv] La version ya no se lee de las preferencias.
+
+
+El juego estaría terminado por el momento a menos que se encuentren mas bugs. (Esto lo dije desde la version 5 :P)
