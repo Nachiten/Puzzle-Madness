@@ -310,7 +310,7 @@ public class Juego1 : MonoBehaviour, IJuegos
             // Se repite hasta llegar a la cantidad de random moves o si se queda en posicion ganada
             do
             {
-                if (intentos > 30000)
+                if (intentos > 300000)
                 {
                     Debug.LogError("[Juego1] DEMASIADOS INTENTOS!!");
                     break;
