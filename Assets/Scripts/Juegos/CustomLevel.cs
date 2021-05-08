@@ -135,7 +135,12 @@ public class CustomLevel : MonoBehaviour
         yield return www.SendWebRequest();
 
         imagen.material.color = Color.white;
-        imagen.texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+
+        Texture texturaObtenida = ((DownloadHandlerTexture)www.downloadHandler).texture;
+
+        imagen.texture = texturaObtenida;
+
+        GameObject.Find("GameManager").GetComponent<GameManager>().fijarTexturaActual(texturaObtenida);
 
         Debug.Log("[CustomLevel] Imagen cargada correctamente.");
 

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Analytics;
@@ -26,6 +25,8 @@ public class GameManager : MonoBehaviour
     Vector3 posicionOriginalModelo;
     float posYOriginalCamara;
 
+    GameObject bloquePrefab;
+
     #endregion
 
     /* -------------------------------------------------------------------------------- */
@@ -34,6 +35,8 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        bloquePrefab = Resources.Load("Bloque", typeof(GameObject)) as GameObject;
+
         GameObject referencia = GameObject.Find("_Reference");
 
         posicionOriginalReferencia = referencia.transform.position;
@@ -96,7 +99,6 @@ public class GameManager : MonoBehaviour
 
     void realizarComienzoDeNivel()
     {
-
         // Si habia bloques anteriores, los borro
         borrarBloquesAnterioresSiExisten();
 
@@ -112,18 +114,25 @@ public class GameManager : MonoBehaviour
         // Ajusta las texturas de los bloques
         ajustarTexturasBloques();
 
+        //Invoke("borrarBloquesAnterioresSiExisten", 5);
+        //Invoke("generarBloques", 10);
+        //Invoke("ajustarPosicionBloques", 15);
+        //Invoke("ajustarPosicionCamaraYModelo", 20);
+        //Invoke("ajustarTexturasBloques", 25);
     }
 
     /* -------------------------------------------------------------------------------- */
 
     void borrarBloquesAnterioresSiExisten()
     {
+        Debug.Log("[GameManager] BORRAR_BLOQUES");
+
         GameObject objetoActual;
         int contador = 1;
 
         while ((objetoActual = GameObject.Find(contador.ToString())) != null)
         {
-            Debug.Log("[GameManager] Destruyo objeto: " + contador);
+            //Debug.Log("[GameManager] Destruyo objeto: " + contador);
 
             Destroy(objetoActual);
             contador++;
@@ -134,6 +143,8 @@ public class GameManager : MonoBehaviour
 
     public void generarBloques()
     {
+        Debug.Log("[GameManager] GENERAR_BLOQUES");
+
         int contador = 1;
 
         float offsetX = 0f;
@@ -146,15 +157,16 @@ public class GameManager : MonoBehaviour
                 // En el juego 1 no genero el ultimo bloque, en el juego2 si
                 if (contador < filas * columnas || SceneManager.GetActiveScene().buildIndex > 12)
                 {
+                    // Asignar posicion de clon
+                    Vector3 posicionClon = new Vector3(posicionOriginalReferencia.x + offsetX, posicionOriginalReferencia.y, posicionOriginalReferencia.z + offsetZ);
+                    // Asignar rotacion de clon
+                    Quaternion rotacionCLon = Quaternion.Euler(new Vector3(0, 180, 0));
+
                     // Crear el clon
-                    GameObject clon = Instantiate(Resources.Load("1", typeof(GameObject))) as GameObject;
+                    GameObject clon = Instantiate(bloquePrefab, posicionClon, rotacionCLon);
 
                     // Asignar nombre correcto
                     clon.name = contador.ToString();
-                    // Asignar posicion de clon
-                    clon.transform.position = new Vector3(posicionOriginalReferencia.x + offsetX, posicionOriginalReferencia.y, posicionOriginalReferencia.z + offsetZ);
-                    // Asignar rotacion de clon
-                    clon.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
                 }
                 contador++;
                 offsetX += 5f;
@@ -166,10 +178,21 @@ public class GameManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    public void fijarTexturaActual(Texture textura) 
+    {
+        texturaActual = textura;
+    }
+
+    Texture texturaActual;
+
     void ajustarTexturasBloques()
     {
+        Debug.Log("[GameManager] AJUSTAR_TEXTURAS");
+
         // Textura de imagen modelo
         Renderer modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
+
+        Debug.Log("[GameManager] Modelo: " + modelo);
 
         float scaleX = 1f / columnas;
         float scaleY = 1f / filas;
@@ -189,7 +212,9 @@ public class GameManager : MonoBehaviour
                     Renderer objeto = GameObject.Find(contador.ToString()).GetComponent<Renderer>();
 
                     // Cambiar la textura al modelo
-                    objeto.material.mainTexture = modelo.material.mainTexture;
+                    objeto.material.mainTexture = texturaActual;
+                    
+                    Debug.Log("Contador: " + contador);
 
                     index = SceneManager.GetActiveScene().buildIndex;
 
@@ -249,6 +274,8 @@ public class GameManager : MonoBehaviour
 
     void ajustarPosicionBloques()
     {
+        Debug.Log("[GameManager] AJUSTAR_POSICION_BLOQUES");
+
         if (index < 12)
         {
             Transform plataforma = GameObject.Find("Piso Mapa").GetComponent<Transform>();
@@ -298,6 +325,8 @@ public class GameManager : MonoBehaviour
     // Hijo de ajustarPosicionBloques
     void ajustarPosicionCamaraYModelo()
     {
+        Debug.Log("[GameManager] AJUSTAR_POSICION_CAMARA_MODELO");
+
         int mayor = columnas;
 
         if (filas > columnas)
