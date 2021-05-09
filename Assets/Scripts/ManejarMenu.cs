@@ -7,22 +7,22 @@ public class ManejarMenu : MonoBehaviour
     #region Variables
 
     // Flags varios
-    bool menuActivo = false, opcionesActivas = false, creditosActivos = false, mostrandoContinuarDesdeNivel = false;
+    bool menuActivo = false, opcionesActivas = false, creditosActivos = false;
 
     // Flag de ya asigne las variables
     static bool variablesAsignadas = false;
 
     // GameObjects
-    static GameObject menu, opciones, creditos, continuarDesdeNivel, panelMenu;
+    static GameObject menu, opciones, creditos, panelMenu;
 
     // Manager de las animaciones
     static LeanTweenManager tweenManager;
 
     // Textos varios
-    static TMP_Text textoNivelNoGanado, textoBoton;
+    static TMP_Text textoBoton;
 
     // Strings utilizados
-    string continuar = "CONTINUAR", comenzar = "COMENZAR";
+    string continuar = "CONTINUAR";
 
     // Index de escena actual
     int index;
@@ -63,23 +63,8 @@ public class ManejarMenu : MonoBehaviour
         // Estoy en el menu principal
         else
         {
-            continuarDesdeNivel = GameObject.Find("ContinuarDesdeNivel");
-            textoNivelNoGanado = GameObject.Find("TextoContinuar").GetComponent<TMP_Text>();
-
-            textoBoton.text = comenzar;
             menu.SetActive(true);
             menuActivo = true;
-
-            if (yaJugoAntes())
-            {
-                textoBoton.text = continuar;
-                mostrarUltimoNivelNoGanado();
-                mostrandoContinuarDesdeNivel = true;
-            }
-            else
-            {
-                continuarDesdeNivel.SetActive(false);
-            }
         }
 
         opciones.SetActive(false);
@@ -106,80 +91,6 @@ public class ManejarMenu : MonoBehaviour
     }
 
     #endregion
-
-    /* -------------------------------------------------------------------------------- */
-
-    bool yaJugoAntes() 
-    {
-        if (PlayerPrefs.GetInt("YaJugoAntes") == 1)
-        {
-            return true;
-        }
-        else 
-        {
-            PlayerPrefs.SetInt("YaJugoAntes", 1);
-            return false;
-        }
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    public void ocultarContinuarDesdeNivelSiCorresponde() 
-    {
-        if (mostrandoContinuarDesdeNivel) 
-        {
-            bool continuarDesdeNivelActivo = continuarDesdeNivel.activeSelf;
-            continuarDesdeNivel.SetActive(!continuarDesdeNivelActivo);
-        }
-    }
-
-    /* -------------------------------------------------------------------------------- */
-
-    void mostrarUltimoNivelNoGanado() 
-    {
-        int indexNoGanado = 0;
-
-        for (int i = 1; i <= 22; i++)
-        {
-            if (i == 11 || i == 12)
-                continue;
-
-            float playerPrefGuardada = PlayerPrefs.GetFloat("Time_" + i);
-
-            if (playerPrefGuardada == 0.0f) {
-                indexNoGanado = i;
-                break;
-            }
-        }
-
-        int juegoNoGanado;
-        int nivelNoGanado;
-
-        // Si es juego1
-        if (indexNoGanado < 11)
-        {
-            juegoNoGanado = 1;
-            nivelNoGanado = indexNoGanado;
-            FindObjectOfType<Buttons>().nivelACargar = indexNoGanado;
-        }
-        // Si es juego2
-        else if (indexNoGanado < 23)
-        {
-            juegoNoGanado = 2;
-            nivelNoGanado = indexNoGanado - 12;
-            FindObjectOfType<Buttons>().nivelACargar = indexNoGanado;
-        }
-        // En cualquier otro caso, no gano nada
-        else {
-            juegoNoGanado = 0;
-            nivelNoGanado = 0;
-        }
-
-        //Debug.Log("[ManejarMenu] Ultimo nivel no ganado. Nivel: " + nivelNoGanado + " | Juego: " + juegoNoGanado);
-
-        textoNivelNoGanado.text = "Nivel: " + nivelNoGanado + " | Juego: " + juegoNoGanado;
-        continuarDesdeNivel.SetActive(true);
-    }
 
     /* -------------------------------------------------------------------------------- */
 

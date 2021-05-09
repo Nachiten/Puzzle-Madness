@@ -22,7 +22,7 @@ public class EditorTools : EditorWindow
 
     private void OnEnable()
     {
-        cantidadEscenas= SceneManager.sceneCountInBuildSettings;
+        cantidadEscenas = SceneManager.sceneCountInBuildSettings;
     }
 
     // Codigo de la Vetana
@@ -132,6 +132,7 @@ public class EditorTools : EditorWindow
             {
                 PlayerPrefs.SetString(i.ToString(), "Ganado");
                 PlayerPrefs.SetFloat("Time_" + i, 25000f);
+                PlayerPrefs.SetInt("Movements_" + i, 137);
 
                 if (SceneManager.GetActiveScene().buildIndex == 12 && !ganaDirecto) 
                 {

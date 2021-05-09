@@ -35,8 +35,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        
-
         GameObject referencia = GameObject.Find("_Reference");
 
         posicionOriginalReferencia = referencia.transform.position;
@@ -380,12 +378,10 @@ public class GameManager : MonoBehaviour
         AnalyticsResult result = AnalyticsEvent.Custom("Ganado_" + index);
         Debug.Log("[GameManager] Analytics Result: " + result + " | DATA: " + "Ganado_" + index);
 
-        PlayerPrefs.SetString(index.ToString(), "Ganado");
-
         FindObjectOfType<Timer>().setPlayerPref();
 
         // Modificar texto
-        if (index == 10 || index == 11 || index == 22 || index == 23) textoBoton.text = regresarAInicio;
+        if (index == 11 || index == 22 || index == 23) textoBoton.text = regresarAInicio;
         else textoBoton.text = siguienteNivel;
 
         // Mostrar boton

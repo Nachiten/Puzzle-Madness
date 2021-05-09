@@ -314,7 +314,10 @@ public class LeanTweenManager : MonoBehaviour
 
     void ocultarContinuarDesdeNivelSiCorresponde() 
     {
-        FindObjectOfType<ManejarMenu>().ocultarContinuarDesdeNivelSiCorresponde();
+        indexActual = SceneManager.GetActiveScene().buildIndex;
+
+        if (indexActual == 0)
+            FindObjectOfType<ContinuarDesdeNivel>().ocultarContinuarDesdeNivelSiCorresponde();
     }
 
     void quitarOpciones() 

@@ -59,6 +59,7 @@ public class Timer : MonoBehaviour
 
             Debug.Log("[Timer] Guardando PlayerPref .....");
             PlayerPrefs.SetFloat("Time_" + SceneManager.GetActiveScene().buildIndex, time);
+            PlayerPrefs.SetString(index.ToString(), "Ganado");
         }
         else 
             Debug.Log("[Timer] Tiempo mayor al previamente guardado, no guardando...");

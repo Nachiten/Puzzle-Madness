@@ -762,6 +762,7 @@ PlayerSettings:
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
   cloudServicesEnabled:
+    Analytics: 0
     Collab: 0
     UNet: 1
   luminIcon:
