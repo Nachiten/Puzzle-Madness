@@ -10,8 +10,6 @@ public class Juego1 : MonoBehaviour, IJuegos
 
     public int columnas = 3, filas = 3, RandomMoves = 30;
 
-    bool pause = false, terminoSetupInicial = false;
-
     #endregion
 
     /* -------------------------------------------------------------------------------- */
@@ -28,8 +26,8 @@ public class Juego1 : MonoBehaviour, IJuegos
     float tiempoAnimacion = 0.1f;
 
     // Flag juego ganado
-    bool gano = false, animacionActiva = false;
-    
+    bool gano = false, animacionActiva = false, pause = false, terminoSetupInicial = false;
+
     // Texto movimientos
     TMP_Text textoMovimientos;
 

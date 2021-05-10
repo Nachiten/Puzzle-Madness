@@ -219,13 +219,8 @@ public class Juego2 : MonoBehaviour, IJuegos
 
         float offsetXPiso = (mayor - 3) * 1f;
 
-        //Debug.Log("[Juego2] OffsetX aplicado a piso: " + offsetXPiso);
-
         tamañoXPlataforma = (5 * columnas) + 2;
         tamañoZPlataforma = (5 * filas) + 2;
-
-        //Debug.Log("[Juego2] tamañoXPlataforma: " + tamañoXPlataforma);
-        //Debug.Log("[Juego2] tamañoZPlataforma: " + tamañoZPlataforma);
 
         // Modificar tamaño de plataforma
         Transform plataforma = GameObject.Find("Piso").GetComponent<Transform>();
@@ -233,9 +228,6 @@ public class Juego2 : MonoBehaviour, IJuegos
 
         posXPlataforma = plataforma.position.x - offsetXPiso;
         posZPlataforma = plataforma.position.z;
-
-        //Debug.Log("[Juego2] posXPlataforma: " + posXPlataforma);
-        //Debug.Log("[Juego2] posZPlataforma: " + posZPlataforma);
 
         // Modificar posicion de plataforma
         plataforma.position = new Vector3(posXPlataforma, plataforma.position.y, posZPlataforma);
@@ -257,29 +249,22 @@ public class Juego2 : MonoBehaviour, IJuegos
         {
             for (int j = 0; j < columnas; j++)
             {
-                if (i == 0 && j == 0)
-                {
-                    // Primer bloque es la referencia
-                    Transform referenciaAjuste = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
+                // Tomo el bloque actual
+                Transform referenciaAjuste = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
 
+                // Si es el primer bloque, fijo la pos de la referencia
+                if (i == 0 && j == 0) 
+                {
                     float offsetXReferencia = (columnas - 3) * 1.5555f;
                     float offsetYReferencia = (filas - 3) * 2.5f;
 
-                    //Debug.Log("[Juego2] offsetX aplicado a referencia: " + offsetXReferencia);
-                    //Debug.Log("[Juego2] offsetY aplicado a referencia: " + offsetXReferencia);
-
                     posXReferencia = referenciaAjuste.position.x + offsetXReferencia;
                     posZReferencia = referenciaAjuste.position.z + offsetYReferencia;
-
-                    // Ajusto la posicion de la referencia
-                    referenciaAjuste.position = new Vector3(posXReferencia, referenciaAjuste.position.y, posZReferencia);
                 }
-                else
-                {
-                    Transform objeto = GameObject.Find("Lugar_" + contador.ToString()).GetComponent<Transform>();
 
-                    objeto.position = new Vector3(posXReferencia + offsetX, objeto.position.y, posZReferencia + offsetZ);
-                }
+                // Ajusto la posicion del bloque
+                referenciaAjuste.position = new Vector3(posXReferencia + offsetX, referenciaAjuste.position.y, posZReferencia + offsetZ);
+                
                 offsetX += 5;
                 contador++;
             }
@@ -324,8 +309,6 @@ public class Juego2 : MonoBehaviour, IJuegos
     // Cuando se agarra un bloque
     void mouseButtonDown()
     {
-        //Debug.Log("mouseButtonDown");
-
         // Set Z coordinate
         coordZ = Camera.main.WorldToScreenPoint(objetoAgarrado.transform.position).z;
 
@@ -350,7 +333,7 @@ public class Juego2 : MonoBehaviour, IJuegos
         // Si está dentro del rango
         if (distancia < limite)
         {
-            Debug.Log("[Juego2] Bloque posicionado correctamente");
+            //Debug.Log("[Juego2] Bloque posicionado correctamente");
 
             // Se coloca en el lugar correcto
             objetoAgarrado.transform.position = new Vector3(posicionLugarCorrectoObjeto.x, posicionLugarCorrectoObjeto.y + 0.2f, posicionLugarCorrectoObjeto.z);
@@ -414,7 +397,7 @@ public class Juego2 : MonoBehaviour, IJuegos
 
     public void inicializar()
     {
-        Debug.Log("[Juego2] Inicializando Juego2");
+        //Debug.Log("[Juego2] Inicializando Juego2");
 
         terminoSetupInicial = true;
 

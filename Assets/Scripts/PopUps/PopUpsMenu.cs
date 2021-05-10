@@ -4,10 +4,9 @@ using TMPro;
 
 public class PopUpsMenu : MonoBehaviour
 {
-    static int popUpOpen = 0, currentImage = 0;
-
     public Texture[] Textura;
 
+    static int popUpOpen = 0, currentImage = 0;
     static bool variablesSeteadas = false;
 
     static RawImage simbolo;

@@ -73,6 +73,8 @@ public class GameManager : MonoBehaviour
             comenzarJuego2();
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     public void comenzarJuego1()
     {
         // Asignar filas y columnas de Juego1

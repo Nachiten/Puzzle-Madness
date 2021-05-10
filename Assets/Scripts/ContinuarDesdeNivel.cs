@@ -7,14 +7,14 @@ public class ContinuarDesdeNivel : MonoBehaviour
 {
     GameObject continuarDesdeNivel;
 
-    // Textos varios
     static TMP_Text textoNivelNoGanado, textoBoton;
 
     string continuarString = "CONTINUAR", comenzarString = "COMENZAR";
 
     bool mostrandoContinuarDesdeNivel = false;
 
-    // Start is called before the first frame update
+    /* -------------------------------------------------------------------------------- */
+
     void Start()
     {
         continuarDesdeNivel = GameObject.Find("ContinuarDesdeNivel");

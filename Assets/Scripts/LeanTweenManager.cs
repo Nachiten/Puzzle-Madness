@@ -30,6 +30,8 @@ public class LeanTweenManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     // Se llama cuando una nueva escena se carga
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -47,6 +49,8 @@ public class LeanTweenManager : MonoBehaviour
         else
             setupInicial();
     }
+
+    /* -------------------------------------------------------------------------------- */
 
     void OnDisable()
     {

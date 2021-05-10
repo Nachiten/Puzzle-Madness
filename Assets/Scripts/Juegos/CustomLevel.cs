@@ -95,9 +95,6 @@ public class CustomLevel : MonoBehaviour
             return;
         }
 
-        //Debug.Log("[CustomLevel] Filas: " + filas);
-        //Debug.Log("[CustomLevel] Columnas: " + columnas);
-
         if (filas < 3 || columnas < 3)
         {
             FindObjectOfType<PopUps>().abrirPopUp(6);

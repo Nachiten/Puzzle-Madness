@@ -19,7 +19,6 @@ public class CameraAspectRatioScaler : MonoBehaviour
     void Start()
     {
         OriginPosition = transform.position;
-        //Debug.Log("[CameraAspectRatioScaler] Posicion origen: " + OriginPosition);
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -52,8 +51,6 @@ public class CameraAspectRatioScaler : MonoBehaviour
         transform.position = OriginPosition + transform.forward * (1f - refRatio / ratio) * ZoomFactor.z
                                             + transform.right * (1f - refRatio / ratio) * ZoomFactor.x
                                             + transform.up * (1f - refRatio / ratio) * ZoomFactor.y;
-  
-        //Debug.Log("Ratio: " + ratio.ToString("F2"));
     }
 
     /* -------------------------------------------------------------------------------- */
