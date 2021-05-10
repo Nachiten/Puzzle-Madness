@@ -130,12 +130,6 @@ public class LevelLoader : MonoBehaviour
     void completarCargaNivel() 
     {
         StartCoroutine(cargarAsincronizadamente(indexACargar));
-
-        if (indexACargar != 7)
-        {
-            AnalyticsResult result = AnalyticsEvent.Custom("Ingreso_" + SceneManager.GetSceneByBuildIndex(indexACargar).name);
-            //Debug.Log("[LevelLoader] Analytics Result: " + result + " | DATA: " + "Ingreso_" + SceneManager.GetSceneByBuildIndex(index).name);
-        }
     }
 
     #endregion
