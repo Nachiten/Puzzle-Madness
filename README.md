@@ -73,5 +73,4 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 - [Fix] Se permite fijar el tamaño en los CustomLevel mas de una vez.
 - [Rmv] La version ya no se lee de las preferencias.
 
-
-El juego estaría terminado por el momento a menos que se encuentren mas bugs. (Esto lo dije desde la version 5 :P)
+El juego estaría terminado por el momento a menos que se encuentren mas bugs. (Esto lo dije desde la version 5 😛)
