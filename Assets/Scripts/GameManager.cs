@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
         Destroy(referencia);
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     void Start()
     {
         // Escena actual

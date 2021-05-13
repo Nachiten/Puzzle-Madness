@@ -50,6 +50,8 @@ public class ManejarMenu : MonoBehaviour
         }
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     void Start()
     {
         index = SceneManager.GetActiveScene().buildIndex;

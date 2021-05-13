@@ -19,7 +19,7 @@ public class PopUps : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void Start()
+    private void Awake()
     {
         popUp = GameObject.Find("Pop Up");
         botonNo = GameObject.Find("Boton No");
@@ -31,7 +31,12 @@ public class PopUps : MonoBehaviour
         textoPrincipal = GameObject.Find("Texto Principal").GetComponent<TMP_Text>();
 
         simbolo = GameObject.Find("Icono").GetComponent<RawImage>();
+    }
 
+    /* -------------------------------------------------------------------------------- */
+
+    void Start()
+    {
         inputField.SetActive(false);
         popUp.SetActive(false);
     }
@@ -114,8 +119,6 @@ public class PopUps : MonoBehaviour
         // Posicion inicial
         LeanTween.moveLocalX(popUp, -1500, 0f).setOnComplete(_ => popUp.SetActive(true));
 
-        Debug.Log("[PopUps] Animando apertura");
-
         LeanTween.moveLocalX(popUp, 0, tiempoAnimacion);
     }
 
@@ -125,7 +128,6 @@ public class PopUps : MonoBehaviour
     {
         GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
 
-        Debug.Log("[PopUps] Cerrando popup");
         LeanTween.moveLocalX(popUp, 1500, tiempoAnimacion).setOnComplete(_ => realizarAccionAlCerrar(accionUsada));
     }
 
@@ -133,8 +135,6 @@ public class PopUps : MonoBehaviour
 
     void realizarAccionAlCerrar(bool accionUsada)
     {
-        string url = "";
-
         // Cierro el popup
         popUp.SetActive(false);
 
@@ -146,7 +146,7 @@ public class PopUps : MonoBehaviour
 
                 break;
             case 4:
-                url = (inputFieldTexto.text).ToString();
+                string url = (inputFieldTexto.text).ToString();
                 url = url.Substring(0, url.Length - 1);
 
                 if (url != "" && extensionValidaDeUrl(url))

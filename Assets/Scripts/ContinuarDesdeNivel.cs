@@ -23,6 +23,8 @@ public class ContinuarDesdeNivel : MonoBehaviour
         textoBoton = GameObject.Find("TextoBotonComenzar").GetComponent<TMP_Text>();
     }
 
+    /* -------------------------------------------------------------------------------- */
+
     void Start()
     {
         textoBoton.text = comenzarString;

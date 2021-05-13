@@ -18,7 +18,6 @@ public class dontDestroy : MonoBehaviour
         else
         {
             Destroy(gameObject);
-        }
-            
+        } 
     }
 }

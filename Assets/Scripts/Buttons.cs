@@ -24,6 +24,15 @@ public class Buttons : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    // Setup que se hace por unica vez
+    void Awake()
+    {
+        codigoSoundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        codigoPopUpsMenu = GameObject.Find("Pop Up").GetComponent<PopUpsMenu>();
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
     // Se llama cuando una nueva escena se carga
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -31,13 +40,6 @@ public class Buttons : MonoBehaviour
     }
 
     /* -------------------------------------------------------------------------------- */
-
-    // Setup que se hace por unica vez
-    void Awake()
-    {
-        codigoSoundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
-        codigoPopUpsMenu = GameObject.Find("Pop Up").GetComponent<PopUpsMenu>();
-    }
 
     // Setup que se hace en cada nueva escena cargada
     void setupInicial()

@@ -17,23 +17,27 @@ public class PopUpsMenu : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void Start()
+    private void Awake()
     {
-        //Debug.Log("[PopsUpsMenu] Start()");
+        if (variablesSeteadas)
+            return;
+        
+        popUp = GameObject.Find("Pop Up");
+        botonNo = GameObject.Find("Boton No");
 
-        if (!variablesSeteadas) 
-        {
-            popUp = GameObject.Find("Pop Up");
-            botonNo = GameObject.Find("Boton No");
+        textoBanner = GameObject.Find("Texto Banner").GetComponent<TMP_Text>();
+        botonSiTexto = GameObject.Find("BotonSiTexto").GetComponent<TMP_Text>();
+        textoPrincipal = GameObject.Find("Texto Principal").GetComponent<TMP_Text>();
 
-            textoBanner = GameObject.Find("Texto Banner").GetComponent<TMP_Text>();
-            botonSiTexto = GameObject.Find("BotonSiTexto").GetComponent<TMP_Text>();
-            textoPrincipal = GameObject.Find("Texto Principal").GetComponent<TMP_Text>();
+        simbolo = GameObject.Find("Icono").GetComponent<RawImage>();
 
-            simbolo = GameObject.Find("Icono").GetComponent<RawImage>();
+        variablesSeteadas = true;
+    }
 
-            variablesSeteadas = true;
-        }
+    /* -------------------------------------------------------------------------------- */
+
+    void Start()
+    { 
         popUp.SetActive(false);
     }
 
@@ -90,8 +94,6 @@ public class PopUpsMenu : MonoBehaviour
         // Posicion inicial
         LeanTween.moveLocalX(popUp, -1500, 0f).setOnComplete(_ => popUp.SetActive(true));
 
-        //Debug.Log("[PopUpsMenu] Animando apertura de PopUp");
-
         LeanTween.moveLocalX(popUp, 0, tiempoAnimacion);
     }
 
@@ -99,7 +101,6 @@ public class PopUpsMenu : MonoBehaviour
 
     public void cerrarPopUp( bool accionUsada) // TRUE = si FALSE = no
     {
-        //Debug.Log("[PopUpsMenu] Animando cerrado de PopUp");
         LeanTween.moveLocalX(popUp, 1500, tiempoAnimacion).setOnComplete(_ => realizarAccionAlCerrar(accionUsada));
     }
 

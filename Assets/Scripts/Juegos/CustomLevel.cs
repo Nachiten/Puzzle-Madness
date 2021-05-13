@@ -23,13 +23,16 @@ public class CustomLevel : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void Start() 
+    private void Awake()
     {
         textoPreview = GameObject.Find("TextoPreview").GetComponent<TMP_Text>();
         botonTamaño = GameObject.Find("BotonTamaño").GetComponent<Button>();
         imagen = GameObject.Find("Imagen Elegida").GetComponent<RawImage>();
         imagenPreview = GameObject.Find("Imagen Preview");
+    }
 
+    void Start() 
+    {
         imagenPreview.SetActive(false);
 
         int index = SceneManager.GetActiveScene().buildIndex;
