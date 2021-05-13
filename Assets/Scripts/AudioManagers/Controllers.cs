@@ -81,8 +81,8 @@ public class Controllers : MonoBehaviour
 
         setearValorSonido(valorSlider);
 
-        // Reproduzco sonido de muestra
-        GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(0);
+        if (Input.GetMouseButtonDown(0))
+            GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(0);
     }
 
     /* -------------------------------------------------------------------------------- */
