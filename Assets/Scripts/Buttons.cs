@@ -5,37 +5,122 @@ public class Buttons : MonoBehaviour
 {
     public int nivelACargar = 1;
 
+    static PopUpsMenu codigoPopUpsMenu;
+    static LevelLoader codigoLevelLoader;
+    static ManejarMenu codigoManejarMenu;
+    static SoundManager codigoSoundManager;
+
     /* -------------------------------------------------------------------------------- */
 
-    public void Comenzar()
+    void OnEnable()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0) 
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    // Se llama cuando una nueva escena se carga
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        setupInicial();
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    // Setup que se hace por unica vez
+    void Awake()
+    {
+        codigoSoundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        codigoPopUpsMenu = GameObject.Find("Pop Up").GetComponent<PopUpsMenu>();
+    }
+
+    // Setup que se hace en cada nueva escena cargada
+    void setupInicial()
+    {
+        Debug.Log("[Buttons] SetupInicial");
+
+        GameObject objetoGameManager = GameObject.Find("GameManager");
+
+        codigoManejarMenu = objetoGameManager.GetComponent<ManejarMenu>();
+        codigoLevelLoader = objetoGameManager.GetComponent<LevelLoader>();
+    }
+
+    #region Botones
+
+    /* --------------------------------------------------------------------------------- */
+    /* ------------------------------------ BOTONES ------------------------------------ */
+    /* --------------------------------------------------------------------------------- */
+
+    public void botonComenzar()
+    {
+        reproducirSonidoClickBoton();
+
+        if (SceneManager.GetActiveScene().buildIndex == 0)
             loadLevel(nivelACargar);
-        else 
-            FindObjectOfType<ManejarMenu>().manejarMenu();
+        else
+            codigoManejarMenu.manejarMenu();
     }
 
-    /* -------------------------------------------------------------------------------- */
-
-    public void Salir() { GameObject.Find("GameManager").GetComponent<LevelLoader>().salir(); }
-
-    /* -------------------------------------------------------------------------------- */
-
-    public void loadLevel(int index) { GameObject.Find("GameManager").GetComponent<LevelLoader>().cargarNivel(index); }
-
-    /* -------------------------------------------------------------------------------- */
-
-    public void manejarOpciones() 
+    public void botonOpciones()
     {
-        GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
-        GameObject.Find("GameManager").GetComponent<ManejarMenu>().manejarOpciones(); 
+        reproducirSonidoClickBoton();
+
+        codigoManejarMenu.manejarOpciones();
     }
+
+    public void botonSalir()
+    {
+        reproducirSonidoClickBoton();
+
+        codigoPopUpsMenu.abrirPopUp(3);
+    }
+
+    public void botonVolverAInicio()
+    {
+        reproducirSonidoClickBoton();
+
+        loadLevel(0);
+    }
+
+    public void botonBorrarProgreso()
+    {
+        reproducirSonidoClickBoton();
+
+        codigoPopUpsMenu.abrirPopUp(0);
+    }
+
+    public void botonCreditos()
+    {
+        reproducirSonidoClickBoton();
+
+        codigoManejarMenu.manejarCreditos();
+    }
+
+    public void botonSeleccionarNivel()
+    {
+        reproducirSonidoClickBoton();
+
+        loadLevel(12);
+    }
+
+    #endregion
+
+    /* ------------------------------------------------------------------------------------ */
+    /* ------------------------------------ AUXILIARES ------------------------------------ */
+    /* ------------------------------------------------------------------------------------ */
 
     /* -------------------------------------------------------------------------------- */
 
-    public void manejarCreditos() 
-    {
-        GameObject.Find("SoundManager").GetComponent<SoundManager>().reproducirSonido(1);
-        GameObject.Find("GameManager").GetComponent<ManejarMenu>().manejarCreditos(); 
-    }
+    public void loadLevel(int index) { codigoLevelLoader.cargarNivel(index); }
+
+    /* -------------------------------------------------------------------------------- */
+
+    void reproducirSonidoClickBoton() { codigoSoundManager.reproducirSonido(1); }
+
+    /* -------------------------------------------------------------------------------- */
 }

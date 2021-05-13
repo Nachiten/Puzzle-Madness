@@ -65,6 +65,7 @@ A minigame about solving puzzles with moving tiles. Also has a normal puzzle gam
 - [Fix] Boton de LevelSelector demasiado pegado al borde.
 
 *Versión 7.0*:
+- [New] Se guarda la musica y volumenes elegidos al cerrar el juego.
 - [New] Se muestran los movimientos de un nivel ganado en LevelSelector para Juego1.
 - [Fix] Optimizaciones varias en codigo.
 - [Fix] Textos borrosos en pantalla de carga.

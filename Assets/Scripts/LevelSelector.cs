@@ -11,12 +11,15 @@ public class LevelSelector : MonoBehaviour
 
     bool estoyEnNivel2 = false;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         juego1 = GameObject.Find("Canvas Juego1");
         juego2 = GameObject.Find("Canvas Juego2");
+    }
 
+    // Start is called before the first frame update
+    void Start()
+    {
         juego1.SetActive(false);
         scanJuego(2);
 

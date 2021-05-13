@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,7 +6,7 @@ public class LeanTweenManager : MonoBehaviour
 {
     #region Variables
 
-    float tiempoAnimacionBotonesMenu = 0.2f, tiempoAnimacionPanelMenu = 0.15f, tiempoAnimacionOpciones = 0.5f; // 0.3, 0.2
+    float tiempoAnimacionBotonesMenu = 0.2f, tiempoAnimacionPanelMenu = 0.15f, tiempoAnimacionMenus = 0.5f, posicionAfuera = 1920;
 
     List<GameObject> botones;
 
@@ -18,39 +18,14 @@ public class LeanTweenManager : MonoBehaviour
     static bool variablesSeteadas = false;
     static int indexActual = -1;
 
-    bool yaCargada = false;
-
     #endregion
 
     /* -------------------------------------------------------------------------------- */
 
-    // called first
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-
-    /* -------------------------------------------------------------------------------- */
-
-    // Se llama cuando una nueva escena se carga
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        // Si es la misma escena que antes
-        if (indexActual == scene.buildIndex)
-        {
-            // Si es la misma escena recargada (la primera vez)
-            if (!yaCargada)
-                setupInicial();
-            // Si es la segunda o mas veces seguidas que quiere cargar
-            else
-                return;
-        }
-        // Si es una escena nueva, inicializo
-        else
-            setupInicial();
-    }
-
-    /* -------------------------------------------------------------------------------- */
 
     void OnDisable()
     {
@@ -59,54 +34,61 @@ public class LeanTweenManager : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void setupInicial() 
+    // Setup que se hace una sola vez
+    void Awake()
     {
-        yaCargada = true;
+        if (variablesSeteadas)
+            return;
 
-        //Debug.Log("[LeanTweenManager] setupInicial");
+        // Objetos
+        menu = GameObject.Find("Menu");
+        menuPanel = GameObject.Find("PanelMenu");
+        menuOpciones = GameObject.Find("MenuOpciones");
+        menuCreditos = GameObject.Find("MenuCreditos");
+
+        // Botones
+        botonSalir = GameObject.Find("Salir");
+        botonComenzar = GameObject.Find("Comenzar");
+        botonOpciones = GameObject.Find("Opciones");
+        botonesInicio = GameObject.Find("Botones Inicio");
+
+        // Botonces condicionales
+        botonVolverInicio = GameObject.Find("VolverAInicio");
+        botonSeleccionarNivel = GameObject.Find("Seleccionar Nivel");
+
+        variablesSeteadas = true;
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    // Se llama cuando una nueva escena se carga
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        setupInicial();
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
+    // Setup que se hace en cada nueva escena cargada
+    void setupInicial()
+    {
+        Debug.Log("[LeanTweenManager] SetupInicial");
 
         indexActual = SceneManager.GetActiveScene().buildIndex;
 
-        if (!variablesSeteadas)
-        {
-            // Objetos
-            menu = GameObject.Find("Menu");
-            menuPanel = GameObject.Find("PanelMenu");
-            menuOpciones = GameObject.Find("MenuOpciones");
-            menuCreditos = GameObject.Find("MenuCreditos");
+        botones = new List<GameObject> { botonSalir, botonComenzar, botonOpciones };
 
-            // Botones
-            botonSalir = GameObject.Find("Salir");
-            botonComenzar = GameObject.Find("Comenzar");
-            botonOpciones = GameObject.Find("Opciones");
-            botonSeleccionarNivel = GameObject.Find("Seleccionar Nivel");
-
-            // Botonces condicionales
-            botonVolverInicio = GameObject.Find("VolverAInicio");
-
-            variablesSeteadas = true;
-        }
-        
-        botones = new List<GameObject>();
-
-        botones.Add(botonSalir);
-        botones.Add(botonComenzar);
-        botones.Add(botonOpciones);
-        botones.Add(botonSeleccionarNivel);
-
+        // Si estoy en inicio
         if (indexActual == 0)
         {
-            botonCreditos = GameObject.Find("Creditos");
-            botonesInicio = GameObject.Find("Botones Inicio");
-            botonBorrarProgreso = GameObject.Find("BorrarProgreso");
-
-            botones.Add(botonBorrarProgreso);
-            botones.Add(botonCreditos);
             botonVolverInicio.SetActive(false);
+            botonesInicio.SetActive(true);
         }
         else
         {
             botones.Add(botonVolverInicio);
+            botones.Add(botonSeleccionarNivel);
+            botonesInicio.SetActive(false);
         }
     }
 
@@ -224,37 +206,40 @@ public class LeanTweenManager : MonoBehaviour
 
     #endregion
 
-    #region AnimacionAbrirOpcionesMenu
+    #region AnimacionesAbrirMenus
 
-    /* ----------------------------------------------------------------------------------------- */
-    // ----------------------------- ANIMACION ABRIR OPCIONES MENU ----------------------------- // 
-    /* ----------------------------------------------------------------------------------------- */
+    /* ------------------------------------------------------------------------------------- */
+    // ------------------------------ ANIMACIONES ABRIR MENUS ------------------------------ // 
+    /* ------------------------------------------------------------------------------------- */
 
-    float posicionAfuera = 1920;
-
-    public void abrirOpciones()
+    public void abrirMenu(GameObject menuAPoner, int signo)
     {
-
         animacionEnEjecucion = true;
 
-        ocultarContinuarDesdeNivelSiCorresponde();
-
-        indexActual = SceneManager.GetActiveScene().buildIndex;
-
-        if (indexActual == 0) 
+        if (indexActual == 0)
         {
-            LeanTween.moveLocalX(botonesInicio, 0f, 0f).setOnComplete(_ => quitarBotonesInicio(posicionAfuera));
+            ocultarContinuarDesdeNivel();
+            LeanTween.moveLocalX(botonesInicio, 0f, 0f).setOnComplete(_ => quitarBotonesInicio(posicionAfuera * signo));
         }
 
         // Posicion Inicial
-        LeanTween.moveLocalX(menu, 0f, 0f).setOnComplete(_ => quitarMenu(posicionAfuera));
-        LeanTween.moveLocalX(menuOpciones, -posicionAfuera, 0f).setOnComplete(ponerOpciones);
+        LeanTween.moveLocalX(menu, 0f, 0f).setOnComplete(_ => quitarMenu(posicionAfuera * signo));
+        LeanTween.moveLocalX(menuAPoner, -posicionAfuera * signo, 0f).setOnComplete(_ => ponerMenu(menuAPoner));
+    }
 
+    void quitarBotonesInicio(float posicion)
+    {
+        LeanTween.moveLocalX(botonesInicio, posicion, tiempoAnimacionMenus).setOnComplete(ocultarBotonesInicio);
+    }
+
+    void ocultarBotonesInicio()
+    {
+        botonesInicio.SetActive(false);
     }
 
     void quitarMenu(float posicion)
     {
-        LeanTween.moveLocalX(menu, posicion, tiempoAnimacionOpciones).setOnComplete(ocultarMenu);
+        LeanTween.moveLocalX(menu, posicion, tiempoAnimacionMenus).setOnComplete(ocultarMenu);
     }
 
     void ocultarMenu()
@@ -263,32 +248,31 @@ public class LeanTweenManager : MonoBehaviour
         animacionEnEjecucion = false;
     }
 
-    void ponerOpciones()
+    void ponerMenu(GameObject menuAPoner)
     {
-        menuOpciones.SetActive(true);
-        LeanTween.moveLocalX(menuOpciones, 0f, tiempoAnimacionOpciones);
+        menuAPoner.SetActive(true);
+        LeanTween.moveLocalX(menuAPoner, 0f, tiempoAnimacionMenus);
     }
 
-    void quitarBotonesInicio(float posicion)
+    public void abrirOpciones()
     {
-        LeanTween.moveLocalX(botonesInicio, posicion, tiempoAnimacionOpciones).setOnComplete(ocultarBotonesInicio);
+        abrirMenu(menuOpciones, 1);
     }
 
-    void ocultarBotonesInicio()
+    public void abrirCreditos()
     {
-        botonesInicio.SetActive(false);
-        //Debug.Log("[LeanTweenManager] Termino Animacion [AbrirOpciones]");
+        abrirMenu(menuCreditos, -1);
     }
 
     #endregion
 
-    #region AnimacionCerrarOpcionesMenu
+    #region AnimacionesCerrarMenus
 
-    /* ------------------------------------------------------------------------------------------ */
-    // ----------------------------- ANIMACION CERRAR OPCIONES MENU ----------------------------- // 
-    /* ------------------------------------------------------------------------------------------ */
+    /* -------------------------------------------------------------------------------------- */
+    // ------------------------------ ANIMACIONES CERRAR MENUS ------------------------------ // 
+    /* -------------------------------------------------------------------------------------- */
 
-    public void cerrarOpciones() 
+    public void cerrarMenu(GameObject menuACerrar, int signo)
     {
         animacionEnEjecucion = true;
 
@@ -296,110 +280,51 @@ public class LeanTweenManager : MonoBehaviour
 
         if (indexActual == 0)
         {
-            LeanTween.moveLocalX(botonesInicio, posicionAfuera, 0f).setOnComplete(ponerBotonesInicio);
+            LeanTween.moveLocalX(botonesInicio, posicionAfuera * signo, 0f).setOnComplete(ponerBotonesInicio);
         }
 
         // Posicion Inicial
-        LeanTween.moveLocalX(menu, posicionAfuera, 0f).setOnComplete(ponerMenu);
-        LeanTween.moveLocalX(menuOpciones, 0, 0f).setOnComplete(quitarOpciones);
+        LeanTween.moveLocalX(menu, posicionAfuera * signo, 0f).setOnComplete(ponerMenu);
+        LeanTween.moveLocalX(menuACerrar, 0, 0f).setOnComplete(_ => quitarMenuOtro(menuACerrar, -posicionAfuera * signo));
     }
 
     void ponerBotonesInicio()
     {
         botonesInicio.SetActive(true);
-        LeanTween.moveLocalX(botonesInicio, 0, tiempoAnimacionOpciones);
+        LeanTween.moveLocalX(botonesInicio, 0, tiempoAnimacionMenus);
     }
 
-    void ponerMenu() 
+    void ponerMenu()
     {
         menu.SetActive(true);
-        LeanTween.moveLocalX(menu, 0, tiempoAnimacionOpciones).setOnComplete(ocultarContinuarDesdeNivelSiCorresponde);
+        LeanTween.moveLocalX(menu, 0, tiempoAnimacionMenus).setOnComplete(ocultarContinuarDesdeNivel);
     }
 
-    void ocultarContinuarDesdeNivelSiCorresponde() 
+    void quitarMenuOtro(GameObject menuAQuitar, float posicion)
     {
-        indexActual = SceneManager.GetActiveScene().buildIndex;
+        LeanTween.moveLocalX(menuAQuitar, posicion, tiempoAnimacionMenus).setOnComplete(_ => ocultarMenuOtro(menuAQuitar));
+    }
 
+    void ocultarMenuOtro(GameObject menuAQuitar)
+    {
+        menuAQuitar.SetActive(false);
+        animacionEnEjecucion = false;
+    }
+
+    public void cerrarOpciones()
+    {
+        cerrarMenu(menuOpciones, 1);
+    }
+
+    public void cerrarCreditos()
+    {
+        cerrarMenu(menuCreditos, -1);
+    }
+
+    void ocultarContinuarDesdeNivel()
+    {
         if (indexActual == 0)
             FindObjectOfType<ContinuarDesdeNivel>().ocultarContinuarDesdeNivelSiCorresponde();
-    }
-
-    void quitarOpciones() 
-    {
-        LeanTween.moveLocalX(menuOpciones, -posicionAfuera, tiempoAnimacionOpciones).setOnComplete(ocultarOpciones);
-    }
-
-    void ocultarOpciones() 
-    {
-        menuOpciones.SetActive(false);
-        animacionEnEjecucion = false;
-    }
-
-    #endregion
-
-    #region AnimacionAbrirCreditos
-
-    /* ------------------------------------------------------------------------------------ */
-    // ----------------------------- ANIMACION ABRIR creditosMenu ----------------------------- // 
-    /* ------------------------------------------------------------------------------------ */
-
-    public void abrirCreditos() 
-    {
-        animacionEnEjecucion = true;
-
-        ocultarContinuarDesdeNivelSiCorresponde();
-
-        indexActual = SceneManager.GetActiveScene().buildIndex;
-
-        if (indexActual == 0)
-        {
-            LeanTween.moveLocalX(botonesInicio, 0f, 0f).setOnComplete(_ => quitarBotonesInicio(-posicionAfuera));
-        }
-
-        // Posicion Inicial
-        LeanTween.moveLocalX(menu, 0f, 0f).setOnComplete(_ => quitarMenu(-posicionAfuera));
-        LeanTween.moveLocalX(menuCreditos, posicionAfuera, 0f).setOnComplete(ponerCreditos);
-    }
-
-    void ponerCreditos() 
-    {
-        menuCreditos.SetActive(true);
-        LeanTween.moveLocalX(menuCreditos, 0f, tiempoAnimacionOpciones);
-    }
-
-    #endregion
-
-    #region AnimacionCerrarCreditos
-
-    /* ------------------------------------------------------------------------------------- */
-    // ----------------------------- ANIMACION CERRAR CREDITOS ----------------------------- // 
-    /* ------------------------------------------------------------------------------------- */
-
-    public void cerrarCreditos() 
-    {
-        animacionEnEjecucion = true;
-
-        indexActual = SceneManager.GetActiveScene().buildIndex;
-
-        if (indexActual == 0)
-        {
-            LeanTween.moveLocalX(botonesInicio, -posicionAfuera, 0f).setOnComplete(ponerBotonesInicio);
-        }
-
-        // Posicion Inicial
-        LeanTween.moveLocalX(menu, -posicionAfuera, 0f).setOnComplete(ponerMenu);
-        LeanTween.moveLocalX(menuOpciones, 0, 0f).setOnComplete(quitarCreditos);
-    }
-
-    void quitarCreditos()
-    {
-        LeanTween.moveLocalX(menuCreditos, posicionAfuera, tiempoAnimacionOpciones).setOnComplete(ocultarCreditos);
-    }
-
-    void ocultarCreditos()
-    {
-        menuCreditos.SetActive(false);
-        animacionEnEjecucion = false;
     }
 
     #endregion

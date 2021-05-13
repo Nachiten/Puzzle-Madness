@@ -13,7 +13,7 @@ public class Timer : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void Start() { timerText = GameObject.Find("Timer").GetComponent<TMP_Text>(); }
+    void Awake() { timerText = GameObject.Find("Timer").GetComponent<TMP_Text>(); }
 
     /* -------------------------------------------------------------------------------- */
 
@@ -29,7 +29,6 @@ public class Timer : MonoBehaviour
 
             timerText.text = minutes + ":" + seconds + ":" + miliseconds;
         }
-
     }
 
     /* -------------------------------------------------------------------------------- */
@@ -38,11 +37,9 @@ public class Timer : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    float playerPref;
-
     public void setPlayerPref() {
 
-        playerPref = PlayerPrefs.GetFloat("Time_" + SceneManager.GetActiveScene().buildIndex);;
+        float playerPref = PlayerPrefs.GetFloat("Time_" + SceneManager.GetActiveScene().buildIndex);;
 
         if (time < playerPref || playerPref == 0)
         {

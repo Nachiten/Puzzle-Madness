@@ -17,28 +17,37 @@ public class LevelLoader : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
+    #region FuncionesInicio
+
+    private void Awake()
+    {
+        if (!variablesAsignadas)
+        {
+            // Asignar variables
+            slider = GameObject.Find("Barra Carga").GetComponent<Slider>();
+            levelLoader = GameObject.Find("Panel Carga");
+            panelCargaColor = GameObject.Find("PanelColorCarga");
+            restoPanelCarga = GameObject.Find("RestoPanelCarga");
+
+            textoProgreso = GameObject.Find("TextoProgreso").GetComponent<TMP_Text>();
+            textoNivel = GameObject.Find("Texto Cargando").GetComponent<TMP_Text>();
+        }
+    }
+
+    /* -------------------------------------------------------------------------------- */
+
     void Start()
     {
         if (!variablesAsignadas)
         {
-            // Aisgnar variables
-            levelLoader = GameObject.Find("Panel Carga");
-            textoProgreso = GameObject.Find("TextoProgreso").GetComponent<TMP_Text>();
-            slider = GameObject.Find("Barra Carga").GetComponent<Slider>();
-            panelCargaColor = GameObject.Find("PanelColorCarga");
-            restoPanelCarga = GameObject.Find("RestoPanelCarga");
-
-            textoNivel = GameObject.Find("Texto Cargando").GetComponent<TMP_Text>();
-
-            variablesAsignadas = true;
-
-            // Ocultar pantalla de carga
             levelLoader.SetActive(false);
+            variablesAsignadas = true;
         }
-        else 
+        else
             quitarPanelCarga();
     }
 
+    #endregion
     /* -------------------------------------------------------------------------------- */
 
     // Llamar a Corutina

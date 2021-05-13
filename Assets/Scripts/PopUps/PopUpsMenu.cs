@@ -90,7 +90,7 @@ public class PopUpsMenu : MonoBehaviour
         // Posicion inicial
         LeanTween.moveLocalX(popUp, -1500, 0f).setOnComplete(_ => popUp.SetActive(true));
 
-        Debug.Log("[PopUpsMenu] Animando apertura de PopUp");
+        //Debug.Log("[PopUpsMenu] Animando apertura de PopUp");
 
         LeanTween.moveLocalX(popUp, 0, tiempoAnimacion);
     }
@@ -99,7 +99,7 @@ public class PopUpsMenu : MonoBehaviour
 
     public void cerrarPopUp( bool accionUsada) // TRUE = si FALSE = no
     {
-        Debug.Log("[PopUpsMenu] Animando cerrado de PopUp");
+        //Debug.Log("[PopUpsMenu] Animando cerrado de PopUp");
         LeanTween.moveLocalX(popUp, 1500, tiempoAnimacion).setOnComplete(_ => realizarAccionAlCerrar(accionUsada));
     }
 

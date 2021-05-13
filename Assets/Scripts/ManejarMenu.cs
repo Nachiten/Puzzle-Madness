@@ -33,23 +33,26 @@ public class ManejarMenu : MonoBehaviour
 
     #region FuncionStart
 
-    void Start()
+    private void Awake()
     {
-        index = SceneManager.GetActiveScene().buildIndex;
-       
         if (!variablesAsignadas)
         {
             menu = GameObject.Find("Menu");
             panelMenu = GameObject.Find("PanelMenu");
             opciones = GameObject.Find("MenuOpciones");
             creditos = GameObject.Find("MenuCreditos");
-            
+
             textoBoton = GameObject.Find("TextoBotonComenzar").GetComponent<TMP_Text>();
-            
+
             tweenManager = GameObject.Find("Canvas Menu").GetComponent<LeanTweenManager>();
 
             variablesAsignadas = true;
         }
+    }
+
+    void Start()
+    {
+        index = SceneManager.GetActiveScene().buildIndex;
 
         // No estoy en el menu principal
         if (index != 0)

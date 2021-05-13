@@ -130,15 +130,13 @@ public class GameManager : MonoBehaviour
 
     void borrarBloquesAnterioresSiExisten()
     {
-        Debug.Log("[GameManager] BORRAR_BLOQUES");
+        //Debug.Log("[GameManager] BORRAR_BLOQUES");
 
         GameObject objetoActual;
         int contador = 1;
 
         while ((objetoActual = GameObject.Find(contador.ToString())) != null)
         {
-            //Debug.Log("[GameManager] Destruyo objeto: " + contador);
-
             Destroy(objetoActual);
             contador++;
         }
@@ -150,7 +148,7 @@ public class GameManager : MonoBehaviour
     {
         bloquePrefab = Resources.Load("Bloque", typeof(GameObject)) as GameObject;
 
-        Debug.Log("[GameManager] GENERAR_BLOQUES");
+        //Debug.Log("[GameManager] GENERAR_BLOQUES");
 
         int contador = 1;
 
@@ -187,12 +185,10 @@ public class GameManager : MonoBehaviour
 
     void ajustarTexturasBloques()
     {
-        Debug.Log("[GameManager] AJUSTAR_TEXTURAS");
+        //Debug.Log("[GameManager] AJUSTAR_TEXTURAS");
 
         // Textura de imagen modelo
         Renderer modelo = GameObject.Find("Bloque Modelo").GetComponent<Renderer>();
-
-        //Debug.Log("[GameManager] Modelo: " + modelo);
 
         float scaleX = 1f / columnas;
         float scaleY = 1f / filas;
@@ -277,7 +273,7 @@ public class GameManager : MonoBehaviour
 
     void ajustarPosicionBloques()
     {
-        Debug.Log("[GameManager] AJUSTAR_POSICION_BLOQUES");
+        //Debug.Log("[GameManager] AJUSTAR_POSICION_BLOQUES");
 
         if (index < 12)
         {
@@ -328,7 +324,7 @@ public class GameManager : MonoBehaviour
     // Hijo de ajustarPosicionBloques
     void ajustarPosicionCamaraYModelo()
     {
-        Debug.Log("[GameManager] AJUSTAR_POSICION_CAMARA_MODELO");
+        //Debug.Log("[GameManager] AJUSTAR_POSICION_CAMARA_MODELO");
 
         int mayor = columnas;
 

@@ -8,7 +8,7 @@ public class dontDestroy : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void Start()
+    void Awake()
     {
         if (flag)
         {

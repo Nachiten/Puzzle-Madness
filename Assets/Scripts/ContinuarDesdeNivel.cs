@@ -15,12 +15,16 @@ public class ContinuarDesdeNivel : MonoBehaviour
 
     /* -------------------------------------------------------------------------------- */
 
-    void Start()
+    private void Awake()
     {
         continuarDesdeNivel = GameObject.Find("ContinuarDesdeNivel");
         textoNivelNoGanado = GameObject.Find("TextoContinuar").GetComponent<TMP_Text>();
 
         textoBoton = GameObject.Find("TextoBotonComenzar").GetComponent<TMP_Text>();
+    }
+
+    void Start()
+    {
         textoBoton.text = comenzarString;
 
         if (yaJugoAntes())
