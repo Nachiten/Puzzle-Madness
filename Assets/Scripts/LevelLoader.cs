@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -21,6 +20,8 @@ public class LevelLoader : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("[LevelLoader] Awake");
+
         if (!variablesAsignadas)
         {
             // Asignar variables
@@ -63,17 +64,17 @@ public class LevelLoader : MonoBehaviour
     /* -------------------------------------------------------------------------------- */
 
     // Iniciar Corutina para cargar nivel en background
-    IEnumerator cargarAsincronizadamente(int index)
+    IEnumerator cargarAsincronizadamente()
     {
         // Iniciar carga de escena
-        AsyncOperation operacion = SceneManager.LoadSceneAsync(index);
+        AsyncOperation operacion = SceneManager.LoadSceneAsync(indexACargar);
 
         operacion.allowSceneActivation = true;
 
-        Debug.Log("[LevelLoader] Cargando escena: " + index);
+        Debug.Log("[LevelLoader] Cargando escena: " + indexACargar);
 
         // Desde aca si encuentra la escena correcta (no se pq)
-        string nombreEscena = SceneManager.GetSceneByBuildIndex(index).name;
+        string nombreEscena = SceneManager.GetSceneByBuildIndex(indexACargar).name;
         //Debug.Log("Escena que se carga: " + nombreEscena);
         textoNivel.text = "Cargando " + nombreEscena + " ...";
 
@@ -99,9 +100,9 @@ public class LevelLoader : MonoBehaviour
 
     #region AnimacionPonerPanelCarga
 
-    /* --------------------------------------------------------------------------------------- */
-    // ----------------------------- ANIMACION PONER PANEL CARGA ----------------------------- // 
-    /* --------------------------------------------------------------------------------------- */
+    /* ----------------------------------------------------------------------------------------- */
+    // ------------------------------ ANIMACION PONER PANEL CARGA ------------------------------ // 
+    /* ----------------------------------------------------------------------------------------- */
 
     float tiempoAnimacionColorPanel = 0.3f; // 0.3
     float tiempoAnimacionRestoPanel = 0.2f; // 0.2
@@ -111,7 +112,8 @@ public class LevelLoader : MonoBehaviour
         restoPanelCarga.SetActive(false);
 
         LeanTween.value(levelLoader, 0, 0, 0f)
-            .setOnUpdate(mostrarColorPanelAlfa).setOnComplete(iniciarMostrarPanelCarga);  
+            .setOnUpdate(mostrarColorPanelAlfa)
+            .setOnComplete(iniciarMostrarPanelCarga);  
     }
 
     void mostrarColorPanelAlfa(float value) 
@@ -119,10 +121,13 @@ public class LevelLoader : MonoBehaviour
         panelCargaColor.GetComponent<Image>().color = new Color(0.149f, 0.149f, 0.149f, value);
     }
 
-    void iniciarMostrarPanelCarga() {
+    void iniciarMostrarPanelCarga() 
+    {
         levelLoader.SetActive(true);
+
         LeanTween.value(levelLoader, 0, 1, tiempoAnimacionColorPanel)
-                .setOnUpdate(mostrarColorPanelAlfa).setOnComplete(mostrarPanelCarga);
+                .setOnUpdate(mostrarColorPanelAlfa)
+                .setOnComplete(mostrarPanelCarga);
     }
 
     void mostrarPanelCarga()
@@ -136,10 +141,7 @@ public class LevelLoader : MonoBehaviour
         LeanTween.scaleY(restoPanelCarga, 1, tiempoAnimacionRestoPanel).setOnComplete(completarCargaNivel);
     }
 
-    void completarCargaNivel() 
-    {
-        StartCoroutine(cargarAsincronizadamente(indexACargar));
-    }
+    void completarCargaNivel() { StartCoroutine(cargarAsincronizadamente()); }
 
     #endregion
 
@@ -157,12 +159,11 @@ public class LevelLoader : MonoBehaviour
     void ocultarColorPanelAlfa() 
     {
         LeanTween.value(levelLoader, 1, 0, tiempoAnimacionColorPanel)
-            .setOnUpdate(mostrarColorPanelAlfa).setOnComplete(esconderPanelCarga);
+            .setOnUpdate(mostrarColorPanelAlfa)
+            .setOnComplete(esconderPanelCarga);
     }
 
-    void esconderPanelCarga() {
-        levelLoader.SetActive(false);
-    }
+    void esconderPanelCarga() { levelLoader.SetActive(false); }
 
     #endregion
 }

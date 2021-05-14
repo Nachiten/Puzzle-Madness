@@ -35,7 +35,7 @@ public class LevelSelector : MonoBehaviour
 
     void scanJuego(int nivel)
     {
-        Debug.Log("Escaneando nivel: " + nivel);
+        //Debug.Log("Escaneando nivel: " + nivel);
 
         for (int i = 1; i < 11; i++)
         {

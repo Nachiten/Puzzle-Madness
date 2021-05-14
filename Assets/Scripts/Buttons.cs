@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class Buttons : MonoBehaviour
 {
+    [HideInInspector]
     public int nivelACargar = 1;
 
     static PopUpsMenu codigoPopUpsMenu;
@@ -116,13 +117,14 @@ public class Buttons : MonoBehaviour
     /* ------------------------------------ AUXILIARES ------------------------------------ */
     /* ------------------------------------------------------------------------------------ */
 
-    /* -------------------------------------------------------------------------------- */
+    public void loadLevel(int index) 
+    {
+        codigoLevelLoader = GameObject.Find("GameManager").GetComponent<LevelLoader>();
 
-    public void loadLevel(int index) { codigoLevelLoader.cargarNivel(index); }
+        codigoLevelLoader.cargarNivel(index); 
+    }
 
-    /* -------------------------------------------------------------------------------- */
+    /* ------------------------------------------------------------------------------------ */
 
     void reproducirSonidoClickBoton() { codigoSoundManager.reproducirSonido(1); }
-
-    /* -------------------------------------------------------------------------------- */
 }
