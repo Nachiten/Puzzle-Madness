@@ -3,6 +3,7 @@
 
 #define MyAppVersion "7.0"
 #define MyAppName "PuzzleMadness" + MyAppVersion
+#define MyAppNameSinVersion "PuzzleMadness"
 #define MyAppPublisher "Nachiten"
 #define MyAppURL "https://www.youtube.com/channel/UCIaYoKyvFB6ubQSYFQ6EISg"
 #define MyAppExeName "Puzzle Madness Launcher.exe"
@@ -19,35 +20,17 @@
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 
-; VERSION 1.0
-; AppId={{8DC430C4-C06C-4E87-87A6-B2A41EB848A2}}
-; VERSION 1.1
-; AppId={{B436E5F6-6A44-410D-8A19-7DDDD4B1928A}}
-; VERSION 2.0
-; AppId={{E6853E16-7154-4578-A10F-8C61FDD46E77}}
-; VERSION 3.0
-; AppId={{D02FA301-28EB-4891-9D5F-BDFFA4521437}}
-; VERSION 4.0
-; AppId={{76DE6F63-EDD1-4655-A21F-120C5C47752D}}
-; VERSION 5.0
-; AppId={{67186AD2-8A7E-4D58-B12D-05524275954E}}
-; VERSION 5.1
-; AppId={{0615520A-1E18-4D6A-9DA2-B76554FA2809}}
-; VERSION 6.0
-; AppId={{A394472F-AB15-4A21-BF03-4318E282F016}}
-; VERSION 6.1
-; AppId={{19ACD13E-AF3D-4143-A054-96A34AF00854}}
-; VERSION 7.0
-AppId={{19A13EF3-42D0-45CA-B50A-EF3C04C14183}} 
+; AppId | Puzzle Madness
+AppId={{AB17CC6A-AD98-4B2F-BBFD-0DEA97810D99}} 
 
-AppName={#MyAppName}
+AppName={#MyAppNameSinVersion}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={autopf}\{#MyAppName}
+DefaultDirName={autopf}\{#MyAppNameSinVersion}
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
 ; Remove the following line to run in administrative install mode (install for all users.)
